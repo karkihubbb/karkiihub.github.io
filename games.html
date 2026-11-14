@@ -40,10 +40,7 @@ nav a{
 
 nav a:hover{color:#a18bd6}
 
-.hero{
-  text-align:center;
-  padding:55px 15px 35px;
-}
+.hero{text-align:center;padding:55px 15px 35px}
 
 .hero h1{
   font-family:Georgia,serif;
@@ -54,19 +51,15 @@ nav a:hover{color:#a18bd6}
 
 .hero p{color:#8492b0;font-size:14px}
 
-.container{
-  width:min(1050px,91%);
-  margin:20px auto 70px;
-}
+.container{width:min(1050px,91%);margin:20px auto 70px}
 
 .game{
-  background:rgba(255,255,255,.65);
-  border:1px solid rgba(255,255,255,.95);
+  background:rgba(255,255,255,.68);
+  border:1px solid white;
   border-radius:25px;
   padding:27px;
   margin-bottom:25px;
   box-shadow:0 12px 35px rgba(100,120,170,.12);
-  backdrop-filter:blur(12px);
 }
 
 .game-heading{
@@ -77,7 +70,7 @@ nav a:hover{color:#a18bd6}
 }
 
 .game-icon{
-  font-size:36px;
+  font-size:35px;
   background:#edf2ff;
   border-radius:17px;
   padding:12px;
@@ -105,7 +98,7 @@ nav a:hover{color:#a18bd6}
 
 button{
   border:0;
-  border-radius:13px;
+  border-radius:12px;
   padding:11px 19px;
   color:white;
   background:linear-gradient(120deg,#91b8ec,#b9a5e8);
@@ -115,15 +108,7 @@ button{
   transition:.2s;
 }
 
-button:hover{
-  transform:translateY(-2px);
-  filter:brightness(1.05);
-}
-
-button:disabled{
-  opacity:.5;
-  cursor:not-allowed;
-}
+button:hover{transform:translateY(-2px);filter:brightness(1.05)}
 
 .status{
   color:#687ca5;
@@ -132,20 +117,81 @@ button:disabled{
   min-height:20px;
 }
 
+.score{color:#62769f;font-weight:bold;margin:10px}
+
 canvas{
   display:block;
   margin:12px auto;
   max-width:100%;
-  border:2px solid #d4def4;
-  border-radius:13px;
-  background:#e8efff;
+  border-radius:8px;
 }
 
-.score{
-  color:#62769f;
-  font-weight:bold;
-  margin:10px;
+#snakeCanvas{
+  background:#111;
+  border:3px solid #555;
 }
+
+#birdCanvas{
+  background:#70c5ce;
+  border:3px solid #438b91;
+  cursor:pointer;
+}
+
+#snakeControls{
+  display:grid;
+  grid-template-columns:repeat(3,55px);
+  justify-content:center;
+  gap:5px;
+  margin-top:12px;
+}
+
+#snakeControls button{
+  margin:0;
+  padding:12px 5px;
+  font-size:20px;
+  background:#637eaf;
+}
+
+#snakeControls button:first-child{grid-column:2}
+#snakeControls button:nth-child(2){grid-column:1;grid-row:2}
+#snakeControls button:nth-child(3){grid-column:2;grid-row:2}
+#snakeControls button:nth-child(4){grid-column:3;grid-row:2}
+
+#board2048{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:9px;
+  width:min(340px,100%);
+  margin:15px auto;
+  padding:10px;
+  border-radius:8px;
+  background:#bbada0;
+  outline:none;
+}
+
+.tile{
+  aspect-ratio:1;
+  border-radius:5px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#cdc1b4;
+  color:#776e65;
+  font-size:clamp(17px,4vw,25px);
+  font-weight:bold;
+}
+
+.tile[data-v="2"]{background:#eee4da}
+.tile[data-v="4"]{background:#ede0c8}
+.tile[data-v="8"]{background:#f2b179;color:white}
+.tile[data-v="16"]{background:#f59563;color:white}
+.tile[data-v="32"]{background:#f67c5f;color:white}
+.tile[data-v="64"]{background:#f65e3b;color:white}
+.tile[data-v="128"]{background:#edcf72;color:white}
+.tile[data-v="256"]{background:#edcc61;color:white}
+.tile[data-v="512"]{background:#edc850;color:white}
+.tile[data-v="1024"]{background:#edc53f;color:white;font-size:18px}
+.tile[data-v="2048"]{background:#edc22e;color:white;font-size:18px}
 
 .rps-buttons{
   display:flex;
@@ -156,46 +202,8 @@ canvas{
 
 .rps-buttons button{
   font-size:30px;
-  padding:15px 25px;
-}
-
-#board2048{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:8px;
-  width:min(340px,100%);
-  margin:15px auto;
-  padding:10px;
-  border-radius:16px;
-  background:#cbd7ef;
-}
-
-.tile{
-  aspect-ratio:1;
-  border-radius:9px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:#e9efff;
-  color:#66769b;
-  font-size:clamp(17px,4vw,25px);
-  font-weight:bold;
-}
-
-.tile[data-v="2"]{background:#fff8e8}
-.tile[data-v="4"]{background:#f4e9ff}
-.tile[data-v="8"]{background:#d5e6ff}
-.tile[data-v="16"]{background:#c8d5ff}
-.tile[data-v="32"]{background:#c5c7f2}
-.tile[data-v="64"]{background:#b3b9ec;color:white}
-.tile[data-v="128"],
-.tile[data-v="256"],
-.tile[data-v="512"],
-.tile[data-v="1024"],
-.tile[data-v="2048"]{
-  background:#8c9fd2;
-  color:white;
-  font-size:18px;
+  padding:16px 25px;
+  background:#718dc4;
 }
 
 footer{
@@ -238,14 +246,26 @@ footer{
     <div class="game-icon">🐍</div>
     <div>
       <h2>Snake</h2>
-      <p>Eat the glowing food and grow your snake.</p>
+      <p>Eat the food and grow your snake.</p>
     </div>
   </div>
+
   <div class="play-area">
     <div class="score">Score: <span id="snakeScore">0</span></div>
     <canvas id="snakeCanvas" width="360" height="240"></canvas>
-    <div class="status" id="snakeStatus">Press Start to play. Use arrow keys.</div>
+    <div class="status" id="snakeStatus">Press Start to play!</div>
+
     <button onclick="startSnake()">Start / Restart</button>
+
+    <div id="snakeControls">
+      <button onclick="changeSnake('up')">⬆</button>
+      <button onclick="changeSnake('left')">⬅</button>
+      <button onclick="changeSnake('down')">⬇</button>
+      <button onclick="changeSnake('right')">➡</button>
+    </div>
+    <p style="font-size:12px;color:#8290ad;margin-top:12px">
+      Use arrow keys or the buttons above.
+    </p>
   </div>
 </section>
 
@@ -255,13 +275,14 @@ footer{
     <div class="game-icon">🐦</div>
     <div>
       <h2>Flappy Bird</h2>
-      <p>Fly through the pipes and beat your best score.</p>
+      <p>Fly through the pipes and avoid obstacles.</p>
     </div>
   </div>
+
   <div class="play-area">
     <div class="score">Score: <span id="birdScore">0</span></div>
     <canvas id="birdCanvas" width="360" height="240"></canvas>
-    <div class="status" id="birdStatus">Press Start, then tap or press Space to fly.</div>
+    <div class="status" id="birdStatus">Press Start to play!</div>
     <button onclick="startBird()">Start / Restart</button>
     <button onclick="flap()">FLAP ↑</button>
   </div>
@@ -276,10 +297,13 @@ footer{
       <p>Combine matching numbers to reach 2048.</p>
     </div>
   </div>
+
   <div class="play-area">
     <div class="score">Score: <span id="score2048">0</span></div>
-    <div id="board2048"></div>
-    <div class="status" id="status2048">Use arrow keys to move the tiles.</div>
+    <div id="board2048" tabindex="0" aria-label="2048 game board"></div>
+    <div class="status" id="status2048">
+      Click the board, then use arrow keys.
+    </div>
     <button onclick="new2048()">New Game</button>
   </div>
 </section>
@@ -290,9 +314,10 @@ footer{
     <div class="game-icon">✊</div>
     <div>
       <h2>Rock Paper Scissors</h2>
-      <p>Challenge the computer. Can you win?</p>
+      <p>Challenge the computer!</p>
     </div>
   </div>
+
   <div class="play-area">
     <div class="rps-buttons">
       <button onclick="playRPS('Rock')">✊</button>
@@ -310,95 +335,166 @@ footer{
 <footer>Made with ✦ in KarkiVerse</footer>
 
 <script>
-// SNAKE GAME
+
+// ================= SNAKE =================
+
 const sc=document.getElementById("snakeCanvas");
 const sx=sc.getContext("2d");
+
 let snake=[],food={},sd={x:1,y:0},nextSd={x:1,y:0};
 let snakeTimer=null,snakeRunning=false,snakePoints=0;
 
 function drawSnake(){
-  sx.clearRect(0,0,360,240);
-  sx.fillStyle="#e8efff";
+  sx.fillStyle="#111111";
   sx.fillRect(0,0,360,240);
-  sx.fillStyle="#f09bbd";
-  sx.fillRect(food.x*20,food.y*20,17,17);
+
+  sx.fillStyle="#ff3333";
+  sx.fillRect(food.x*20,food.y*20,18,18);
+
   snake.forEach((p,i)=>{
-    sx.fillStyle=i===0?"#718bc4":"#9fb8e9";
-    sx.fillRect(p.x*20,p.y*20,17,17);
+    sx.fillStyle=i===0?"#00ff00":"#32cd32";
+    sx.fillRect(p.x*20,p.y*20,18,18);
   });
 }
 
 function placeFood(){
-  food={x:Math.floor(Math.random()*18),y:Math.floor(Math.random()*12)};
+  food={
+    x:Math.floor(Math.random()*18),
+    y:Math.floor(Math.random()*12)
+  };
   if(snake.some(p=>p.x===food.x&&p.y===food.y))placeFood();
 }
 
 function startSnake(){
   clearInterval(snakeTimer);
   snake=[{x:8,y:6},{x:7,y:6},{x:6,y:6}];
-  sd={x:1,y:0};nextSd={x:1,y:0};
-  snakePoints=0;snakeRunning=true;
+  sd={x:1,y:0};
+  nextSd={x:1,y:0};
+  snakePoints=0;
+  snakeRunning=true;
+
   document.getElementById("snakeScore").textContent=0;
-  document.getElementById("snakeStatus").textContent="Good luck!";
-  placeFood();drawSnake();
+  document.getElementById("snakeStatus").textContent="Game started!";
+  placeFood();
+  drawSnake();
   snakeTimer=setInterval(updateSnake,130);
+}
+
+function changeSnake(direction){
+  const directions={
+    up:{x:0,y:-1},
+    down:{x:0,y:1},
+    left:{x:-1,y:0},
+    right:{x:1,y:0}
+  };
+
+  const d=directions[direction];
+  if(!d||!snakeRunning)return;
+
+  if(d.x!==-sd.x||d.y!==-sd.y)nextSd=d;
 }
 
 function updateSnake(){
   sd=nextSd;
-  const head={x:snake[0].x+sd.x,y:snake[0].y+sd.y};
+
+  const head={
+    x:snake[0].x+sd.x,
+    y:snake[0].y+sd.y
+  };
+
   if(head.x<0||head.x>=18||head.y<0||head.y>=12||
      snake.some(p=>p.x===head.x&&p.y===head.y)){
-    clearInterval(snakeTimer);snakeRunning=false;
-    document.getElementById("snakeStatus").textContent="Game over! Press restart.";
+    clearInterval(snakeTimer);
+    snakeRunning=false;
+    document.getElementById("snakeStatus").textContent=
+      "Game Over! Score: "+snakePoints+". Restart to play again.";
     return;
   }
+
   snake.unshift(head);
+
   if(head.x===food.x&&head.y===food.y){
     snakePoints++;
     document.getElementById("snakeScore").textContent=snakePoints;
     placeFood();
-  }else snake.pop();
+  }else{
+    snake.pop();
+  }
+
   drawSnake();
 }
 
+// Snake keyboard controls
 document.addEventListener("keydown",e=>{
   const keys={
-    ArrowUp:{x:0,y:-1},ArrowDown:{x:0,y:1},
-    ArrowLeft:{x:-1,y:0},ArrowRight:{x:1,y:0}
+    ArrowUp:"up",
+    ArrowDown:"down",
+    ArrowLeft:"left",
+    ArrowRight:"right"
   };
-  if(keys[e.key]&&snakeRunning){
+  if(snakeRunning&&keys[e.key]){
     e.preventDefault();
-    const d=keys[e.key];
-    if(d.x!==-sd.x||d.y!==-sd.y)nextSd=d;
+    changeSnake(keys[e.key]);
   }
 });
 
-// FLAPPY BIRD
+
+// ================= FLAPPY BIRD =================
+
 const bc=document.getElementById("birdCanvas");
 const bx=bc.getContext("2d");
-let birdY=110,birdV=0,pipes=[],birdPoints=0,birdRunning=false;
-let birdTimer=null,birdStarted=false;
+
+let birdY=110,birdV=0,pipes=[],birdPoints=0;
+let birdRunning=false,birdTimer=null;
 
 function drawBird(){
-  bx.clearRect(0,0,360,240);
-  bx.fillStyle="#e8efff";bx.fillRect(0,0,360,240);
-  bx.fillStyle="#a9c6ed";
+  bx.fillStyle="#70c5ce";
+  bx.fillRect(0,0,360,240);
+
+  bx.fillStyle="#ded895";
+  bx.fillRect(0,218,360,22);
+
   pipes.forEach(p=>{
-    bx.fillRect(p.x,0,42,p.top);
-    bx.fillRect(p.x,p.bottom,42,240-p.bottom);
+    bx.fillStyle="#73bf2e";
+    bx.fillRect(p.x,0,48,p.top);
+    bx.fillRect(p.x,p.bottom,48,218-p.bottom);
+
+    bx.fillStyle="#579c22";
+    bx.fillRect(p.x-3,p.top-13,54,13);
+    bx.fillRect(p.x-3,p.bottom,54,13);
   });
-  bx.font="25px Arial";
-  bx.fillText("🐦",48,birdY+9);
+
+  bx.fillStyle="#ffdf35";
+  bx.beginPath();
+  bx.arc(58,birdY,11,0,Math.PI*2);
+  bx.fill();
+
+  bx.fillStyle="#fff";
+  bx.beginPath();
+  bx.arc(62,birdY-4,4,0,Math.PI*2);
+  bx.fill();
+
+  bx.fillStyle="#222";
+  bx.beginPath();
+  bx.arc(63,birdY-4,2,0,Math.PI*2);
+  bx.fill();
+
+  bx.fillStyle="#f28b25";
+  bx.fillRect(66,birdY,10,5);
 }
 
 function startBird(){
   clearInterval(birdTimer);
-  birdY=110;birdV=0;pipes=[];birdPoints=0;
-  birdRunning=true;birdStarted=true;
+  birdY=110;
+  birdV=0;
+  pipes=[];
+  birdPoints=0;
+  birdRunning=true;
+
   document.getElementById("birdScore").textContent=0;
   document.getElementById("birdStatus").textContent="Tap or press Space to fly!";
-  addPipe();drawBird();
+  addPipe();
+  drawBird();
   birdTimer=setInterval(updateBird,30);
 }
 
@@ -413,44 +509,67 @@ function flap(){
 }
 
 function updateBird(){
-  birdV+=0.28;birdY+=birdV;
+  birdV+=0.28;
+  birdY+=birdV;
+
   pipes.forEach(p=>p.x-=2);
-  if(pipes.length&&pipes[0].x< -45)pipes.shift();
-  if(pipes.length===0||pipes[pipes.length-1].x<205)addPipe();
+
+  if(pipes.length&&pipes[0].x<-55)pipes.shift();
+  if(!pipes.length||pipes[pipes.length-1].x<205)addPipe();
 
   for(const p of pipes){
-    if(!p.passed&&p.x+42<48){
-      p.passed=true;birdPoints++;
+    if(!p.passed&&p.x+48<58){
+      p.passed=true;
+      birdPoints++;
       document.getElementById("birdScore").textContent=birdPoints;
     }
-    if(65>p.x&&48<p.x+42&&
-       (birdY-10<p.top||birdY+10>p.bottom)){
-      endBird();return;
+
+    if(69>p.x&&47<p.x+48&&
+       (birdY-9<p.top||birdY+9>p.bottom)){
+      endBird();
+      return;
     }
   }
-  if(birdY<0||birdY>230){endBird();return;}
+
+  if(birdY<0||birdY>218){
+    endBird();
+    return;
+  }
+
   drawBird();
 }
 
 function endBird(){
-  clearInterval(birdTimer);birdRunning=false;
-  document.getElementById("birdStatus").textContent="Game over! Score: "+birdPoints+". Restart to try again.";
+  clearInterval(birdTimer);
+  birdRunning=false;
+  document.getElementById("birdStatus").textContent=
+    "Game Over! Score: "+birdPoints+". Press restart to try again.";
 }
 
 bc.addEventListener("click",flap);
+
 document.addEventListener("keydown",e=>{
   if(e.code==="Space"&&birdRunning){
-    e.preventDefault();flap();
+    e.preventDefault();
+    flap();
   }
 });
 
-// 2048 GAME
+
+// ================= 2048 =================
+
 let grid=[],score=0,over2048=false;
+const board=document.getElementById("board2048");
 
 function new2048(){
-  grid=Array(16).fill(0);score=0;over2048=false;
-  add2048();add2048();draw2048();
-  document.getElementById("status2048").textContent="Use arrow keys to move.";
+  grid=Array(16).fill(0);
+  score=0;
+  over2048=false;
+  add2048();
+  add2048();
+  draw2048();
+  document.getElementById("status2048").textContent=
+    "Click the board, then use arrow keys.";
 }
 
 function add2048(){
@@ -462,7 +581,6 @@ function add2048(){
 }
 
 function draw2048(){
-  const board=document.getElementById("board2048");
   board.innerHTML="";
   grid.forEach(v=>{
     const tile=document.createElement("div");
@@ -476,42 +594,58 @@ function draw2048(){
 
 function slideLine(line){
   let a=line.filter(v=>v);
+
   for(let i=0;i<a.length-1;i++){
     if(a[i]===a[i+1]){
-      a[i]*=2;score+=a[i];a.splice(i+1,1);
+      a[i]*=2;
+      score+=a[i];
+      a.splice(i+1,1);
     }
   }
+
   while(a.length<4)a.push(0);
   return a;
 }
 
 function move2048(direction){
   if(over2048)return;
+
   const old=grid.slice();
+
   for(let n=0;n<4;n++){
     let line=[];
+
     for(let i=0;i<4;i++){
       const index=direction==="left"||direction==="right"
         ?n*4+i:i*4+n;
       line.push(grid[index]);
     }
+
     if(direction==="right"||direction==="down")line.reverse();
     line=slideLine(line);
     if(direction==="right"||direction==="down")line.reverse();
+
     for(let i=0;i<4;i++){
       const index=direction==="left"||direction==="right"
         ?n*4+i:i*4+n;
       grid[index]=line[i];
     }
   }
+
   if(grid.some((v,i)=>v!==old[i])){
-    add2048();draw2048();
+    add2048();
+    draw2048();
+
     if(grid.includes(2048)){
-      document.getElementById("status2048").textContent="You reached 2048! Amazing!";
-      over2048=true;return;
+      document.getElementById("status2048").textContent=
+        "You reached 2048! Amazing!";
+      over2048=true;
+      return;
     }
+
     if(!canMove2048()){
-      document.getElementById("status2048").textContent="No more moves! Start a new game.";
+      document.getElementById("status2048").textContent=
+        "No more moves! Start a new game.";
       over2048=true;
     }
   }
@@ -526,36 +660,50 @@ function canMove2048(){
   return false;
 }
 
-document.addEventListener("keydown",e=>{
+board.addEventListener("click",()=>board.focus());
+
+board.addEventListener("keydown",e=>{
   const directions={
-    ArrowLeft:"left",ArrowRight:"right",
-    ArrowUp:"up",ArrowDown:"down"
+    ArrowLeft:"left",
+    ArrowRight:"right",
+    ArrowUp:"up",
+    ArrowDown:"down"
   };
+
   if(directions[e.key]){
-    e.preventDefault();move2048(directions[e.key]);
+    e.preventDefault();
+    move2048(directions[e.key]);
   }
 });
 
-// ROCK PAPER SCISSORS
+
+// ================= ROCK PAPER SCISSORS =================
+
 let wins=0,losses=0,draws=0;
 
 function playRPS(player){
   const choices=["Rock","Paper","Scissors"];
   const computer=choices[Math.floor(Math.random()*3)];
   let result;
+
   if(player===computer){
-    result="It's a draw! ✨";draws++;
+    result="It's a draw! ✨";
+    draws++;
   }else if(
     (player==="Rock"&&computer==="Scissors")||
     (player==="Paper"&&computer==="Rock")||
     (player==="Scissors"&&computer==="Paper")
   ){
-    result="You win! 🌸";wins++;
+    result="You win! 🌸";
+    wins++;
   }else{
-    result="Computer wins!";losses++;
+    result="Computer wins!";
+    losses++;
   }
+
   document.getElementById("rpsResult").textContent=
     "You: "+player+" | Computer: "+computer+" — "+result;
+
   updateRPS();
 }
 
@@ -565,15 +713,20 @@ function updateRPS(){
 }
 
 function resetRPS(){
-  wins=0;losses=0;draws=0;
+  wins=0;
+  losses=0;
+  draws=0;
   document.getElementById("rpsResult").textContent="Choose your move!";
   updateRPS();
 }
 
+
 // INITIALIZE
+
 new2048();
 drawSnake();
 drawBird();
+
 </script>
 
 </body>
