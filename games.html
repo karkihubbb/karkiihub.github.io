@@ -1,96 +1,215 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KarkiVerse | Arcade</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KarkiVerse | Game Zone</title>
+
 <style>
-*{box-sizing:border-box}
+*{box-sizing:border-box;margin:0;padding:0}
+
 body{
- margin:0;background:#09090f;color:#f8fafc;
- font-family:Arial,sans-serif;
+  font-family:Arial,sans-serif;
+  color:#485b83;
+  background:linear-gradient(135deg,#eaf4ff,#e6e9ff,#f5edff);
+  min-height:100vh;
 }
+
 header{
- padding:20px 7%;display:flex;justify-content:space-between;
- align-items:center;border-bottom:1px solid #262638;
+  padding:22px 7%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:15px;
 }
-.logo{font-size:25px;font-weight:bold;color:#a78bfa}
-nav a{color:#aaa;text-decoration:none;margin-left:18px}
-nav a:hover{color:#a78bfa}
-.hero{text-align:center;padding:55px 15px 30px}
-.hero h1{font-size:clamp(38px,7vw,65px);margin:0}
-.hero h1 span{color:#a78bfa}
-.hero p{color:#999}
-main{max-width:1100px;margin:auto;padding:20px}
-.section-title{margin-top:30px}
-.games{
- display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
- gap:20px;
+
+.logo{
+  font-family:Georgia,serif;
+  font-size:27px;
+  font-weight:bold;
+  color:#536a9d;
 }
-.card{
- background:#151522;border:1px solid #29293b;
- padding:22px;border-radius:17px;
- transition:.2s;
+
+nav a{
+  color:#65769c;
+  text-decoration:none;
+  margin-left:22px;
+  font-size:14px;
 }
-.card:hover{border-color:#8b5cf6;transform:translateY(-3px)}
-.game-icon{font-size:38px}
-.card h2{margin:10px 0}
-.card p{color:#999;font-size:14px;line-height:1.5}
-.stats{display:flex;gap:10px;margin:18px 0}
-.stat{
- flex:1;background:#0d0d18;border:1px solid #29293b;
- border-radius:10px;padding:12px;text-align:center;
+
+nav a:hover{color:#a18bd6}
+
+.hero{
+  text-align:center;
+  padding:55px 15px 35px;
 }
-.stat small{color:#999;display:block;margin-bottom:7px}
-.stat strong{font-size:22px;color:#c4b5fd}
+
+.hero h1{
+  font-family:Georgia,serif;
+  font-size:clamp(42px,7vw,65px);
+  color:#526895;
+  margin-bottom:13px;
+}
+
+.hero p{color:#8492b0;font-size:14px}
+
+.container{
+  width:min(1050px,91%);
+  margin:20px auto 70px;
+}
+
+.game{
+  background:rgba(255,255,255,.65);
+  border:1px solid rgba(255,255,255,.95);
+  border-radius:25px;
+  padding:27px;
+  margin-bottom:25px;
+  box-shadow:0 12px 35px rgba(100,120,170,.12);
+  backdrop-filter:blur(12px);
+}
+
+.game-heading{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  margin-bottom:22px;
+}
+
+.game-icon{
+  font-size:36px;
+  background:#edf2ff;
+  border-radius:17px;
+  padding:12px;
+}
+
+.game h2{
+  font-family:Georgia,serif;
+  font-size:25px;
+  color:#526895;
+}
+
+.game-heading p{
+  font-size:13px;
+  color:#8996b2;
+  margin-top:5px;
+}
+
+.play-area{
+  background:rgba(237,243,255,.7);
+  border:1px solid #e0e8fa;
+  border-radius:19px;
+  padding:20px;
+  text-align:center;
+}
+
 button{
- border:0;border-radius:9px;padding:12px 17px;
- background:#8b5cf6;color:white;font-weight:bold;
- cursor:pointer;margin:4px;
+  border:0;
+  border-radius:13px;
+  padding:11px 19px;
+  color:white;
+  background:linear-gradient(120deg,#91b8ec,#b9a5e8);
+  cursor:pointer;
+  font-size:14px;
+  margin:5px;
+  transition:.2s;
 }
-button:hover{background:#7041d8}
-button.secondary{background:#29293b}
-button.secondary:hover{background:#41415a}
+
+button:hover{
+  transform:translateY(-2px);
+  filter:brightness(1.05);
+}
+
+button:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.status{
+  color:#687ca5;
+  font-size:14px;
+  margin:13px 0;
+  min-height:20px;
+}
+
 canvas{
- display:block;width:100%;max-width:340px;
- margin:15px auto;background:#09090f;
- border:1px solid #35354b;border-radius:10px;
+  display:block;
+  margin:12px auto;
+  max-width:100%;
+  border:2px solid #d4def4;
+  border-radius:13px;
+  background:#e8efff;
 }
-.status{text-align:center;color:#c4b5fd;min-height:22px}
-.center{text-align:center}
-#flappyCanvas{max-width:340px}
-#snakeCanvas{max-width:340px}
-#grid2048{
- display:grid;grid-template-columns:repeat(4,1fr);
- gap:7px;max-width:340px;margin:15px auto;
- padding:9px;background:#28243b;border-radius:12px;
+
+.score{
+  color:#62769f;
+  font-weight:bold;
+  margin:10px;
 }
+
+.rps-buttons{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.rps-buttons button{
+  font-size:30px;
+  padding:15px 25px;
+}
+
+#board2048{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  width:min(340px,100%);
+  margin:15px auto;
+  padding:10px;
+  border-radius:16px;
+  background:#cbd7ef;
+}
+
 .tile{
- aspect-ratio:1;background:#444057;border-radius:8px;
- display:flex;align-items:center;justify-content:center;
- font-size:clamp(18px,5vw,28px);font-weight:bold;
- color:white;
+  aspect-ratio:1;
+  border-radius:9px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#e9efff;
+  color:#66769b;
+  font-size:clamp(17px,4vw,25px);
+  font-weight:bold;
 }
-.tile[data-v="2"]{background:#eee4da;color:#554b42}
-.tile[data-v="4"]{background:#ede0c8;color:#554b42}
-.tile[data-v="8"]{background:#f2b179}
-.tile[data-v="16"]{background:#f59563}
-.tile[data-v="32"]{background:#f67c5f}
-.tile[data-v="64"]{background:#f65e3b}
-.tile[data-v="128"]{background:#edcf72}
-.tile[data-v="256"]{background:#edcc61}
-.tile[data-v="512"]{background:#edc850}
-.tile[data-v="1024"]{background:#edc53f}
-.tile[data-v="2048"]{background:#edc22e;color:#302000}
-.controls{display:flex;justify-content:center;flex-wrap:wrap;gap:5px}
-.hint{font-size:12px;color:#888;text-align:center}
-footer{text-align:center;color:#777;padding:45px 10px}
-@media(max-width:500px){
- header{padding:18px 5%}
- .logo{font-size:20px}
- nav a{font-size:12px;margin-left:9px}
- main{padding:14px}
+
+.tile[data-v="2"]{background:#fff8e8}
+.tile[data-v="4"]{background:#f4e9ff}
+.tile[data-v="8"]{background:#d5e6ff}
+.tile[data-v="16"]{background:#c8d5ff}
+.tile[data-v="32"]{background:#c5c7f2}
+.tile[data-v="64"]{background:#b3b9ec;color:white}
+.tile[data-v="128"],
+.tile[data-v="256"],
+.tile[data-v="512"],
+.tile[data-v="1024"],
+.tile[data-v="2048"]{
+  background:#8c9fd2;
+  color:white;
+  font-size:18px;
+}
+
+footer{
+  text-align:center;
+  padding:25px;
+  color:#8996b2;
+  font-size:12px;
+}
+
+@media(max-width:600px){
+  header{justify-content:center}
+  nav a{margin:0 8px}
+  .game{padding:17px}
+  .game-heading{align-items:flex-start}
 }
 </style>
 </head>
@@ -98,413 +217,364 @@ footer{text-align:center;color:#777;padding:45px 10px}
 <body>
 
 <header>
- <div class="logo">KarkiVerse ✦</div>
- <nav>
-  <a href="index.html#home">Home</a>
-  <a href="index.html#fun">Fun Zone</a>
-  <a href="games.html">Game Zone 🎮</a>
- </nav>
+  <div class="logo">✦ KarkiVerse</div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="games.html">Game Zone</a>
+    <a href="voices.html">Voice Zone</a>
+  </nav>
 </header>
 
 <section class="hero">
- <h1>THE <span>ARCADE.</span></h1>
- <p>Play. Beat your records. Become the champion.</p>
+  <h1>Game Zone ✧</h1>
+  <p>A little world of games, challenges and fun.</p>
 </section>
 
-<main>
-
-<h2 class="section-title">🔥 Featured Games</h2>
-
-<div class="games">
+<main class="container">
 
 <!-- SNAKE -->
-<section class="card">
- <div class="game-icon">🐍</div>
- <h2>Snake</h2>
- <p>Eat the food, grow your snake and beat your high score.</p>
-
- <div class="stats">
-  <div class="stat"><small>SCORE</small><strong id="snakeScore">0</strong></div>
-  <div class="stat"><small>BEST</small><strong id="snakeBest">0</strong></div>
- </div>
-
- <canvas id="snakeCanvas" width="320" height="320"></canvas>
- <div class="status" id="snakeStatus">Press Start to play!</div>
- <div class="center">
-  <button onclick="startSnake()">Start / Restart</button>
- </div>
- <div class="controls">
-  <button class="secondary" onclick="snakeDir(0,-1)">⬆️</button>
- </div>
- <div class="controls">
-  <button class="secondary" onclick="snakeDir(-1,0)">⬅️</button>
-  <button class="secondary" onclick="snakeDir(0,1)">⬇️</button>
-  <button class="secondary" onclick="snakeDir(1,0)">➡️</button>
- </div>
- <p class="hint">Use arrow keys or buttons to move.</p>
+<section class="game">
+  <div class="game-heading">
+    <div class="game-icon">🐍</div>
+    <div>
+      <h2>Snake</h2>
+      <p>Eat the glowing food and grow your snake.</p>
+    </div>
+  </div>
+  <div class="play-area">
+    <div class="score">Score: <span id="snakeScore">0</span></div>
+    <canvas id="snakeCanvas" width="360" height="240"></canvas>
+    <div class="status" id="snakeStatus">Press Start to play. Use arrow keys.</div>
+    <button onclick="startSnake()">Start / Restart</button>
+  </div>
 </section>
 
-<!-- FLAPPY -->
-<section class="card">
- <div class="game-icon">🐦</div>
- <h2>Flappy Bird</h2>
- <p>Fly through the pipes. Avoid obstacles and set a new record.</p>
-
- <div class="stats">
-  <div class="stat"><small>SCORE</small><strong id="birdScore">0</strong></div>
-  <div class="stat"><small>BEST</small><strong id="birdBest">0</strong></div>
- </div>
-
- <canvas id="flappyCanvas" width="320" height="420"></canvas>
- <div class="status" id="birdStatus">Press Start to play!</div>
- <div class="center">
-  <button onclick="startBird()">Start Game</button>
-  <button class="secondary" onclick="flap()">FLAP ↑</button>
- </div>
- <p class="hint">Press SPACE, click the game or tap FLAP.</p>
+<!-- FLAPPY BIRD -->
+<section class="game">
+  <div class="game-heading">
+    <div class="game-icon">🐦</div>
+    <div>
+      <h2>Flappy Bird</h2>
+      <p>Fly through the pipes and beat your best score.</p>
+    </div>
+  </div>
+  <div class="play-area">
+    <div class="score">Score: <span id="birdScore">0</span></div>
+    <canvas id="birdCanvas" width="360" height="240"></canvas>
+    <div class="status" id="birdStatus">Press Start, then tap or press Space to fly.</div>
+    <button onclick="startBird()">Start / Restart</button>
+    <button onclick="flap()">FLAP ↑</button>
+  </div>
 </section>
 
 <!-- 2048 -->
-<section class="card">
- <div class="game-icon">🔢</div>
- <h2>2048</h2>
- <p>Combine matching numbers and reach the legendary 2048 tile.</p>
-
- <div class="stats">
-  <div class="stat"><small>SCORE</small><strong id="numScore">0</strong></div>
-  <div class="stat"><small>BEST</small><strong id="numBest">0</strong></div>
- </div>
-
- <div id="grid2048"></div>
- <div class="status" id="numStatus">Combine numbers to win!</div>
- <div class="center">
-  <button onclick="start2048()">New Game</button>
- </div>
- <div class="controls">
-  <button class="secondary" onclick="move2048('up')">⬆️</button>
- </div>
- <div class="controls">
-  <button class="secondary" onclick="move2048('left')">⬅️</button>
-  <button class="secondary" onclick="move2048('down')">⬇️</button>
-  <button class="secondary" onclick="move2048('right')">➡️</button>
- </div>
- <p class="hint">Use arrow keys or buttons to move.</p>
+<section class="game">
+  <div class="game-heading">
+    <div class="game-icon">🔢</div>
+    <div>
+      <h2>2048</h2>
+      <p>Combine matching numbers to reach 2048.</p>
+    </div>
+  </div>
+  <div class="play-area">
+    <div class="score">Score: <span id="score2048">0</span></div>
+    <div id="board2048"></div>
+    <div class="status" id="status2048">Use arrow keys to move the tiles.</div>
+    <button onclick="new2048()">New Game</button>
+  </div>
 </section>
 
-</div>
+<!-- ROCK PAPER SCISSORS -->
+<section class="game">
+  <div class="game-heading">
+    <div class="game-icon">✊</div>
+    <div>
+      <h2>Rock Paper Scissors</h2>
+      <p>Challenge the computer. Can you win?</p>
+    </div>
+  </div>
+  <div class="play-area">
+    <div class="rps-buttons">
+      <button onclick="playRPS('Rock')">✊</button>
+      <button onclick="playRPS('Paper')">✋</button>
+      <button onclick="playRPS('Scissors')">✌️</button>
+    </div>
+    <div class="status" id="rpsResult">Choose your move!</div>
+    <div class="score" id="rpsScore">Wins: 0 | Losses: 0 | Draws: 0</div>
+    <button onclick="resetRPS()">Reset Score</button>
+  </div>
+</section>
+
 </main>
 
-<footer>
- KarkiVerse Arcade ✦ Made for fun © 2026
-</footer>
+<footer>Made with ✦ in KarkiVerse</footer>
 
 <script>
-
-// HIGH SCORES
-function getBest(name){
- return Number(localStorage.getItem('kv_'+name)||0);
-}
-function saveBest(name,score){
- if(score>getBest(name)){
-  localStorage.setItem('kv_'+name,score);
- }
-}
-function showBest(name,id){
- document.getElementById(id).textContent=getBest(name);
-}
-
 // SNAKE GAME
+const sc=document.getElementById("snakeCanvas");
+const sx=sc.getContext("2d");
+let snake=[],food={},sd={x:1,y:0},nextSd={x:1,y:0};
+let snakeTimer=null,snakeRunning=false,snakePoints=0;
 
-const sc=document.getElementById('snakeCanvas');
-const sx=sc.getContext('2d');
-let snake=[],food={},dx=1,dy=0,nextX=1,nextY=0;
-let sScore=0,sRunning=false,sTimer=null;
-
-function startSnake(){
- clearInterval(sTimer);
- snake=[{x:5,y:5},{x:4,y:5},{x:3,y:5}];
- dx=1;dy=0;nextX=1;nextY=0;
- sScore=0;sRunning=true;
- food={x:12,y:10};
- document.getElementById('snakeStatus').textContent='Game running!';
- document.getElementById('snakeScore').textContent=0;
- drawSnake();
- sTimer=setInterval(updateSnake,115);
-}
-
-function snakeDir(x,y){
- if(!sRunning)return;
- if(x===-dx&&y===-dy)return;
- nextX=x;nextY=y;
-}
-
-function updateSnake(){
- dx=nextX;dy=nextY;
- let head={x:snake[0].x+dx,y:snake[0].y+dy};
- let eating=head.x===food.x&&head.y===food.y;
-
- if(head.x<0||head.x>=16||head.y<0||head.y>=16||
- snake.slice(0,eating?snake.length:snake.length-1)
- .some(p=>p.x===head.x&&p.y===head.y)){
-  endSnake();return;
- }
-
- snake.unshift(head);
-
- if(eating){
-  sScore+=10;
-  document.getElementById('snakeScore').textContent=sScore;
-  saveBest('snake',sScore);
-  showBest('snake','snakeBest');
-  placeFood();
- }else snake.pop();
-
- drawSnake();
+function drawSnake(){
+  sx.clearRect(0,0,360,240);
+  sx.fillStyle="#e8efff";
+  sx.fillRect(0,0,360,240);
+  sx.fillStyle="#f09bbd";
+  sx.fillRect(food.x*20,food.y*20,17,17);
+  snake.forEach((p,i)=>{
+    sx.fillStyle=i===0?"#718bc4":"#9fb8e9";
+    sx.fillRect(p.x*20,p.y*20,17,17);
+  });
 }
 
 function placeFood(){
- do{
-  food={x:Math.floor(Math.random()*16),y:Math.floor(Math.random()*16)};
- }while(snake.some(p=>p.x===food.x&&p.y===food.y));
+  food={x:Math.floor(Math.random()*18),y:Math.floor(Math.random()*12)};
+  if(snake.some(p=>p.x===food.x&&p.y===food.y))placeFood();
 }
 
-function drawSnake(){
- sx.fillStyle='#09090f';
- sx.fillRect(0,0,320,320);
- sx.fillStyle='#a78bfa';
- snake.forEach((p,i)=>{
-  sx.fillStyle=i===0?'#c4b5fd':'#8b5cf6';
-  sx.fillRect(p.x*20+1,p.y*20+1,18,18);
- });
- sx.fillStyle='#f87171';
- sx.fillRect(food.x*20+3,food.y*20+3,14,14);
+function startSnake(){
+  clearInterval(snakeTimer);
+  snake=[{x:8,y:6},{x:7,y:6},{x:6,y:6}];
+  sd={x:1,y:0};nextSd={x:1,y:0};
+  snakePoints=0;snakeRunning=true;
+  document.getElementById("snakeScore").textContent=0;
+  document.getElementById("snakeStatus").textContent="Good luck!";
+  placeFood();drawSnake();
+  snakeTimer=setInterval(updateSnake,130);
 }
 
-function endSnake(){
- sRunning=false;
- clearInterval(sTimer);
- document.getElementById('snakeStatus').textContent='Game Over! Score: '+sScore;
+function updateSnake(){
+  sd=nextSd;
+  const head={x:snake[0].x+sd.x,y:snake[0].y+sd.y};
+  if(head.x<0||head.x>=18||head.y<0||head.y>=12||
+     snake.some(p=>p.x===head.x&&p.y===head.y)){
+    clearInterval(snakeTimer);snakeRunning=false;
+    document.getElementById("snakeStatus").textContent="Game over! Press restart.";
+    return;
+  }
+  snake.unshift(head);
+  if(head.x===food.x&&head.y===food.y){
+    snakePoints++;
+    document.getElementById("snakeScore").textContent=snakePoints;
+    placeFood();
+  }else snake.pop();
+  drawSnake();
 }
-showBest('snake','snakeBest');
 
+document.addEventListener("keydown",e=>{
+  const keys={
+    ArrowUp:{x:0,y:-1},ArrowDown:{x:0,y:1},
+    ArrowLeft:{x:-1,y:0},ArrowRight:{x:1,y:0}
+  };
+  if(keys[e.key]&&snakeRunning){
+    e.preventDefault();
+    const d=keys[e.key];
+    if(d.x!==-sd.x||d.y!==-sd.y)nextSd=d;
+  }
+});
 
 // FLAPPY BIRD
+const bc=document.getElementById("birdCanvas");
+const bx=bc.getContext("2d");
+let birdY=110,birdV=0,pipes=[],birdPoints=0,birdRunning=false;
+let birdTimer=null,birdStarted=false;
 
-const bc=document.getElementById('flappyCanvas');
-const bx=bc.getContext('2d');
-let birdY=200,birdV=0,pipes=[],bScore=0;
-let bRunning=false,bTimer=null,bFrames=0;
+function drawBird(){
+  bx.clearRect(0,0,360,240);
+  bx.fillStyle="#e8efff";bx.fillRect(0,0,360,240);
+  bx.fillStyle="#a9c6ed";
+  pipes.forEach(p=>{
+    bx.fillRect(p.x,0,42,p.top);
+    bx.fillRect(p.x,p.bottom,42,240-p.bottom);
+  });
+  bx.font="25px Arial";
+  bx.fillText("🐦",48,birdY+9);
+}
 
 function startBird(){
- clearInterval(bTimer);
- birdY=200;birdV=0;pipes=[];bScore=0;bFrames=0;
- bRunning=true;
- document.getElementById('birdScore').textContent=0;
- document.getElementById('birdStatus').textContent='Flying!';
- bTimer=setInterval(updateBird,25);
- drawBird();
+  clearInterval(birdTimer);
+  birdY=110;birdV=0;pipes=[];birdPoints=0;
+  birdRunning=true;birdStarted=true;
+  document.getElementById("birdScore").textContent=0;
+  document.getElementById("birdStatus").textContent="Tap or press Space to fly!";
+  addPipe();drawBird();
+  birdTimer=setInterval(updateBird,30);
+}
+
+function addPipe(){
+  const top=35+Math.random()*95;
+  pipes.push({x:360,top:top,bottom:top+95,passed:false});
 }
 
 function flap(){
- if(!bRunning){
-  if(bScore===0)startBird();
-  else return;
- }
- birdV=-5.5;
+  if(!birdRunning)return;
+  birdV=-5.5;
 }
 
 function updateBird(){
- bFrames++;
- birdV+=0.28;
- birdY+=birdV;
+  birdV+=0.28;birdY+=birdV;
+  pipes.forEach(p=>p.x-=2);
+  if(pipes.length&&pipes[0].x< -45)pipes.shift();
+  if(pipes.length===0||pipes[pipes.length-1].x<205)addPipe();
 
- if(bFrames%85===0){
-  let gap=145;
-  let top=45+Math.random()*165;
-  pipes.push({x:330,top:top,gap:gap,passed:false});
- }
-
- pipes.forEach(p=>p.x-=2.3);
- pipes=pipes.filter(p=>p.x>-55);
-
- for(let p of pipes){
-  if(!p.passed&&p.x+48<55){
-   p.passed=true;bScore++;
-   document.getElementById('birdScore').textContent=bScore;
-   saveBest('bird',bScore);
-   showBest('bird','birdBest');
+  for(const p of pipes){
+    if(!p.passed&&p.x+42<48){
+      p.passed=true;birdPoints++;
+      document.getElementById("birdScore").textContent=birdPoints;
+    }
+    if(65>p.x&&48<p.x+42&&
+       (birdY-10<p.top||birdY+10>p.bottom)){
+      endBird();return;
+    }
   }
-
-  if(55+12>p.x&&55-12<p.x+48&&
-   (birdY-12<p.top||birdY+12>p.top+p.gap)){
-   endBird();return;
-  }
- }
-
- if(birdY<12||birdY>408){endBird();return}
- drawBird();
-}
-
-function drawBird(){
- bx.fillStyle='#101a32';
- bx.fillRect(0,0,320,420);
-
- bx.fillStyle='#1e3a5f';
- for(let i=0;i<320;i+=32){
-  bx.fillRect(i,40,2,2);
-  bx.fillRect((i*3)%320,100,2,2);
- }
-
- pipes.forEach(p=>{
-  bx.fillStyle='#22c55e';
-  bx.fillRect(p.x,0,48,p.top);
-  bx.fillRect(p.x,p.top+p.gap,48,420-p.top-p.gap);
-  bx.fillStyle='#16a34a';
-  bx.fillRect(p.x-4,p.top-15,56,15);
-  bx.fillRect(p.x-4,p.top+p.gap,56,15);
- });
-
- bx.font='25px Arial';
- bx.fillText('🐦',42,birdY+9);
+  if(birdY<0||birdY>230){endBird();return;}
+  drawBird();
 }
 
 function endBird(){
- bRunning=false;
- clearInterval(bTimer);
- document.getElementById('birdStatus').textContent='Game Over! Score: '+bScore;
+  clearInterval(birdTimer);birdRunning=false;
+  document.getElementById("birdStatus").textContent="Game over! Score: "+birdPoints+". Restart to try again.";
 }
 
-bc.addEventListener('click',flap);
-showBest('bird','birdBest');
-
+bc.addEventListener("click",flap);
+document.addEventListener("keydown",e=>{
+  if(e.code==="Space"&&birdRunning){
+    e.preventDefault();flap();
+  }
+});
 
 // 2048 GAME
+let grid=[],score=0,over2048=false;
 
-let board=[],nScore=0,nOver=false,nWon=false;
-
-function start2048(){
- board=Array.from({length:4},()=>Array(4).fill(0));
- nScore=0;nOver=false;nWon=false;
- addTile();addTile();
- document.getElementById('numStatus').textContent='Combine matching numbers!';
- draw2048();
+function new2048(){
+  grid=Array(16).fill(0);score=0;over2048=false;
+  add2048();add2048();draw2048();
+  document.getElementById("status2048").textContent="Use arrow keys to move.";
 }
 
-function addTile(){
- let empty=[];
- board.forEach((row,r)=>row.forEach((v,c)=>{
-  if(!v)empty.push([r,c]);
- }));
- if(!empty.length)return;
- let [r,c]=empty[Math.floor(Math.random()*empty.length)];
- board[r][c]=Math.random()<.9?2:4;
-}
-
-function slide(row){
- let a=row.filter(v=>v);
- let result=[];
- for(let i=0;i<a.length;i++){
-  if(a[i]===a[i+1]){
-   let merged=a[i]*2;
-   result.push(merged);
-   nScore+=merged;
-   i++;
-   if(merged===2048&&!nWon){
-    nWon=true;
-    document.getElementById('numStatus').textContent='You reached 2048! 🎉';
-   }
-  }else result.push(a[i]);
- }
- while(result.length<4)result.push(0);
- return result;
-}
-
-function move2048(dir){
- if(nOver)return;
- let old=JSON.stringify(board);
-
- if(dir==='left'){
-  board=board.map(row=>slide(row));
- }
- if(dir==='right'){
-  board=board.map(row=>slide([...row].reverse()).reverse());
- }
- if(dir==='up'){
-  for(let c=0;c<4;c++){
-   let row=board.map(r=>r[c]);
-   row=slide(row);
-   for(let r=0;r<4;r++)board[r][c]=row[r];
+function add2048(){
+  const empty=grid.map((v,i)=>v===0?i:-1).filter(i=>i>=0);
+  if(empty.length){
+    const i=empty[Math.floor(Math.random()*empty.length)];
+    grid[i]=Math.random()<.9?2:4;
   }
- }
- if(dir==='down'){
-  for(let c=0;c<4;c++){
-   let row=board.map(r=>r[c]).reverse();
-   row=slide(row).reverse();
-   for(let r=0;r<4;r++)board[r][c]=row[r];
-  }
- }
-
- if(old===JSON.stringify(board))return;
-
- addTile();
- saveBest('2048',nScore);
- showBest('2048','numBest');
- draw2048();
-
- if(!canMove()){
-  nOver=true;
-  document.getElementById('numStatus').textContent='Game Over! Final score: '+nScore;
- }
-}
-
-function canMove(){
- for(let r=0;r<4;r++)for(let c=0;c<4;c++){
-  if(board[r][c]===0)return true;
-  if(c<3&&board[r][c]===board[r][c+1])return true;
-  if(r<3&&board[r][c]===board[r+1][c])return true;
- }
- return false;
 }
 
 function draw2048(){
- const grid=document.getElementById('grid2048');
- grid.innerHTML='';
- board.forEach(row=>row.forEach(v=>{
-  let cell=document.createElement('div');
-  cell.className='tile';
-  cell.textContent=v||'';
-  cell.dataset.v=v||0;
-  grid.appendChild(cell);
- }));
- document.getElementById('numScore').textContent=nScore;
+  const board=document.getElementById("board2048");
+  board.innerHTML="";
+  grid.forEach(v=>{
+    const tile=document.createElement("div");
+    tile.className="tile";
+    tile.dataset.v=v||0;
+    tile.textContent=v||"";
+    board.appendChild(tile);
+  });
+  document.getElementById("score2048").textContent=score;
 }
 
-showBest('2048','numBest');
-start2048();
+function slideLine(line){
+  let a=line.filter(v=>v);
+  for(let i=0;i<a.length-1;i++){
+    if(a[i]===a[i+1]){
+      a[i]*=2;score+=a[i];a.splice(i+1,1);
+    }
+  }
+  while(a.length<4)a.push(0);
+  return a;
+}
 
+function move2048(direction){
+  if(over2048)return;
+  const old=grid.slice();
+  for(let n=0;n<4;n++){
+    let line=[];
+    for(let i=0;i<4;i++){
+      const index=direction==="left"||direction==="right"
+        ?n*4+i:i*4+n;
+      line.push(grid[index]);
+    }
+    if(direction==="right"||direction==="down")line.reverse();
+    line=slideLine(line);
+    if(direction==="right"||direction==="down")line.reverse();
+    for(let i=0;i<4;i++){
+      const index=direction==="left"||direction==="right"
+        ?n*4+i:i*4+n;
+      grid[index]=line[i];
+    }
+  }
+  if(grid.some((v,i)=>v!==old[i])){
+    add2048();draw2048();
+    if(grid.includes(2048)){
+      document.getElementById("status2048").textContent="You reached 2048! Amazing!";
+      over2048=true;return;
+    }
+    if(!canMove2048()){
+      document.getElementById("status2048").textContent="No more moves! Start a new game.";
+      over2048=true;
+    }
+  }
+}
 
-// KEYBOARD CONTROLS
+function canMove2048(){
+  for(let i=0;i<16;i++){
+    if(grid[i]===0)return true;
+    if(i%4<3&&grid[i]===grid[i+1])return true;
+    if(i<12&&grid[i]===grid[i+4])return true;
+  }
+  return false;
+}
 
-document.addEventListener('keydown',e=>{
- if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key)){
-  e.preventDefault();
- }
-
- if(e.key==='ArrowUp')move2048('up');
- if(e.key==='ArrowDown')move2048('down');
- if(e.key==='ArrowLeft')move2048('left');
- if(e.key==='ArrowRight')move2048('right');
-
- if(e.key===' '){
-  if(bRunning)flap();
- }
- if(e.key==='ArrowUp'&&sRunning)snakeDir(0,-1);
- if(e.key==='ArrowDown'&&sRunning)snakeDir(0,1);
- if(e.key==='ArrowLeft'&&sRunning)snakeDir(-1,0);
- if(e.key==='ArrowRight'&&sRunning)snakeDir(1,0);
+document.addEventListener("keydown",e=>{
+  const directions={
+    ArrowLeft:"left",ArrowRight:"right",
+    ArrowUp:"up",ArrowDown:"down"
+  };
+  if(directions[e.key]){
+    e.preventDefault();move2048(directions[e.key]);
+  }
 });
 
+// ROCK PAPER SCISSORS
+let wins=0,losses=0,draws=0;
+
+function playRPS(player){
+  const choices=["Rock","Paper","Scissors"];
+  const computer=choices[Math.floor(Math.random()*3)];
+  let result;
+  if(player===computer){
+    result="It's a draw! ✨";draws++;
+  }else if(
+    (player==="Rock"&&computer==="Scissors")||
+    (player==="Paper"&&computer==="Rock")||
+    (player==="Scissors"&&computer==="Paper")
+  ){
+    result="You win! 🌸";wins++;
+  }else{
+    result="Computer wins!";losses++;
+  }
+  document.getElementById("rpsResult").textContent=
+    "You: "+player+" | Computer: "+computer+" — "+result;
+  updateRPS();
+}
+
+function updateRPS(){
+  document.getElementById("rpsScore").textContent=
+    "Wins: "+wins+" | Losses: "+losses+" | Draws: "+draws;
+}
+
+function resetRPS(){
+  wins=0;losses=0;draws=0;
+  document.getElementById("rpsResult").textContent="Choose your move!";
+  updateRPS();
+}
+
+// INITIALIZE
+new2048();
+drawSnake();
+drawBird();
 </script>
+
 </body>
 </html>
-
