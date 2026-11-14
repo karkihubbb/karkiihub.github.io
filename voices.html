@@ -6,9 +6,7 @@
 <title>KarkiVerse | Voice Zone</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -26,7 +24,7 @@ body {
   width: 100%;
   max-width: 650px;
   background: rgba(255,255,255,0.8);
-  border: 1px solid #ffffff;
+  border: 1px solid white;
   border-radius: 25px;
   padding: 30px;
   box-shadow: 0 15px 45px rgba(100,100,150,0.12);
@@ -70,6 +68,28 @@ select {
   border-radius: 12px;
   background: white;
   font-size: 15px;
+}
+
+.voice-card {
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px solid #dcd9f5;
+  border-radius: 16px;
+  background: linear-gradient(120deg, #f0efff, #eaf4ff);
+}
+
+.voice-card h3 {
+  margin: 0 0 7px;
+}
+
+.voice-card p {
+  color: #777;
+  font-size: 13px;
+  margin: 0 0 12px;
+}
+
+.voice-card select {
+  margin-top: 0;
 }
 
 .buttons {
@@ -125,33 +145,54 @@ button:hover {
   <option value="">Loading voices...</option>
 </select>
 
+<div class="voice-card">
+  <h3>⚽ Ronaldo-Inspired Voice</h3>
+  <p>Energetic, confident delivery with a football-inspired feel. AI-generated, not Ronaldo's actual voice.</p>
+
+  <select id="ronaldoVoice">
+    <option value="">Choose a device voice</option>
+  </select>
+</div>
+
 <div class="buttons">
   <button class="speak" onclick="speakText()">▶ Speak</button>
   <button class="stop" onclick="stopText()">■ Stop</button>
 </div>
 
-<p class="note">Voices depend on the voices available on your device and browser.</p>
+<p class="note">Available voices depend on your device and browser.</p>
 
 </div>
 
 <script>
 const voiceSelect = document.getElementById("voice");
+const ronaldoSelect = document.getElementById("ronaldoVoice");
 
 function loadVoices() {
   const voices = speechSynthesis.getVoices();
-  voiceSelect.innerHTML = "";
 
-  if (voices.length === 0) {
-    voiceSelect.innerHTML = '<option value="">Default device voice</option>';
-    return;
-  }
+  voiceSelect.innerHTML = "";
+  ronaldoSelect.innerHTML = '<option value="">Choose a device voice</option>';
 
   voices.forEach((voice, index) => {
-    const option = document.createElement("option");
-    option.value = index;
-    option.textContent = voice.name + " (" + voice.lang + ")";
-    voiceSelect.appendChild(option);
+    const label = voice.name + " (" + voice.lang + ")";
+
+    const normalOption = new Option(label, index);
+    voiceSelect.add(normalOption);
+
+    const ronaldoOption = new Option(label, index);
+    ronaldoSelect.add(ronaldoOption);
   });
+
+  if (voices.length > 0) {
+    const englishVoice = voices.findIndex(v =>
+      v.lang.toLowerCase().startsWith("en")
+    );
+
+    if (englishVoice >= 0) {
+      voiceSelect.value = englishVoice;
+      ronaldoSelect.value = englishVoice;
+    }
+  }
 }
 
 function speakText() {
@@ -166,14 +207,23 @@ function speakText() {
 
   const speech = new SpeechSynthesisUtterance(text);
   const voices = speechSynthesis.getVoices();
-  const selected = voiceSelect.value;
+
+  const ronaldoMode = ronaldoSelect.value !== "";
+  const selected = ronaldoMode
+    ? ronaldoSelect.value
+    : voiceSelect.value;
 
   if (selected !== "" && voices[selected]) {
     speech.voice = voices[selected];
   }
 
-  speech.rate = 1;
-  speech.pitch = 1;
+  if (ronaldoMode) {
+    speech.rate = 0.94;
+    speech.pitch = 0.92;
+  } else {
+    speech.rate = 1;
+    speech.pitch = 1;
+  }
 
   speechSynthesis.speak(speech);
 }
@@ -185,5 +235,6 @@ function stopText() {
 loadVoices();
 speechSynthesis.onvoiceschanged = loadVoices;
 </script>
+
 </body>
 </html>
