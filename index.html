@@ -1,1 +1,219 @@
+<!DOCTYPE html>
 
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KarkiVerse | No Context Zone</title>
+
+<style>
+
+*{box-sizing:border-box}
+
+body{
+
+ margin:0;background:#09090f;color:white;
+
+ font-family:Arial,sans-serif;
+
+}
+
+header{
+
+ padding:24px 8%;display:flex;
+
+ justify-content:space-between;align-items:center;
+
+ border-bottom:1px solid #252536;
+
+}
+
+.logo{font-size:25px;font-weight:bold;color:#a78bfa}
+
+nav a{color:#aaa;text-decoration:none;margin-left:20px}
+
+.hero{text-align:center;padding:85px 20px 50px}
+
+.hero h1{font-size:clamp(40px,8vw,75px);margin:0}
+
+.hero h1 span{color:#a78bfa}
+
+.hero p{color:#aaa;font-size:17px}
+
+button{
+
+ background:#8b5cf6;color:white;border:0;
+
+ padding:13px 22px;border-radius:10px;
+
+ cursor:pointer;font-size:15px;
+
+}
+
+button:hover{background:#7041d8}
+
+main{max-width:1050px;margin:auto;padding:20px}
+
+.grid{
+
+ display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+ gap:18px;margin-top:25px;
+
+}
+
+.card{
+
+ background:#151522;border:1px solid #29293b;
+
+ border-radius:16px;padding:25px;
+
+ transition:.2s;
+
+}
+
+.card:hover{transform:translateY(-5px);border-color:#8b5cf6}
+
+.card h2{font-size:20px}
+
+.card p{color:#aaa;min-height:40px}
+
+.result{color:#c4b5fd;font-size:18px;margin-top:15px}
+
+footer{text-align:center;color:#777;padding:40px}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+ <div class="logo">KarkiVerse ✦</div>
+
+ <nav><a href="#home">Home</a><a href="#fun">Fun Zone</a></nav>
+
+</header>
+
+<section class="hero" id="home">
+
+ <h1>Welcome to <span>KarkiVerse.</span></h1>
+
+ <p>No context. No rules. Just random internet chaos.</p>
+
+ <button onclick="document.getElementById('fun').scrollIntoView({behavior:'smooth'})">Explore the chaos ↓</button>
+
+</section>
+
+<main id="fun">
+
+ <h2>🎲 The Random Zone</h2>
+
+ <div class="grid">
+
+  <div class="card">
+
+   <h2>🎰 Random Number</h2>
+
+   <p>Generate a random number.</p>
+
+   <button onclick="document.getElementById('number').textContent=Math.floor(Math.random()*1000)+1">Generate</button>
+
+   <div class="result" id="number">???</div>
+
+  </div>
+
+  <div class="card">
+
+   <h2>🧠 Random Fact</h2>
+
+   <p>Discover something unexpected.</p>
+
+   <button onclick="fact()">Surprise me</button>
+
+   <div class="result" id="fact">???</div>
+
+  </div>
+
+  <div class="card">
+
+   <h2>🎲 Coin Flip</h2>
+
+   <p>Heads or tails? Let fate decide.</p>
+
+   <button onclick="document.getElementById('coin').textContent=Math.random()<0.5?'Heads 🪙':'Tails 🪙'">Flip</button>
+
+   <div class="result" id="coin">???</div>
+
+  </div>
+
+  <div class="card">
+
+   <h2>😂 Joke Machine</h2>
+
+   <p>Get a random joke.</p>
+
+   <button onclick="joke()">Tell me</button>
+
+   <div class="result" id="joke">???</div>
+
+  </div>
+
+ </div>
+
+</main>
+
+<footer>
+
+ Made with chaos ✦ KarkiVerse © 2026
+
+</footer>
+
+<script>
+
+const facts=[
+
+ "Octopuses have three hearts.",
+
+ "Bananas are berries.",
+
+ "A day on Venus is longer than its year.",
+
+ "Honey can last for thousands of years.",
+
+ "Sharks are older than trees."
+
+];
+
+const jokes=[
+
+ "Why did the computer go to the doctor? It had a virus.",
+
+ "Why was the math book sad? Too many problems.",
+
+ "What do you call a sleeping dinosaur? A dino-snore."
+
+];
+
+function fact(){
+
+ document.getElementById('fact').textContent=facts[Math.floor(Math.random()*facts.length)];
+
+}
+
+function joke(){
+
+ document.getElementById('joke').textContent=jokes[Math.floor(Math.random()*jokes.length)];
+
+}
+
+</script>
+
+</body>
+
+</html>
