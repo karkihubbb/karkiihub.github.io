@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KarkiVerse | Voice Zone</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #eaf4ff, #f4edff, #ffffff);
+  color: #25263b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 650px;
+  background: rgba(255,255,255,0.8);
+  border: 1px solid #ffffff;
+  border-radius: 25px;
+  padding: 30px;
+  box-shadow: 0 15px 45px rgba(100,100,150,0.12);
+}
+
+.back {
+  color: #7774b9;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+h1 {
+  text-align: center;
+  font-size: 35px;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #777;
+  margin-bottom: 28px;
+}
+
+textarea {
+  width: 100%;
+  min-height: 160px;
+  padding: 18px;
+  border: 1px solid #dcd9f5;
+  border-radius: 15px;
+  resize: vertical;
+  font-size: 16px;
+  outline: none;
+  background: #fbfaff;
+}
+
+select {
+  width: 100%;
+  padding: 14px;
+  margin-top: 15px;
+  border: 1px solid #dcd9f5;
+  border-radius: 12px;
+  background: white;
+  font-size: 15px;
+}
+
+.buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+button {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.speak {
+  background: #8b83dc;
+  color: white;
+}
+
+.stop {
+  background: #eeeafa;
+  color: #514b85;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+.note {
+  text-align: center;
+  color: #888;
+  font-size: 12px;
+  margin-top: 22px;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<a class="back" href="index.html">← Back to KarkiVerse</a>
+
+<h1>🎙️ Voice Zone</h1>
+<p class="subtitle">Type anything. Choose a voice. Let AI speak it.</p>
+
+<textarea id="text" placeholder="Type anything you want the voice to say..."></textarea>
+
+<select id="voice">
+  <option value="">Loading voices...</option>
+</select>
+
+<div class="buttons">
+  <button class="speak" onclick="speakText()">▶ Speak</button>
+  <button class="stop" onclick="stopText()">■ Stop</button>
+</div>
+
+<p class="note">Voices depend on the voices available on your device and browser.</p>
+
+</div>
+
+<script>
+const voiceSelect = document.getElementById("voice");
+
+function loadVoices() {
+  const voices = speechSynthesis.getVoices();
+  voiceSelect.innerHTML = "";
+
+  if (voices.length === 0) {
+    voiceSelect.innerHTML = '<option value="">Default device voice</option>';
+    return;
+  }
+
+  voices.forEach((voice, index) => {
+    const option = document.createElement("option");
+    option.value = index;
+    option.textContent = voice.name + " (" + voice.lang + ")";
+    voiceSelect.appendChild(option);
+  });
+}
+
+function speakText() {
+  const text = document.getElementById("text").value.trim();
+
+  if (!text) {
+    alert("Please type something first!");
+    return;
+  }
+
+  speechSynthesis.cancel();
+
+  const speech = new SpeechSynthesisUtterance(text);
+  const voices = speechSynthesis.getVoices();
+  const selected = voiceSelect.value;
+
+  if (selected !== "" && voices[selected]) {
+    speech.voice = voices[selected];
+  }
+
+  speech.rate = 1;
+  speech.pitch = 1;
+
+  speechSynthesis.speak(speech);
+}
+
+function stopText() {
+  speechSynthesis.cancel();
+}
+
+loadVoices();
+speechSynthesis.onvoiceschanged = loadVoices;
+</script>
+</body>
+</html>
