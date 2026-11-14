@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f5f2">
+  <title>My Life | KarkiVerse</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --paper: #f7f5f2;
+      --ink: #22243a;
+      --muted: #77778a;
+      --purple: #8172a9;
+      --line: #e8e3ed;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      line-height: 1.6;
+    }
+    .topbar {
+      width: min(1180px, 90%);
+      margin: auto;
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand {
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 800;
+      letter-spacing: -.6px;
+      font-size: 20px;
+    }
+    nav { display: flex; flex-wrap: wrap; gap: 22px; }
+    nav a {
+      color: #55556a;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color .2s ease;
+    }
+    nav a:hover, nav a.active { color: var(--purple); }
+    .intro {
+      width: min(900px, 88%);
+      margin: 76px auto 54px;
+      text-align: center;
+    }
+    .eyebrow {
+      color: var(--purple);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    h1 {
+      font-size: clamp(42px, 7vw, 76px);
+      letter-spacing: -3px;
+      line-height: 1.05;
+      font-weight: 750;
+    }
+    .intro p {
+      max-width: 570px;
+      margin: 20px auto 0;
+      color: var(--muted);
+      font-size: 16px;
+    }
+    .photo-story {
+      width: min(1120px, 90%);
+      margin: 0 auto 88px;
+    }
+    .photo-entry { margin: 0 0 66px; }
+    .photo-frame {
+      width: 100%;
+      overflow: hidden;
+      background: #e9e5e2;
+      border-radius: 5px;
+      aspect-ratio: 16 / 9;
+    }
+    .photo-frame img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .7s ease;
+    }
+    .photo-entry:hover .photo-frame img { transform: scale(1.015); }
+    .caption {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 18px;
+      padding: 17px 2px 0;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 19px;
+    }
+    .caption h2 {
+      font-size: clamp(18px, 2.3vw, 23px);
+      font-weight: 650;
+      letter-spacing: -.4px;
+    }
+    .caption p {
+      color: var(--muted);
+      font-size: 14px;
+      max-width: 440px;
+      text-align: right;
+    }
+    footer {
+      border-top: 1px solid var(--line);
+      text-align: center;
+      padding: 28px 16px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    @media (max-width: 640px) {
+      .topbar { min-height: 68px; }
+      nav { gap: 13px; }
+      nav a { font-size: 12px; }
+      .intro { margin: 55px auto 38px; }
+      h1 { letter-spacing: -2px; }
+      .photo-story { width: 92%; margin-bottom: 55px; }
+      .photo-entry { margin-bottom: 43px; }
+      .photo-frame { aspect-ratio: 4 / 3; }
+      .caption { display: block; }
+      .caption p { text-align: left; margin-top: 5px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html">KarkiVerse</a>
+    <nav aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a class="active" href="about.html">My Life</a>
+      <a href="games.html">Game Zone</a>
+      <a href="voices.html">Voice Zone</a>
+    </nav>
+  </header>
+
+  <section class="intro">
+    <div class="eyebrow">A little about me</div>
+    <h1>My Life</h1>
+    <p>A collection of places, views and moments I've captured along the way.</p>
+  </section>
+
+  <main class="photo-story">
+
+    <article class="photo-entry">
+      <div class="photo-frame">
+        <img src="assets/mylife/IMG_1252.jpeg" alt="A View Worth Remembering" loading="lazy">
+      </div>
+      <div class="caption">
+        <h2>A View Worth Remembering</h2>
+        <p>A quiet moment with the hills stretching into the distance.</p>
+      </div>
+    </article>
+
+    <article class="photo-entry">
+      <div class="photo-frame">
+        <img src="assets/mylife/IMG_1398(1).jpeg" alt="Along the Way" loading="lazy">
+      </div>
+      <div class="caption">
+        <h2>Along the Way</h2>
+        <p>Open skies, green hills and the road ahead.</p>
+      </div>
+    </article>
+
+    <article class="photo-entry">
+      <div class="photo-frame">
+        <img src="assets/mylife/IMG_1235.jpeg" alt="Dharan Clock Tower" loading="lazy">
+      </div>
+      <div class="caption">
+        <h2>Dharan Clock Tower</h2>
+        <p>A familiar landmark in the heart of the city.</p>
+      </div>
+    </article>
+
+    <article class="photo-entry">
+      <div class="photo-frame">
+        <img src="assets/mylife/IMG_1236.jpeg" alt="Into the Green" loading="lazy">
+      </div>
+      <div class="caption">
+        <h2>Into the Green</h2>
+        <p>A peaceful path surrounded by trees.</p>
+      </div>
+    </article>
+
+    <article class="photo-entry">
+      <div class="photo-frame">
+        <img src="assets/mylife/IMG_1405.jpeg" alt="A Walk Through Nature" loading="lazy">
+      </div>
+      <div class="caption">
+        <h2>A Walk Through Nature</h2>
+        <p>A little space to slow down and enjoy the outdoors.</p>
+      </div>
+    </article>
+
+    <article class="photo-entry">
+      <div class="photo-frame">
+        <img src="assets/mylife/IMG_1468.jpeg" alt="A Bridge Between the Hills" loading="lazy">
+      </div>
+      <div class="caption">
+        <h2>A Bridge Between the Hills</h2>
+        <p>A beautiful view framed by the forest.</p>
+      </div>
+    </article>
+
+    <article class="photo-entry">
+      <div class="photo-frame">
+        <img src="assets/mylife/IMG_1475.jpeg" alt="Waterfall View" loading="lazy">
+      </div>
+      <div class="caption">
+        <h2>Waterfall View</h2>
+        <p>The sound and scenery of flowing water.</p>
+      </div>
+    </article>
+
+    <article class="photo-entry">
+      <div class="photo-frame">
+        <img src="assets/mylife/IMG_1361.jpeg" alt="The Open Road" loading="lazy">
+      </div>
+      <div class="caption">
+        <h2>The Open Road</h2>
+        <p>A winding road through the green countryside.</p>
+      </div>
+    </article>
+
+  </main>
+
+  <footer>© 2026 KarkiVerse · My Life</footer>
+</body>
+</html>
