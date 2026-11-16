@@ -10,35 +10,35 @@
 *{box-sizing:border-box}
 body{
  margin:0;font-family:Arial,sans-serif;
- background:#101713;color:#f3f7f3;
+ background:#111827;color:#F3F0E8;
  min-height:100vh;display:flex;justify-content:center;
 }
 .app{width:100%;max-width:900px;height:100vh;display:flex;flex-direction:column;padding:16px}
-header{display:flex;align-items:center;justify-content:space-between;padding:12px 4px;border-bottom:1px solid #29352d}
+header{display:flex;align-items:center;justify-content:space-between;padding:12px 4px;border-bottom:1px solid #30394A}
 .logo{font-size:23px;font-weight:800}
-.logo span{color:#8ed6a0}
-.status{font-size:12px;color:#9bb8a2}
+.logo span{color:#D6B77A}
+.status{font-size:12px;color:#AAB4C4}
 .chat{flex:1;overflow-y:auto;padding:22px 4px;display:flex;flex-direction:column;gap:18px}
 .welcome{text-align:center;margin:auto;max-width:500px}
-.welcome .symbol{display:block;width:138px;height:138px;border-radius:50%;object-fit:cover;margin:0 auto 12px;border:1px solid #344438}
+.welcome .symbol{display:block;width:138px;height:138px;border-radius:50%;object-fit:cover;margin:0 auto 12px;border:1px solid #3A4659}
 .welcome h1{font-size:30px;margin:12px 0}
-.welcome p{color:#aab9ad;line-height:1.6}
+.welcome p{color:#B8C0CC;line-height:1.6}
 .message{max-width:85%;padding:14px 16px;border-radius:17px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}
-.user{align-self:flex-end;background:#315b3d;border-bottom-right-radius:5px}
-.bot{align-self:flex-start;background:#202b23;border:1px solid #344438;border-bottom-left-radius:5px;display:flex;align-items:flex-start;gap:10px}
+.user{align-self:flex-end;background:#34445F;border-bottom-right-radius:5px}
+.bot{align-self:flex-start;background:#202B3D;border:1px solid #3A4659;border-bottom-left-radius:5px;display:flex;align-items:flex-start;gap:10px}
 .bot-avatar{width:30px;height:30px;border-radius:50%;object-fit:cover;flex:0 0 30px;margin-top:2px}
 .bot-content{min-width:0;flex:1}
-.bot small{display:block;color:#8ed6a0;font-weight:bold;margin-bottom:6px}
-.controls{border-top:1px solid #29352d;padding:14px 0 8px}
-.inputrow{display:flex;gap:9px;background:#202b23;padding:9px;border:1px solid #3b4a3e;border-radius:17px}
+.bot small{display:block;color:#D6B77A;font-weight:bold;margin-bottom:6px}
+.controls{border-top:1px solid #30394A;padding:14px 0 8px}
+.inputrow{display:flex;gap:9px;background:#202B3D;padding:9px;border:1px solid #46536A;border-radius:17px}
 input{flex:1;min-width:0;background:transparent;border:0;outline:0;color:white;font-size:16px;padding:9px}
-button{border:0;cursor:pointer;border-radius:12px;padding:12px;background:#8ed6a0;color:#102016;font-weight:bold}
+button{border:0;cursor:pointer;border-radius:12px;padding:12px;background:#D6B77A;color:#182033;font-weight:bold}
 button:disabled{opacity:.5}
-.iconbtn{background:#344438;color:white;min-width:45px}
+.iconbtn{background:#3A4659;color:white;min-width:45px}
 .send{min-width:55px}
-.hint{text-align:center;font-size:11px;color:#829387;margin-top:10px}
+.hint{text-align:center;font-size:11px;color:#929EAF;margin-top:10px}
 .suggestions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:18px}
-.suggestions button{background:#26372b;color:#ccebd2;border:1px solid #405544;font-size:12px}
+.suggestions button{background:#29364B;color:#E8DCC1;border:1px solid #536078;font-size:12px}
 @media(max-width:600px){
  .app{padding:10px;height:100dvh}
  .message{max-width:92%}
@@ -159,9 +159,18 @@ function suggest(text){
 function localAnswer(q){
  const s=q.toLowerCase().trim();
 
- // Greetings
- if(/^(how are you|how r u|how are u|how're you)[?.! ]*$/.test(s))
- return "I'm doing great, thanks for asking! I'm ready to help you. How are you?";
+ // Casual conversation
+ if(/^(how are you|how r u|how are u|how're you|hru|how you doing)[?.! ]*$/.test(s))
+ return "I'm doing well, thanks for asking! I'm here and ready to chat or help with anything. How are you?";
+
+ if(/^(what are you doing|what r u doing|wht are you doing|wht r u doing|what're you doing)[?.! ]*$/.test(s))
+ return "I'm right here chatting with you and ready to help. What are you up to?";
+
+ if(/^(how is your day|how's your day|hows your day)[?.! ]*$/.test(s))
+ return "It's going well, thanks for asking! How's your day going?";
+
+ if(/^(what's up|whats up|sup|are you okay|are u okay)[?.! ]*$/.test(s))
+ return "All good here! I'm ready to chat. What's on your mind?";
 
  if(/^(hi|hello|hey|hii|heyy)\b/.test(s))
  return "Hey! Welcome to KarkiAI. What would you like to know?";
@@ -252,6 +261,17 @@ function localAnswer(q){
  return null;
 }
 
+function shouldSearchWikipedia(question){
+ const s=question.toLowerCase().trim();
+
+ // Small talk and questions about KarkiAI itself stay conversational.
+ if(/^(how are you|how r u|how are u|how're you|hru|what are you doing|what r u doing|wht are you doing|wht r u doing|how is your day|how's your day|hows your day|what's up|whats up|sup|are you okay|are u okay|hi|hello|hey|hii|heyy)[?.! ]*$/.test(s)) return false;
+ if(/^(what|who) (are|is) you\b/.test(s) || s.includes("your name") || s.includes("who made you") || s.includes("who created you")) return false;
+
+ // Search only when wording clearly asks for factual information.
+ return /\b(what is|what are|who is|who was|where is|where was|when did|when was|why does|why is|how does|how do|how did|explain|tell me about|give me information about|define|meaning of|history of|facts about|latest news about)\b/.test(s);
+}
+
 async function onlineAnswer(question){
  try{
   const searchURL="https://en.wikipedia.org/w/api.php?action=opensearch&search="
@@ -297,12 +317,12 @@ async function sendMessage(){
 
  let answer=localAnswer(question);
 
- if(!answer){
+ if(!answer && shouldSearchWikipedia(question)){
   answer=await onlineAnswer(question);
  }
 
  if(!answer){
-  answer="I don't have a programmed answer for that yet, and I couldn't find information online. I'm a free assistant with a small knowledge module, not a full AI model. Try asking me about schoolwork, internet basics or a specific topic.";
+  answer="I’m not sure I understood that yet. Could you rephrase it or tell me a little more? I’ll do my best to help.";
  }
 
  loading.querySelector("span").textContent=answer;
