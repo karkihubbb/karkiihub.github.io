@@ -493,7 +493,29 @@ function getDemoReply(text){
   return "That's an interesting question! I don't have a programmed answer for that yet. I can currently help with basic internet knowledge, technology, general knowledge, school topics and simple maths.";
 }
 
-function sendMessage(){
+function sendMessage() {
+  const text = input.value.trim();
+  if (!text) return;
+
+  addMessage(text, "user");
+  input.value = "";
+
+  const reply = getDemoReply(text);
+
+  setTimeout(() => {
+    addMessage(reply, "ai", true);
+
+    // Automatically speak the AI reply
+    window.speechSynthesis.cancel();
+
+    const speech = new SpeechSynthesisUtterance(reply);
+    speech.lang = "en-IN";
+    speech.rate = 0.9;
+    speech.pitch = 0.8;
+
+    window.speechSynthesis.speak(speech);
+  }, 350);
+}
   const text = input.value.trim();
   if(!text) return;
 
