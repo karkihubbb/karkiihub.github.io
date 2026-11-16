@@ -20,12 +20,14 @@ header{display:flex;align-items:center;justify-content:space-between;padding:12p
 .status{font-size:12px;color:#9bb8a2}
 .chat{flex:1;overflow-y:auto;padding:22px 4px;display:flex;flex-direction:column;gap:18px}
 .welcome{text-align:center;margin:auto;max-width:500px}
-.welcome .symbol{font-size:48px}
+.welcome .symbol{display:block;width:138px;height:138px;border-radius:50%;object-fit:cover;margin:0 auto 12px;border:1px solid #344438}
 .welcome h1{font-size:30px;margin:12px 0}
 .welcome p{color:#aab9ad;line-height:1.6}
 .message{max-width:85%;padding:14px 16px;border-radius:17px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}
 .user{align-self:flex-end;background:#315b3d;border-bottom-right-radius:5px}
-.bot{align-self:flex-start;background:#202b23;border:1px solid #344438;border-bottom-left-radius:5px}
+.bot{align-self:flex-start;background:#202b23;border:1px solid #344438;border-bottom-left-radius:5px;display:flex;align-items:flex-start;gap:10px}
+.bot-avatar{width:30px;height:30px;border-radius:50%;object-fit:cover;flex:0 0 30px;margin-top:2px}
+.bot-content{min-width:0;flex:1}
 .bot small{display:block;color:#8ed6a0;font-weight:bold;margin-bottom:6px}
 .controls{border-top:1px solid #29352d;padding:14px 0 8px}
 .inputrow{display:flex;gap:9px;background:#202b23;padding:9px;border:1px solid #3b4a3e;border-radius:17px}
@@ -50,16 +52,15 @@ button:disabled{opacity:.5}
 
 <header>
  <div style="display:flex;align-items:center;gap:10px;">
-    <img src="image.png"
-         style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
-    <div class="logo">Karki<span>AI</span></div>
-</div>
+  <img src="image.png" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+  <div class="logo">Karki<span>AI</span></div>
+ </div>
  <div class="status">● Ready to chat</div>
 </header>
 
 <main class="chat" id="chat">
  <div class="welcome" id="welcome">
-  <div class="symbol">✦</div>
+  <img class="symbol" src="image.png" alt="KarkiAI profile picture">
   <h1>Hey! How can I help you?</h1>
   <p>I'm KarkiAI. Ask me questions, learn something, explore the internet or get help with schoolwork.</p>
   <div class="suggestions">
@@ -85,6 +86,7 @@ button:disabled{opacity:.5}
 const chat=document.getElementById("chat");
 const input=document.getElementById("question");
 const sendBtn=document.getElementById("send");
+
 let speaking=true;
 let recognition=null;
 
@@ -96,24 +98,37 @@ function addMessage(text,type){
  div.className="message "+type;
 
  if(type==="bot"){
-  const label=document.createElement("small");
   const avatar=document.createElement("img");
-avatar.src="image.png";
-avatar.style.cssText="width:28px;height:28px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:8px;";
-label.appendChild(avatar);
-label.appendChild(document.createTextNode("KarkiAI"));
-div.appendChild(label);
+  avatar.src="image.png";
+  avatar.alt="KarkiAI profile picture";
+  avatar.className="bot-avatar";
+  div.appendChild(avatar);
+
+  const wrapper=document.createElement("div");
+  wrapper.className="bot-content";
+
+  const label=document.createElement("small");
+  label.textContent="KarkiAI";
+  wrapper.appendChild(label);
+
+  const content=document.createElement("span");
+  content.textContent=text;
+  wrapper.appendChild(content);
+
+  div.appendChild(wrapper);
+ }else{
+  const content=document.createElement("span");
+  content.textContent=text;
+  div.appendChild(content);
  }
- const content=document.createElement("span");
- content.textContent=text;
- div.appendChild(content);
+
  chat.appendChild(div);
  chat.scrollTop=chat.scrollHeight;
  return div;
 }
 
 function speak(text){
- if(!speaking || !("speechSynthesis" in window)) return;
+ if(!speaking || !("speechSynthesis" in window))return;
 
  window.speechSynthesis.cancel();
 
@@ -125,14 +140,15 @@ function speak(text){
 
  const voices=window.speechSynthesis.getVoices();
  const voice=voices.find(v=>v.lang==="en-IN")
-       ||voices.find(v=>v.lang.startsWith("en"));
+ ||voices.find(v=>v.lang.startsWith("en"));
 
- if(voice) utterance.voice=voice;
+ if(voice)utterance.voice=voice;
  window.speechSynthesis.speak(utterance);
 }
 
 function stopSpeaking(){
- if("speechSynthesis" in window) window.speechSynthesis.cancel();
+ if("speechSynthesis" in window)
+ window.speechSynthesis.cancel();
 }
 
 function suggest(text){
@@ -143,77 +159,93 @@ function suggest(text){
 function localAnswer(q){
  const s=q.toLowerCase().trim();
 
+ // Greetings
+ if(/^(how are you|how r u|how are u|how're you)[?.! ]*$/.test(s))
+ return "I'm doing great, thanks for asking! I'm ready to help you. How are you?";
+
  if(/^(hi|hello|hey|hii|heyy)\b/.test(s))
-  return "Hey! Welcome to KarkiAI. What would you like to know?";
+ return "Hey! Welcome to KarkiAI. What would you like to know?";
 
  if(s.includes("your name")||s.includes("who are you"))
-  return "I'm KarkiAI, a free assistant made for KarkiVerse by Sir Karki.";
+ return "I'm KarkiAI, a free assistant made for KarkiVerse by Sir Karki.";
 
  if(s.includes("who made you")||s.includes("who created you"))
-  return "I was created for KarkiVerse by Sir Karki.";
+ return "I was created for KarkiVerse by Sir Karki.";
 
  if(s.includes("what can you do"))
-  return "I can answer programmed questions, help with basic school topics, maths, internet knowledge, and look up some factual information online.";
+ return "I can answer programmed questions, help with basic school topics, maths, internet knowledge, and look up some factual information online.";
 
- if(s.includes("2+2")||s.includes("2 + 2")) return "2 + 2 = 4.";
- if(s.includes("capital of nepal")) return "The capital of Nepal is Kathmandu.";
- if(s.includes("capital of india")) return "The capital of India is New Delhi.";
- if(s.includes("capital of japan")) return "The capital of Japan is Tokyo.";
- if(s.includes("capital of france")) return "The capital of France is Paris.";
+ if(s.includes("2+2")||s.includes("2 + 2"))
+ return "2 + 2 = 4.";
+
+ if(s.includes("capital of nepal"))
+ return "The capital of Nepal is Kathmandu.";
+
+ if(s.includes("capital of india"))
+ return "The capital of India is New Delhi.";
+
+ if(s.includes("capital of japan"))
+ return "The capital of Japan is Tokyo.";
+
+ if(s.includes("capital of france"))
+ return "The capital of France is Paris.";
 
  if(s.includes("photosynthesis"))
-  return "Photosynthesis is the process by which green plants use sunlight, water and carbon dioxide to make food. Oxygen is released during this process.";
+ return "Photosynthesis is the process by which green plants use sunlight, water and carbon dioxide to make food. Oxygen is released during this process.";
 
  if(s.includes("gravity"))
-  return "Gravity is a force that attracts objects towards each other. Earth's gravity pulls objects towards its centre.";
+ return "Gravity is a force that attracts objects towards each other. Earth's gravity pulls objects towards its centre.";
 
  if(s.includes("internet"))
-  return "The Internet is a worldwide network connecting computers and devices. It lets people communicate, share information and use websites.";
+ return "The Internet is a worldwide network connecting computers and devices. It lets people communicate, share information and use websites.";
 
  if(s.includes("html"))
-  return "HTML stands for HyperText Markup Language. It is used to create the structure of web pages.";
+ return "HTML stands for HyperText Markup Language. It is used to create the structure of web pages.";
 
  if(s.includes("css"))
-  return "CSS stands for Cascading Style Sheets. It controls how a website looks, including colours, fonts, spacing and layouts.";
+ return "CSS stands for Cascading Style Sheets. It controls how a website looks, including colours, fonts, spacing and layouts.";
 
  if(s.includes("javascript"))
-  return "JavaScript is a programming language that makes websites interactive. It can respond to clicks, update content and perform calculations.";
+ return "JavaScript is a programming language that makes websites interactive. It can respond to clicks, update content and perform calculations.";
 
  if(s.includes("artificial intelligence")||s==="what is ai")
-  return "Artificial intelligence (AI) is technology that allows computers to perform tasks such as understanding language, recognising images and solving problems.";
+ return "Artificial intelligence (AI) is technology that allows computers to perform tasks such as understanding language, recognising images and solving problems.";
 
  if(s.includes("minecraft"))
-  return "Minecraft is a sandbox game where players explore, build and survive. It has Survival and Creative modes, different dimensions, mobs and crafting.";
+ return "Minecraft is a sandbox game where players explore, build and survive. It has Survival and Creative modes, different dimensions, mobs and crafting.";
 
  if(s.includes("free fire"))
-  return "Free Fire is a battle royale game. Players compete to survive, use characters and equipment, and try to be the last player or team standing.";
+ return "Free Fire is a battle royale game. Players compete to survive, use characters and equipment, and try to be the last player or team standing.";
 
  if(s.includes("mobile legends")||s.includes("mlbb"))
-  return "Mobile Legends: Bang Bang is a 5v5 multiplayer online battle arena game. Its main roles include Tank, Fighter, Assassin, Mage, Marksman and Support.";
+ return "Mobile Legends: Bang Bang is a 5v5 multiplayer online battle arena game. Its main roles include Tank, Fighter, Assassin, Mage, Marksman and Support.";
 
  if(s.includes("football")||s.includes("soccer"))
-  return "Football is a team sport where two teams try to score by getting the ball into the opponent's goal. Each team normally has 11 players.";
+ return "Football is a team sport where two teams try to score by getting the ball into the opponent's goal. Each team normally has 11 players.";
 
  if(s.includes("joke"))
-  return "Why did the computer go to the doctor? Because it had a virus!";
+ return "Why did the computer go to the doctor? Because it had a virus!";
 
  if(s.includes("thank"))
-  return "You're welcome! Ask me anything else.";
+ return "You're welcome! Ask me anything else.";
 
  if(s.includes("bye"))
-  return "Goodbye! See you again on KarkiVerse.";
+ return "Goodbye! See you again on KarkiVerse.";
 
  // Basic arithmetic
  const math=s.match(/^\s*(-?\d+(?:\.\d+)?)\s*([+\-*/x×])\s*(-?\d+(?:\.\d+)?)\s*\??\s*$/);
+
  if(math){
   const a=Number(math[1]),b=Number(math[3]);
   let result;
+
   switch(math[2]){
    case "+":result=a+b;break;
    case "-":result=a-b;break;
    case "*":case "x":case "×":result=a*b;break;
    case "/":result=b===0?"Cannot divide by zero.":a/b;break;
   }
+
   return "The answer is "+result+".";
  }
 
@@ -223,28 +255,31 @@ function localAnswer(q){
 async function onlineAnswer(question){
  try{
   const searchURL="https://en.wikipedia.org/w/api.php?action=opensearch&search="
-    +encodeURIComponent(question)+"&limit=1&namespace=0&format=json&origin=*";
+  +encodeURIComponent(question)+"&limit=1&namespace=0&format=json&origin=*";
 
   const searchResponse=await fetch(searchURL);
-  if(!searchResponse.ok) throw new Error("Search unavailable");
+  if(!searchResponse.ok)throw new Error("Search unavailable");
 
   const results=await searchResponse.json();
-  if(!results[1]||!results[1].length) return null;
+  if(!results[1]||!results[1].length)return null;
 
   const title=results[1][0];
+
   const summaryURL="https://en.wikipedia.org/api/rest_v1/page/summary/"
-    +encodeURIComponent(title);
+  +encodeURIComponent(title);
 
   const summaryResponse=await fetch(summaryURL);
-  if(!summaryResponse.ok) return null;
+  if(!summaryResponse.ok)return null;
 
   const data=await summaryResponse.json();
-  if(data.extract){
-   return data.extract+"\n\nSource: Wikipedia";
-  }
+
+  if(data.extract)
+  return data.extract+"\n\nSource: Wikipedia";
+
  }catch(error){
   console.log("Online lookup unavailable",error);
  }
+
  return null;
 }
 
@@ -254,6 +289,7 @@ async function sendMessage(){
 
  stopSpeaking();
  addMessage(question,"user");
+
  input.value="";
  sendBtn.disabled=true;
 
@@ -270,6 +306,7 @@ async function sendMessage(){
  }
 
  loading.querySelector("span").textContent=answer;
+
  chat.scrollTop=chat.scrollHeight;
  sendBtn.disabled=false;
 
@@ -322,12 +359,12 @@ function startVoice(){
  }
 }
 
-// Load available voices when the browser provides them.
 if("speechSynthesis" in window){
  window.speechSynthesis.onvoiceschanged=()=>{
   window.speechSynthesis.getVoices();
  };
 }
 </script>
+
 </body>
 </html>
