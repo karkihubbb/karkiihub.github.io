@@ -5,82 +5,172 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KarkiAI</title>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
+
 body{
   font-family:Inter,Arial,sans-serif;
-  background:#101113;color:#f4f4f5;
-  height:100vh;overflow:hidden
+  background:#101113;
+  color:#f4f4f5;
+  min-height:100vh;
 }
-.app{height:100vh;display:flex;flex-direction:column}
+
+.app{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
 header{
-  height:68px;display:flex;align-items:center;
-  justify-content:space-between;padding:0 25px;
-  border-bottom:1px solid #292a2d;background:#141517
+  height:68px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 25px;
+  border-bottom:1px solid #292a2d;
+  background:#141517;
 }
+
 .brand{display:flex;align-items:center;gap:12px;font-weight:650}
+
 .avatar{
-  width:36px;height:36px;border-radius:50%;
-  background:#303238;display:grid;place-items:center;
-  font-size:15px;font-weight:700
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  object-fit:cover;
+  flex-shrink:0;
 }
+
 .status{font-size:12px;color:#a1a1aa}
+
 main{
-  flex:1;overflow-y:auto;width:100%;
-  max-width:850px;margin:auto;padding:35px 22px
+  flex:1;
+  overflow-y:auto;
+  width:100%;
+  max-width:850px;
+  margin:auto;
+  padding:35px 22px;
 }
-.welcome{text-align:center;margin:100px auto 35px}
-.welcome h1{font-size:32px;font-weight:600;letter-spacing:-1px}
-.welcome p{color:#999ba2;margin-top:12px;font-size:14px}
+
+.welcome{
+  text-align:center;
+  margin:55px auto 45px;
+}
+
+.hero-photo{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  object-fit:cover;
+  border:3px solid #34363b;
+  margin-bottom:25px;
+}
+
+.welcome h1{
+  font-size:34px;
+  font-weight:600;
+  letter-spacing:-1px;
+}
+
+.welcome p{
+  color:#999ba2;
+  margin-top:12px;
+  font-size:15px;
+}
+
 .messages{display:flex;flex-direction:column;gap:22px}
+
 .message{display:flex;gap:12px;align-items:flex-start}
+
 .message.user{justify-content:flex-end}
+
 .bubble{
-  max-width:78%;padding:13px 16px;border-radius:17px;
-  background:#222428;line-height:1.6;font-size:14px;
-  white-space:pre-wrap;overflow-wrap:anywhere
+  max-width:78%;
+  padding:13px 16px;
+  border-radius:17px;
+  background:#222428;
+  line-height:1.6;
+  font-size:14px;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
 }
+
 .user .bubble{background:#e9e9eb;color:#171719}
+
 .message .avatar{flex-shrink:0}
+
 .composer-area{
   padding:15px 20px 20px;
-  background:linear-gradient(transparent,#101113 20%)
+  background:linear-gradient(transparent,#101113 20%);
 }
+
 .composer{
-  max-width:780px;margin:auto;border:1px solid #393a3e;
-  border-radius:20px;background:#1c1d20;
-  display:flex;align-items:flex-end;padding:10px;gap:8px
+  max-width:780px;
+  margin:auto;
+  border:1px solid #393a3e;
+  border-radius:20px;
+  background:#1c1d20;
+  display:flex;
+  align-items:flex-end;
+  padding:10px;
+  gap:8px;
 }
+
 textarea{
-  flex:1;resize:none;border:0;outline:0;
-  background:transparent;color:white;font:14px Arial;
-  padding:10px;max-height:130px;min-height:40px
+  flex:1;
+  resize:none;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:white;
+  font:14px Arial;
+  padding:10px;
+  max-height:130px;
+  min-height:40px;
 }
+
 textarea::placeholder{color:#85858d}
+
 .btn{
-  border:0;border-radius:13px;width:40px;height:40px;
-  background:#303136;color:#eee;cursor:pointer;font-size:17px
+  border:0;
+  border-radius:13px;
+  width:40px;
+  height:40px;
+  background:#303136;
+  color:#eee;
+  cursor:pointer;
+  font-size:17px;
 }
+
 .btn:hover{background:#414248}
+
 .send{background:#eee;color:#171719}
 .send:hover{background:#ccc}
+
 .note{text-align:center;color:#74757c;font-size:11px;margin-top:12px}
+
 button{touch-action:manipulation}
+
 @media(max-width:600px){
- header{height:60px;padding:0 16px}
- main{padding:20px 14px}
- .welcome{margin:90px auto 30px}
- .welcome h1{font-size:27px}
- .bubble{max-width:88%}
- .composer-area{padding:10px 12px 15px}
+  header{height:60px;padding:0 16px}
+  main{padding:20px 14px}
+  .welcome{margin:65px auto 35px}
+  .hero-photo{width:105px;height:105px}
+  .welcome h1{font-size:29px}
+  .welcome p{font-size:13px}
+  .bubble{max-width:88%}
+  .composer-area{padding:10px 12px 15px}
 }
 </style>
 </head>
+
 <body>
 <div class="app">
+
 <header>
   <div class="brand">
-    <div class="avatar">K</div>
+    <img class="avatar" src="image.png" alt="KarkiAI">
     <div>
       <div>KarkiAI</div>
       <div class="status">Personal AI assistant</div>
@@ -90,10 +180,13 @@ button{touch-action:manipulation}
 </header>
 
 <main id="chat">
+
   <div class="welcome" id="welcome">
-    <h1>Hey, what's up?</h1>
-    <p>I'm KarkiAI. What would you like to talk about?</p>
+    <img class="hero-photo" src="image.png" alt="KarkiAI assistant">
+    <h1>Hey! How can I help you?</h1>
+    <p>I'm KarkiAI. Ask me anything.</p>
   </div>
+
   <div class="messages" id="messages"></div>
 </main>
 
@@ -105,6 +198,7 @@ button{touch-action:manipulation}
   </div>
   <div class="note">KarkiAI can make mistakes. Check important information.</div>
 </div>
+
 </div>
 
 <script>
@@ -115,17 +209,21 @@ const welcome=document.getElementById("welcome");
 function addMessage(text,who){
   const row=document.createElement("div");
   row.className="message "+who;
+
   if(who==="ai"){
-    const avatar=document.createElement("div");
+    const avatar=document.createElement("img");
     avatar.className="avatar";
-    avatar.textContent="K";
+    avatar.src="image.png";
+    avatar.alt="KarkiAI";
     row.appendChild(avatar);
   }
+
   const bubble=document.createElement("div");
   bubble.className="bubble";
   bubble.textContent=text;
   row.appendChild(bubble);
   messages.appendChild(row);
+
   document.getElementById("chat").scrollTop=
     document.getElementById("chat").scrollHeight;
 }
@@ -141,34 +239,48 @@ function speak(text){
 
 function getDemoReply(text){
   const t=text.toLowerCase();
+
   if(/\b(hi|hello|hey)\b/.test(t))
     return "Hey! What's up? What are we talking about today?";
+
   if(t.includes("your name"))
     return "I'm KarkiAI, your personal assistant!";
+
   if(t.includes("how are you"))
     return "I'm doing good! Ready to chat. How about you?";
+
   if(t.includes("joke"))
     return "Why did the computer go to the doctor? Because it had a virus! 😂";
+
   return "I'm ready to help! My AI brain hasn't been connected yet, so I can't answer that properly just yet.";
 }
 
 function send(){
   const text=input.value.trim();
   if(!text)return;
+
   welcome.style.display="none";
   addMessage(text,"user");
   input.value="";
   input.style.height="40px";
+
   const reply=getDemoReply(text);
-  setTimeout(()=>addMessage(reply,"ai"),350);
+
+  setTimeout(()=>{
+    addMessage(reply,"ai");
+    speak(reply);
+  },350);
 }
 
 document.getElementById("send").addEventListener("click",send);
+
 input.addEventListener("keydown",e=>{
   if(e.key==="Enter"&&!e.shiftKey){
-    e.preventDefault();send();
+    e.preventDefault();
+    send();
   }
 });
+
 input.addEventListener("input",()=>{
   input.style.height="40px";
   input.style.height=Math.min(input.scrollHeight,130)+"px";
@@ -176,20 +288,23 @@ input.addEventListener("input",()=>{
 
 const SpeechRecognition=window.SpeechRecognition||
   window.webkitSpeechRecognition;
+
 document.getElementById("mic").addEventListener("click",()=>{
   if(!SpeechRecognition){
     alert("Voice input is not supported in this browser.");
     return;
   }
+
   const recognition=new SpeechRecognition();
   recognition.lang="en-IN";
+
   recognition.onresult=e=>{
     input.value=e.results[0][0].transcript;
     send();
   };
+
   recognition.start();
 });
 </script>
 </body>
 </html>
-
