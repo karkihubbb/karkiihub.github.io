@@ -7,531 +7,413 @@
 <title>KarkiAI</title>
 
 <style>
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  background:#101114;
-  color:#f5f5f5;
-  font-family:Arial,sans-serif;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-header{
-  height:65px;
-  padding:20px 25px;
-  border-bottom:1px solid #292a30;
-  font-size:21px;
-  font-weight:bold;
-  letter-spacing:.3px;
+body {
+  background: #101114;
+  color: #f5f5f5;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
 }
 
-main{
-  max-width:850px;
-  margin:auto;
-  padding:25px 18px 120px;
+header {
+  height: 65px;
+  padding: 0 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #292a30;
+  background: #141519;
 }
 
-.hero{
-  text-align:center;
-  padding:35px 0 30px;
+.logo {
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: -1px;
 }
 
-.hero img{
-  width:105px;
-  height:105px;
-  border-radius:50%;
-  object-fit:cover;
-  border:2px solid #393b42;
+.logo span {
+  color: #8b9cff;
 }
 
-.hero h2{
-  font-size:25px;
-  margin:18px 0 8px;
+.status {
+  color: #a5a5a5;
+  font-size: 12px;
 }
 
-.hero p{
-  color:#999;
-  font-size:14px;
+main {
+  max-width: 850px;
+  margin: auto;
+  min-height: calc(100vh - 65px);
+  display: flex;
+  flex-direction: column;
+  padding: 25px 18px 20px;
 }
 
-.suggestions{
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:9px;
-  margin-top:22px;
+.welcome {
+  text-align: center;
+  margin: 65px 0 35px;
 }
 
-.suggestions button{
-  background:#202127;
-  border:1px solid #35363d;
-  color:#ddd;
-  padding:10px 14px;
-  border-radius:20px;
-  font-size:13px;
+.avatar {
+  width: 65px;
+  height: 65px;
+  margin: 0 auto 20px;
+  border-radius: 22px;
+  background: #242631;
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  font-weight: bold;
+  border: 1px solid #383b49;
 }
 
-#chat{
-  display:flex;
-  flex-direction:column;
-  gap:18px;
+.welcome h1 {
+  font-size: 30px;
+  margin-bottom: 10px;
 }
 
-.message{
-  max-width:88%;
-  padding:14px 17px;
-  border-radius:16px;
-  line-height:1.6;
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
-  font-size:15px;
+.welcome p {
+  color: #999ba5;
+  font-size: 14px;
 }
 
-.user{
-  background:#30323a;
-  align-self:flex-end;
+#chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-bottom: 25px;
 }
 
-.ai{
-  background:#1c1e23;
-  align-self:flex-start;
+.message {
+  max-width: 85%;
+  padding: 14px 17px;
+  border-radius: 17px;
+  font-size: 15px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
-.ai img{
-  width:25px;
-  height:25px;
-  border-radius:50%;
-  object-fit:cover;
-  vertical-align:middle;
-  margin-right:8px;
+.user {
+  align-self: flex-end;
+  background: #30333d;
+  border-bottom-right-radius: 5px;
 }
 
-.composer{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:#101114;
-  border-top:1px solid #292a30;
-  padding:13px 14px;
+.ai {
+  align-self: flex-start;
+  background: #1b1d23;
+  border: 1px solid #2b2d35;
+  border-bottom-left-radius: 5px;
 }
 
-.input-area{
-  max-width:850px;
-  margin:auto;
-  display:flex;
-  gap:9px;
-  align-items:center;
+.composer {
+  position: sticky;
+  bottom: 10px;
+  background: #1b1d23;
+  border: 1px solid #383a43;
+  border-radius: 18px;
+  padding: 10px;
+  display: flex;
+  align-items: flex-end;
+  gap: 9px;
+  box-shadow: 0 8px 30px #0005;
 }
 
-textarea{
-  flex:1;
-  min-width:0;
-  resize:none;
-  height:48px;
-  max-height:110px;
-  border-radius:15px;
-  padding:14px;
-  background:#24262d;
-  color:white;
-  border:1px solid #383a40;
-  outline:none;
-  font-size:15px;
+textarea {
+  flex: 1;
+  resize: none;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: white;
+  font-size: 15px;
+  padding: 10px 5px;
+  max-height: 130px;
+  min-height: 40px;
+  font-family: inherit;
 }
 
-button{
-  cursor:pointer;
-  border:0;
+textarea::placeholder {
+  color: #858791;
 }
 
-.send{
-  width:48px;
-  height:48px;
-  border-radius:14px;
-  background:#f1f1f1;
-  color:#111;
-  font-size:21px;
+.control {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 12px;
+  background: #30333d;
+  color: white;
+  font-size: 17px;
+  cursor: pointer;
+  flex-shrink: 0;
 }
 
-.mic{
-  width:45px;
-  height:45px;
-  border-radius:14px;
-  background:#292b32;
-  color:white;
-  font-size:19px;
+.send {
+  background: #8293ff;
+  color: #101114;
+  font-weight: bold;
 }
 
-.note{
-  text-align:center;
-  color:#777;
-  font-size:11px;
-  margin-top:8px;
+.control:disabled {
+  opacity: .5;
+  cursor: not-allowed;
 }
 
-@media(max-width:500px){
-  header{padding:20px}
-  main{padding-left:13px;padding-right:13px}
-  .hero{padding-top:28px}
-  .message{max-width:94%}
+.note {
+  text-align: center;
+  color: #777982;
+  font-size: 11px;
+  margin-top: 12px;
+}
+
+.typing {
+  color: #a1a3ad;
+  font-size: 13px;
+  padding: 5px;
+}
+
+@media(max-width:600px) {
+  main {
+    padding: 15px 12px;
+  }
+
+  .welcome {
+    margin-top: 45px;
+  }
+
+  .welcome h1 {
+    font-size: 25px;
+  }
+
+  .message {
+    max-width: 92%;
+    font-size: 14px;
+  }
+
+  header {
+    padding: 0 15px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<header>KarkiAI</header>
+<header>
+  <div class="logo">Karki<span>AI</span></div>
+  <div class="status">● AI Assistant</div>
+</header>
 
 <main>
 
-<section class="hero" id="hero">
-  <img src="image.png" alt="KarkiAI">
-  <h2>Hey! How can I help you?</h2>
-  <p>Ask me anything. Let's talk!</p>
+  <section class="welcome" id="welcome">
+    <div class="avatar">K</div>
+    <h1>Hey, how can I help you?</h1>
+    <p>Ask me anything. Let's figure it out together.</p>
+  </section>
 
-  <div class="suggestions">
-    <button onclick="ask('Tell me about Minecraft')">🎮 Minecraft</button>
-    <button onclick="ask('Tell me about Free Fire')">🔥 Free Fire</button>
-    <button onclick="ask('Tell me about MLBB')">⚔️ MLBB</button>
+  <section id="chat"></section>
+
+  <div class="composer">
+    <button class="control" id="mic" title="Speak">🎙</button>
+
+    <textarea
+      id="message"
+      placeholder="Message KarkiAI..."
+      rows="1"
+    ></textarea>
+
+    <button class="control send" id="send">➤</button>
   </div>
-</section>
 
-<div id="chat"></div>
+  <div class="note">
+    KarkiAI can make mistakes. Check important information.
+  </div>
 
 </main>
 
-<div class="composer">
-  <div class="input-area">
-    <textarea id="input" placeholder="Message KarkiAI..."></textarea>
-    <button class="mic" onclick="startMic()">🎙</button>
-    <button class="send" onclick="sendMessage()">➤</button>
-  </div>
-  <div class="note">KarkiAI • Your AI assistant</div>
-</div>
-
 <script>
-const input = document.getElementById("input");
+// IMPORTANT: Replace this with your actual deployed backend URL.
+const API_URL = "https://YOUR-VERCEL-APP.vercel.app/api/chat";
+
 const chat = document.getElementById("chat");
-const hero = document.getElementById("hero");
+const input = document.getElementById("message");
+const sendButton = document.getElementById("send");
+const micButton = document.getElementById("mic");
+const welcome = document.getElementById("welcome");
 
-let voices = [];
+let messages = [];
+let busy = false;
 
-function loadVoices(){
-  voices = speechSynthesis.getVoices();
-}
-
-if("speechSynthesis" in window){
-  loadVoices();
-  speechSynthesis.onvoiceschanged = loadVoices;
-}
-
-// AUTOMATIC VOICE REPLY
-function speak(text){
-  if(!("speechSynthesis" in window)) return;
-
-  speechSynthesis.cancel();
-
-  const message = new SpeechSynthesisUtterance(text);
-  message.lang = "en-IN";
-  message.rate = 0.92;
-  message.pitch = 0.85;
-
-  const indianVoice = voices.find(v =>
-    v.lang.toLowerCase() === "en-in"
-  );
-
-  if(indianVoice){
-    message.voice = indianVoice;
-  }
-
-  speechSynthesis.resume();
-  speechSynthesis.speak(message);
-}
-
-function addMessage(text,type){
-  hero.style.display = "none";
-
+function addMessage(text, type) {
   const div = document.createElement("div");
   div.className = "message " + type;
-
-  if(type === "ai"){
-    const img = document.createElement("img");
-    img.src = "image.png";
-    img.alt = "AI";
-    div.appendChild(img);
-  }
-
-  div.appendChild(document.createTextNode(text));
+  div.textContent = text;
   chat.appendChild(div);
 
   window.scrollTo({
-    top:document.body.scrollHeight,
-    behavior:"smooth"
+    top: document.body.scrollHeight,
+    behavior: "smooth"
   });
+
+  return div;
 }
 
-function answer(q){
-  q = q.toLowerCase().trim();
+function speak(text) {
+  if (!("speechSynthesis" in window)) return;
 
-  // MINECRAFT
-  if(q.includes("minecraft")){
-    if(q.includes("ender dragon"))
-      return "The Ender Dragon is the main boss of Minecraft. It lives in the End dimension. Players can reach it through an End Portal.";
+  speechSynthesis.cancel();
 
-    if(q.includes("warden"))
-      return "The Warden is a powerful hostile mob found in the Deep Dark. It detects vibrations and sounds, so players should be careful around it.";
+  const speech = new SpeechSynthesisUtterance(text);
+  speech.lang = "en-IN";
+  speech.rate = 0.95;
+  speech.pitch = 0.9;
 
-    if(q.includes("creeper"))
-      return "Creepers are hostile Minecraft mobs that approach players and explode. They are known for their iconic hissing sound.";
+  const voices = speechSynthesis.getVoices();
+  const indianVoice = voices.find(v =>
+    v.lang.toLowerCase().includes("en-in")
+  );
 
-    if(q.includes("villager"))
-      return "Villagers are peaceful mobs who live in villages. You can trade with them using emeralds and other items.";
+  if (indianVoice) speech.voice = indianVoice;
 
-    if(q.includes("diamond"))
-      return "Diamonds are valuable resources in Minecraft. They can be used to craft tools, weapons and armor.";
-
-    if(q.includes("nether"))
-      return "The Nether is a dangerous dimension in Minecraft. It contains unique biomes, mobs, structures and resources.";
-
-    if(q.includes("survival"))
-      return "In Survival mode, you collect resources, craft tools, build shelters, explore the world and try to survive.";
-
-    if(q.includes("creative"))
-      return "Creative mode gives you access to unlimited building blocks and the ability to fly. It is great for creating big builds.";
-
-    if(q.includes("enchant"))
-      return "Enchantments improve your equipment. For example, Sharpness increases melee damage, Efficiency speeds up mining, and Unbreaking helps equipment last longer.";
-
-    if(q.includes("craft"))
-      return "Crafting is how you make items in Minecraft. You use a crafting table or your inventory crafting grid to combine materials.";
-
-    if(q.includes("seed"))
-      return "A Minecraft seed is a value used to generate a world. Different seeds can create different landscapes, villages and structures.";
-
-    if(q.includes("herobrine"))
-      return "Herobrine is a famous Minecraft community legend. He is not an official mob in the normal vanilla game.";
-
-    return "Minecraft is a sandbox game where you can explore, build, craft and survive. It has Survival, Creative and other modes, with mobs, villages, dimensions and countless building possibilities. What would you like to know about Minecraft?";
-  }
-
-  // FREE FIRE
-  if(q.includes("free fire") || q.includes("freefire") || q.includes("garena")){
-    if(q.includes("character"))
-      return "Free Fire has different characters with special abilities. Some abilities help with healing, movement, information or combat. Character choices depend on your playstyle.";
-
-    if(q.includes("rank"))
-      return "Free Fire ranked mode lets players compete and increase their rank by playing matches. Performance and match results affect rank progress.";
-
-    if(q.includes("map"))
-      return "Free Fire has several maps, including Bermuda, Purgatory and Kalahari. Each map has different locations and gameplay opportunities.";
-
-    if(q.includes("pet"))
-      return "Pets in Free Fire can provide special abilities that support your gameplay. Different pets have different skills.";
-
-    if(q.includes("weapon") || q.includes("gun"))
-      return "Free Fire has many weapon types, including assault rifles, SMGs, shotguns, sniper rifles and pistols. Each type works differently at different ranges.";
-
-    if(q.includes("sensitivity"))
-      return "Sensitivity settings affect how quickly your aim moves. The best settings depend on your device, controls and personal comfort. Try small adjustments in training mode.";
-
-    if(q.includes("headshot"))
-      return "A headshot is a hit that connects with an opponent's head. Aim control, positioning and practice can help improve accuracy.";
-
-    if(q.includes("diamond"))
-      return "Diamonds are Free Fire's premium in-game currency. They can be used for certain characters, cosmetics and other game items.";
-
-    if(q.includes("booyah"))
-      return "BOOYAH! is the victory message associated with winning a Free Fire match.";
-
-    if(q.includes("guild"))
-      return "A guild is a group of players who can play and participate in activities together.";
-
-    return "Free Fire is a battle royale game developed by Garena. Players land on an island, collect equipment, survive against other players and compete to be the last one standing. It includes characters, pets, weapons, maps and ranked modes. What do you want to know about Free Fire?";
-  }
-
-  // MOBILE LEGENDS BANG BANG
-  if(q.includes("mlbb") || q.includes("mobile legends") || q.includes("mobile legend")){
-    if(q.includes("role") || q.includes("roles")){
-      return "MLBB has five main roles: Tank, Fighter, Assassin, Mage and Marksman. Supports also help the team with healing, protection and control.";
-    }
-
-    if(q.includes("tank"))
-      return "Tanks are heroes who can absorb damage and protect teammates. They often help start team fights and provide crowd control.";
-
-    if(q.includes("assassin"))
-      return "Assassins specialize in quickly attacking important enemy targets. They often focus on enemy damage dealers.";
-
-    if(q.includes("mage"))
-      return "Mages usually deal magic damage and use abilities to control fights, clear minion waves or attack enemies from a distance.";
-
-    if(q.includes("marksman"))
-      return "Marksmen are ranged damage dealers who often become stronger later in the match. They usually depend on items and good positioning.";
-
-    if(q.includes("fighter"))
-      return "Fighters are versatile heroes who can deal damage and survive in fights. Many are strong in the EXP lane.";
-
-    if(q.includes("support"))
-      return "Support heroes help teammates through healing, shields, crowd control or other helpful abilities.";
-
-    if(q.includes("lane")){
-      return "MLBB has three main lanes: EXP Lane, Gold Lane and Mid Lane. The Jungle is another important area where players farm monsters and help teammates.";
-    }
-
-    if(q.includes("jungle"))
-      return "The jungler farms jungle monsters, secures important objectives and helps teammates across the map.";
-
-    if(q.includes("lord") || q.includes("turtle"))
-      return "Turtle and Lord are important neutral objectives in MLBB. Defeating them can give your team useful advantages.";
-
-    if(q.includes("build"))
-      return "A good MLBB build depends on your hero, enemy team and match situation. Choose items that support your hero's role instead of using the same build every match.";
-
-    if(q.includes("rank"))
-      return "MLBB ranked mode lets you compete against other players and climb through ranks. Teamwork, map awareness and good decisions are important.";
-
-    if(q.includes("hero"))
-      return "MLBB has many heroes with different abilities and roles. You can choose from Tanks, Fighters, Assassins, Mages, Marksmen and Supports.";
-
-    return "Mobile Legends: Bang Bang is a 5-versus-5 multiplayer online battle arena game. Two teams compete to destroy the enemy base. It includes heroes, lanes, roles, jungle monsters, items and team fights. What would you like to know about MLBB?";
-  }
-
-  // GENERAL CONVERSATION
-  if(/^(hi|hello|hey|hii)\b/.test(q))
-    return "Hey! What's up? What are we talking about today?";
-
-  if(q.includes("how are you"))
-    return "I'm doing great! Ready to talk about games, technology or anything else.";
-
-  if(q.includes("your name"))
-    return "I'm KarkiAI, your personal assistant from KarkiVerse.";
-
-  if(q.includes("who made you"))
-    return "I was created as part of the KarkiVerse project.";
-
-  if(q.includes("what can you do"))
-    return "I can answer programmed questions about Minecraft, Free Fire, MLBB, technology, school subjects, maths and general knowledge.";
-
-  // TECHNOLOGY
-  if(q.includes("internet"))
-    return "The Internet is a worldwide network that connects computers and devices. It allows us to visit websites, communicate and share information.";
-
-  if(q.includes("browser"))
-    return "A browser is an application used to visit websites. Examples include Chrome, Safari, Firefox and Microsoft Edge.";
-
-  if(q.includes("html"))
-    return "HTML stands for HyperText Markup Language. It provides the structure of a website.";
-
-  if(q.includes("css"))
-    return "CSS stands for Cascading Style Sheets. It controls the appearance of websites, including colors, fonts and layouts.";
-
-  if(q.includes("javascript"))
-    return "JavaScript is a programming language used to make websites interactive.";
-
-  if(q.includes("artificial intelligence") || q === "what is ai")
-    return "Artificial intelligence, or AI, is technology that helps computers perform tasks such as understanding language, recognizing images and answering questions.";
-
-  if(q.includes("wifi"))
-    return "Wi-Fi is a wireless technology that allows devices to connect to a network.";
-
-  // SCIENCE AND GENERAL KNOWLEDGE
-  if(q.includes("gravity"))
-    return "Gravity is the force that attracts objects with mass toward each other. Earth's gravity keeps us on the ground.";
-
-  if(q.includes("photosynthesis"))
-    return "Photosynthesis is the process by which green plants use sunlight, water and carbon dioxide to make food and release oxygen.";
-
-  if(q.includes("capital of nepal"))
-    return "The capital of Nepal is Kathmandu.";
-
-  if(q.includes("capital of india"))
-    return "The capital of India is New Delhi.";
-
-  if(q.includes("planets"))
-    return "There are eight planets in our solar system: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus and Neptune.";
-
-  if(q.includes("joke"))
-    return "Why did the computer go to the doctor? Because it caught a virus!";
-
-  if(q.includes("bored"))
-    return "Let's do something interesting! We can talk about Minecraft, Free Fire, MLBB, or try a fun quiz.";
-
-  // BASIC MATH
-  const math = q.match(/^\s*(-?\d+(?:\.\d+)?)\s*([+\-*\/])\s*(-?\d+(?:\.\d+)?)\s*\??\s*$/);
-
-  if(math){
-    const a = Number(math[1]);
-    const b = Number(math[3]);
-    let result;
-
-    switch(math[2]){
-      case "+": result = a+b; break;
-      case "-": result = a-b; break;
-      case "*": result = a*b; break;
-      case "/": result = b===0 ? "undefined (division by zero)" : a/b; break;
-    }
-
-    return "The answer is " + result + ".";
-  }
-
-  return "That's an interesting question! I don't have a programmed answer for that yet. I can help with Minecraft, Free Fire, MLBB, technology, school topics, maths and general knowledge. Try asking me something about those topics!";
+  speechSynthesis.speak(speech);
 }
 
-function sendMessage(){
+const funnyFallback =
+  "I'm a free AI made by Sir Karki. It's free, what more do you expect? 😂 " +
+  "I have a small brain module right now! If you want me to answer that, " +
+  "I'd need a bigger module (and money for it). For now, I can help with " +
+  "internet-related questions, technology and schoolwork!";
+
+async function sendMessage() {
   const text = input.value.trim();
-  if(!text) return;
 
-  // This click is also the user's audio interaction.
-  if("speechSynthesis" in window){
-    speechSynthesis.resume();
-  }
+  if (!text || busy) return;
 
-  addMessage(text,"user");
+  welcome.style.display = "none";
+  addMessage(text, "user");
+
+  messages.push({
+    role: "user",
+    content: text
+  });
+
   input.value = "";
+  input.style.height = "40px";
 
-  const reply = answer(text);
+  busy = true;
+  sendButton.disabled = true;
 
-  addMessage(reply,"ai");
+  const loading = document.createElement("div");
+  loading.className = "typing";
+  loading.textContent = "KarkiAI is thinking...";
+  chat.appendChild(loading);
 
-  // Speak automatically. No Listen button needed.
-  speak(reply);
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        messages: messages.slice(-16)
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error("AI server error");
+    }
+
+    const data = await response.json();
+
+    if (!data.reply || typeof data.reply !== "string") {
+      throw new Error("No reply received");
+    }
+
+    messages.push({
+      role: "assistant",
+      content: data.reply
+    });
+
+    loading.remove();
+    addMessage(data.reply, "ai");
+    speak(data.reply);
+
+  } catch (error) {
+    loading.remove();
+
+    const errorMessage =
+      "I can't connect to my AI brain right now. Please check the backend connection and try again.";
+
+    addMessage(errorMessage, "ai");
+
+  } finally {
+    busy = false;
+    sendButton.disabled = false;
+    input.focus();
+  }
 }
 
-function ask(text){
-  input.value = text;
-  sendMessage();
-}
+sendButton.addEventListener("click", sendMessage);
 
-input.addEventListener("keydown",function(e){
-  if(e.key === "Enter" && !e.shiftKey){
-    e.preventDefault();
+input.addEventListener("keydown", event => {
+  if (event.key === "Enter" && !event.shiftKey) {
+    event.preventDefault();
     sendMessage();
   }
 });
 
-function startMic(){
-  const Recognition =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
+input.addEventListener("input", () => {
+  input.style.height = "40px";
+  input.style.height =
+    Math.min(input.scrollHeight, 130) + "px";
+});
 
-  if(!Recognition){
-    alert("Voice input is not supported in this browser. Try another browser.");
-    return;
-  }
+// Voice input
+const SpeechRecognition =
+  window.SpeechRecognition ||
+  window.webkitSpeechRecognition;
 
-  const recognition = new Recognition();
+if (SpeechRecognition) {
+  const recognition = new SpeechRecognition();
+
   recognition.lang = "en-IN";
+  recognition.continuous = false;
   recognition.interimResults = false;
 
-  recognition.onresult = function(event){
+  micButton.addEventListener("click", () => {
+    try {
+      recognition.start();
+      micButton.textContent = "🔴";
+    } catch (error) {
+      micButton.textContent = "🎙";
+    }
+  });
+
+  recognition.onresult = event => {
     input.value = event.results[0][0].transcript;
+    input.dispatchEvent(new Event("input"));
     sendMessage();
   };
 
-  recognition.onerror = function(){
-    alert("Microphone problem. Please check microphone permission.");
+  recognition.onend = () => {
+    micButton.textContent = "🎙";
   };
 
-  recognition.start();
+  recognition.onerror = () => {
+    micButton.textContent = "🎙";
+  };
+
+} else {
+  micButton.style.display = "none";
 }
 </script>
 
