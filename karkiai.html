@@ -8,72 +8,128 @@
 
 <style>
 *{box-sizing:border-box}
+
 body{
   margin:0;
   background:#101114;
   color:#f5f5f5;
   font-family:Arial,sans-serif;
 }
+
 header{
-  padding:20px;
+  height:65px;
+  padding:20px 25px;
   border-bottom:1px solid #292a30;
   font-size:21px;
   font-weight:bold;
+  letter-spacing:.3px;
 }
+
 main{
   max-width:850px;
   margin:auto;
   padding:25px 18px 120px;
 }
-.hero{text-align:center;padding:35px 0 25px}
+
+.hero{
+  text-align:center;
+  padding:35px 0 30px;
+}
+
 .hero img{
-  width:105px;height:105px;
+  width:105px;
+  height:105px;
   border-radius:50%;
   object-fit:cover;
-  border:2px solid #383a40;
+  border:2px solid #393b42;
 }
-.hero h2{font-size:25px;margin-bottom:8px}
-.hero p{color:#999}
-#chat{display:flex;flex-direction:column;gap:17px}
+
+.hero h2{
+  font-size:25px;
+  margin:18px 0 8px;
+}
+
+.hero p{
+  color:#999;
+  font-size:14px;
+}
+
+.suggestions{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:9px;
+  margin-top:22px;
+}
+
+.suggestions button{
+  background:#202127;
+  border:1px solid #35363d;
+  color:#ddd;
+  padding:10px 14px;
+  border-radius:20px;
+  font-size:13px;
+}
+
+#chat{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
 .message{
+  max-width:88%;
   padding:14px 17px;
   border-radius:16px;
-  max-width:85%;
   line-height:1.6;
   white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  font-size:15px;
 }
+
 .user{
-  background:#292b32;
+  background:#30323a;
   align-self:flex-end;
 }
+
 .ai{
-  background:#1b1c21;
+  background:#1c1e23;
   align-self:flex-start;
 }
+
 .ai img{
-  width:25px;height:25px;
+  width:25px;
+  height:25px;
   border-radius:50%;
   object-fit:cover;
   vertical-align:middle;
   margin-right:8px;
 }
+
 .composer{
   position:fixed;
-  bottom:0;left:0;right:0;
+  bottom:0;
+  left:0;
+  right:0;
   background:#101114;
-  padding:14px;
   border-top:1px solid #292a30;
+  padding:13px 14px;
 }
+
 .input-area{
   max-width:850px;
   margin:auto;
   display:flex;
   gap:9px;
+  align-items:center;
 }
+
 textarea{
   flex:1;
+  min-width:0;
   resize:none;
   height:48px;
+  max-height:110px;
   border-radius:15px;
   padding:14px;
   background:#24262d;
@@ -82,17 +138,43 @@ textarea{
   outline:none;
   font-size:15px;
 }
+
 button{
-  border:0;
-  border-radius:13px;
-  padding:0 16px;
-  background:#f0f0f0;
-  color:#111;
-  font-size:18px;
   cursor:pointer;
+  border:0;
 }
-#mic{background:#292b32;color:white}
-.note{text-align:center;color:#777;font-size:11px;margin-top:8px}
+
+.send{
+  width:48px;
+  height:48px;
+  border-radius:14px;
+  background:#f1f1f1;
+  color:#111;
+  font-size:21px;
+}
+
+.mic{
+  width:45px;
+  height:45px;
+  border-radius:14px;
+  background:#292b32;
+  color:white;
+  font-size:19px;
+}
+
+.note{
+  text-align:center;
+  color:#777;
+  font-size:11px;
+  margin-top:8px;
+}
+
+@media(max-width:500px){
+  header{padding:20px}
+  main{padding-left:13px;padding-right:13px}
+  .hero{padding-top:28px}
+  .message{max-width:94%}
+}
 </style>
 </head>
 
@@ -101,22 +183,30 @@ button{
 <header>KarkiAI</header>
 
 <main>
-  <section class="hero" id="hero">
-    <img src="image.png" alt="KarkiAI">
-    <h2>Hey! How can I help you?</h2>
-    <p>Ask me anything. I'm here to help.</p>
-  </section>
 
-  <div id="chat"></div>
+<section class="hero" id="hero">
+  <img src="image.png" alt="KarkiAI">
+  <h2>Hey! How can I help you?</h2>
+  <p>Ask me anything. Let's talk!</p>
+
+  <div class="suggestions">
+    <button onclick="ask('Tell me about Minecraft')">🎮 Minecraft</button>
+    <button onclick="ask('Tell me about Free Fire')">🔥 Free Fire</button>
+    <button onclick="ask('Tell me about MLBB')">⚔️ MLBB</button>
+  </div>
+</section>
+
+<div id="chat"></div>
+
 </main>
 
 <div class="composer">
   <div class="input-area">
-    <textarea id="input" placeholder="Message KarkiAI..." rows="1"></textarea>
-    <button id="mic" onclick="startMic()">🎙</button>
-    <button onclick="sendMessage()">➤</button>
+    <textarea id="input" placeholder="Message KarkiAI..."></textarea>
+    <button class="mic" onclick="startMic()">🎙</button>
+    <button class="send" onclick="sendMessage()">➤</button>
   </div>
-  <div class="note">KarkiAI can make mistakes.</div>
+  <div class="note">KarkiAI • Your AI assistant</div>
 </div>
 
 <script>
@@ -129,26 +219,33 @@ let voices = [];
 function loadVoices(){
   voices = speechSynthesis.getVoices();
 }
-loadVoices();
-speechSynthesis.onvoiceschanged = loadVoices;
 
+if("speechSynthesis" in window){
+  loadVoices();
+  speechSynthesis.onvoiceschanged = loadVoices;
+}
+
+// AUTOMATIC VOICE REPLY
 function speak(text){
   if(!("speechSynthesis" in window)) return;
 
   speechSynthesis.cancel();
 
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = "en-IN";
-  utterance.rate = 0.9;
-  utterance.pitch = 0.8;
+  const message = new SpeechSynthesisUtterance(text);
+  message.lang = "en-IN";
+  message.rate = 0.92;
+  message.pitch = 0.85;
 
   const indianVoice = voices.find(v =>
-    v.lang.toLowerCase().includes("en-in")
+    v.lang.toLowerCase() === "en-in"
   );
 
-  if(indianVoice) utterance.voice = indianVoice;
+  if(indianVoice){
+    message.voice = indianVoice;
+  }
 
-  speechSynthesis.speak(utterance);
+  speechSynthesis.resume();
+  speechSynthesis.speak(message);
 }
 
 function addMessage(text,type){
@@ -160,71 +257,188 @@ function addMessage(text,type){
   if(type === "ai"){
     const img = document.createElement("img");
     img.src = "image.png";
-    img.alt = "KarkiAI";
+    img.alt = "AI";
     div.appendChild(img);
   }
 
   div.appendChild(document.createTextNode(text));
   chat.appendChild(div);
-  window.scrollTo(0,document.body.scrollHeight);
+
+  window.scrollTo({
+    top:document.body.scrollHeight,
+    behavior:"smooth"
+  });
 }
 
-function getReply(q){
-  q=q.toLowerCase().trim();
+function answer(q){
+  q = q.toLowerCase().trim();
 
+  // MINECRAFT
+  if(q.includes("minecraft")){
+    if(q.includes("ender dragon"))
+      return "The Ender Dragon is the main boss of Minecraft. It lives in the End dimension. Players can reach it through an End Portal.";
+
+    if(q.includes("warden"))
+      return "The Warden is a powerful hostile mob found in the Deep Dark. It detects vibrations and sounds, so players should be careful around it.";
+
+    if(q.includes("creeper"))
+      return "Creepers are hostile Minecraft mobs that approach players and explode. They are known for their iconic hissing sound.";
+
+    if(q.includes("villager"))
+      return "Villagers are peaceful mobs who live in villages. You can trade with them using emeralds and other items.";
+
+    if(q.includes("diamond"))
+      return "Diamonds are valuable resources in Minecraft. They can be used to craft tools, weapons and armor.";
+
+    if(q.includes("nether"))
+      return "The Nether is a dangerous dimension in Minecraft. It contains unique biomes, mobs, structures and resources.";
+
+    if(q.includes("survival"))
+      return "In Survival mode, you collect resources, craft tools, build shelters, explore the world and try to survive.";
+
+    if(q.includes("creative"))
+      return "Creative mode gives you access to unlimited building blocks and the ability to fly. It is great for creating big builds.";
+
+    if(q.includes("enchant"))
+      return "Enchantments improve your equipment. For example, Sharpness increases melee damage, Efficiency speeds up mining, and Unbreaking helps equipment last longer.";
+
+    if(q.includes("craft"))
+      return "Crafting is how you make items in Minecraft. You use a crafting table or your inventory crafting grid to combine materials.";
+
+    if(q.includes("seed"))
+      return "A Minecraft seed is a value used to generate a world. Different seeds can create different landscapes, villages and structures.";
+
+    if(q.includes("herobrine"))
+      return "Herobrine is a famous Minecraft community legend. He is not an official mob in the normal vanilla game.";
+
+    return "Minecraft is a sandbox game where you can explore, build, craft and survive. It has Survival, Creative and other modes, with mobs, villages, dimensions and countless building possibilities. What would you like to know about Minecraft?";
+  }
+
+  // FREE FIRE
+  if(q.includes("free fire") || q.includes("freefire") || q.includes("garena")){
+    if(q.includes("character"))
+      return "Free Fire has different characters with special abilities. Some abilities help with healing, movement, information or combat. Character choices depend on your playstyle.";
+
+    if(q.includes("rank"))
+      return "Free Fire ranked mode lets players compete and increase their rank by playing matches. Performance and match results affect rank progress.";
+
+    if(q.includes("map"))
+      return "Free Fire has several maps, including Bermuda, Purgatory and Kalahari. Each map has different locations and gameplay opportunities.";
+
+    if(q.includes("pet"))
+      return "Pets in Free Fire can provide special abilities that support your gameplay. Different pets have different skills.";
+
+    if(q.includes("weapon") || q.includes("gun"))
+      return "Free Fire has many weapon types, including assault rifles, SMGs, shotguns, sniper rifles and pistols. Each type works differently at different ranges.";
+
+    if(q.includes("sensitivity"))
+      return "Sensitivity settings affect how quickly your aim moves. The best settings depend on your device, controls and personal comfort. Try small adjustments in training mode.";
+
+    if(q.includes("headshot"))
+      return "A headshot is a hit that connects with an opponent's head. Aim control, positioning and practice can help improve accuracy.";
+
+    if(q.includes("diamond"))
+      return "Diamonds are Free Fire's premium in-game currency. They can be used for certain characters, cosmetics and other game items.";
+
+    if(q.includes("booyah"))
+      return "BOOYAH! is the victory message associated with winning a Free Fire match.";
+
+    if(q.includes("guild"))
+      return "A guild is a group of players who can play and participate in activities together.";
+
+    return "Free Fire is a battle royale game developed by Garena. Players land on an island, collect equipment, survive against other players and compete to be the last one standing. It includes characters, pets, weapons, maps and ranked modes. What do you want to know about Free Fire?";
+  }
+
+  // MOBILE LEGENDS BANG BANG
+  if(q.includes("mlbb") || q.includes("mobile legends") || q.includes("mobile legend")){
+    if(q.includes("role") || q.includes("roles")){
+      return "MLBB has five main roles: Tank, Fighter, Assassin, Mage and Marksman. Supports also help the team with healing, protection and control.";
+    }
+
+    if(q.includes("tank"))
+      return "Tanks are heroes who can absorb damage and protect teammates. They often help start team fights and provide crowd control.";
+
+    if(q.includes("assassin"))
+      return "Assassins specialize in quickly attacking important enemy targets. They often focus on enemy damage dealers.";
+
+    if(q.includes("mage"))
+      return "Mages usually deal magic damage and use abilities to control fights, clear minion waves or attack enemies from a distance.";
+
+    if(q.includes("marksman"))
+      return "Marksmen are ranged damage dealers who often become stronger later in the match. They usually depend on items and good positioning.";
+
+    if(q.includes("fighter"))
+      return "Fighters are versatile heroes who can deal damage and survive in fights. Many are strong in the EXP lane.";
+
+    if(q.includes("support"))
+      return "Support heroes help teammates through healing, shields, crowd control or other helpful abilities.";
+
+    if(q.includes("lane")){
+      return "MLBB has three main lanes: EXP Lane, Gold Lane and Mid Lane. The Jungle is another important area where players farm monsters and help teammates.";
+    }
+
+    if(q.includes("jungle"))
+      return "The jungler farms jungle monsters, secures important objectives and helps teammates across the map.";
+
+    if(q.includes("lord") || q.includes("turtle"))
+      return "Turtle and Lord are important neutral objectives in MLBB. Defeating them can give your team useful advantages.";
+
+    if(q.includes("build"))
+      return "A good MLBB build depends on your hero, enemy team and match situation. Choose items that support your hero's role instead of using the same build every match.";
+
+    if(q.includes("rank"))
+      return "MLBB ranked mode lets you compete against other players and climb through ranks. Teamwork, map awareness and good decisions are important.";
+
+    if(q.includes("hero"))
+      return "MLBB has many heroes with different abilities and roles. You can choose from Tanks, Fighters, Assassins, Mages, Marksmen and Supports.";
+
+    return "Mobile Legends: Bang Bang is a 5-versus-5 multiplayer online battle arena game. Two teams compete to destroy the enemy base. It includes heroes, lanes, roles, jungle monsters, items and team fights. What would you like to know about MLBB?";
+  }
+
+  // GENERAL CONVERSATION
   if(/^(hi|hello|hey|hii)\b/.test(q))
-    return "Hey! How are you doing today? What would you like to talk about?";
+    return "Hey! What's up? What are we talking about today?";
 
   if(q.includes("how are you"))
-    return "I'm doing great! Thanks for asking. How can I help you today?";
+    return "I'm doing great! Ready to talk about games, technology or anything else.";
 
   if(q.includes("your name"))
-    return "I'm KarkiAI, your personal AI assistant.";
+    return "I'm KarkiAI, your personal assistant from KarkiVerse.";
 
   if(q.includes("who made you"))
     return "I was created as part of the KarkiVerse project.";
 
   if(q.includes("what can you do"))
-    return "I can help with general knowledge, technology, school subjects, maths, explanations, ideas and everyday questions.";
+    return "I can answer programmed questions about Minecraft, Free Fire, MLBB, technology, school subjects, maths and general knowledge.";
 
+  // TECHNOLOGY
   if(q.includes("internet"))
-    return "The Internet is a worldwide network that connects computers and devices. It allows us to communicate, search for information, watch videos and use websites.";
-
-  if(q.includes("www") || q.includes("world wide web"))
-    return "WWW stands for World Wide Web. It is a collection of connected web pages that we access through the Internet.";
+    return "The Internet is a worldwide network that connects computers and devices. It allows us to visit websites, communicate and share information.";
 
   if(q.includes("browser"))
-    return "A browser is an application used to visit websites. Examples include Google Chrome, Safari, Firefox and Microsoft Edge.";
-
-  if(q.includes("google"))
-    return "Google is a technology company best known for its search engine, which helps people find information on the Internet.";
-
-  if(q.includes("website"))
-    return "A website is a collection of related web pages available on the Internet. Websites are commonly built using HTML, CSS and JavaScript.";
+    return "A browser is an application used to visit websites. Examples include Chrome, Safari, Firefox and Microsoft Edge.";
 
   if(q.includes("html"))
-    return "HTML stands for HyperText Markup Language. It provides the structure and content of a web page.";
+    return "HTML stands for HyperText Markup Language. It provides the structure of a website.";
 
   if(q.includes("css"))
-    return "CSS stands for Cascading Style Sheets. It controls how a website looks, including its colors, fonts, spacing and layout.";
+    return "CSS stands for Cascading Style Sheets. It controls the appearance of websites, including colors, fonts and layouts.";
 
   if(q.includes("javascript"))
-    return "JavaScript is a programming language that makes websites interactive. It can handle buttons, animations, forms and much more.";
-
-  if(q.includes("wifi"))
-    return "Wi-Fi is a wireless technology that allows devices to connect to a network and access the Internet without a physical cable.";
+    return "JavaScript is a programming language used to make websites interactive.";
 
   if(q.includes("artificial intelligence") || q === "what is ai")
-    return "Artificial intelligence, or AI, is technology that allows computers to perform tasks such as understanding language, recognizing images and answering questions.";
+    return "Artificial intelligence, or AI, is technology that helps computers perform tasks such as understanding language, recognizing images and answering questions.";
 
-  if(q.includes("server"))
-    return "A server is a computer or software system that provides information or services to other computers over a network.";
+  if(q.includes("wifi"))
+    return "Wi-Fi is a wireless technology that allows devices to connect to a network.";
 
+  // SCIENCE AND GENERAL KNOWLEDGE
   if(q.includes("gravity"))
-    return "Gravity is the force of attraction between objects that have mass. Earth's gravity keeps us on the ground.";
+    return "Gravity is the force that attracts objects with mass toward each other. Earth's gravity keeps us on the ground.";
 
   if(q.includes("photosynthesis"))
-    return "Photosynthesis is the process by which green plants use sunlight, water and carbon dioxide to produce food and release oxygen.";
+    return "Photosynthesis is the process by which green plants use sunlight, water and carbon dioxide to make food and release oxygen.";
 
   if(q.includes("capital of nepal"))
     return "The capital of Nepal is Kathmandu.";
@@ -239,66 +453,84 @@ function getReply(q){
     return "Why did the computer go to the doctor? Because it caught a virus!";
 
   if(q.includes("bored"))
-    return "Let's make things interesting! We could try a fun quiz, learn something surprising or come up with a crazy story.";
+    return "Let's do something interesting! We can talk about Minecraft, Free Fire, MLBB, or try a fun quiz.";
 
-  if(q.includes("sad"))
-    return "I'm sorry you're having a difficult day. Want to talk about what's bothering you?";
-
-  if(q.includes("time"))
-    return "You can check the current time on your device. I don't have access to a live clock in this demo.";
-
+  // BASIC MATH
   const math = q.match(/^\s*(-?\d+(?:\.\d+)?)\s*([+\-*\/])\s*(-?\d+(?:\.\d+)?)\s*\??\s*$/);
+
   if(math){
-    const a=Number(math[1]), b=Number(math[3]);
+    const a = Number(math[1]);
+    const b = Number(math[3]);
     let result;
+
     switch(math[2]){
-      case "+": result=a+b; break;
-      case "-": result=a-b; break;
-      case "*": result=a*b; break;
-      case "/": result=b===0 ? "undefined (division by zero)" : a/b; break;
+      case "+": result = a+b; break;
+      case "-": result = a-b; break;
+      case "*": result = a*b; break;
+      case "/": result = b===0 ? "undefined (division by zero)" : a/b; break;
     }
+
     return "The answer is " + result + ".";
   }
 
-  return "That's an interesting question! I'm currently a basic demo assistant, so I don't know the answer to everything yet. I can still help with basic technology, Internet, school topics and general knowledge.";
+  return "That's an interesting question! I don't have a programmed answer for that yet. I can help with Minecraft, Free Fire, MLBB, technology, school topics, maths and general knowledge. Try asking me something about those topics!";
 }
 
 function sendMessage(){
-  const text=input.value.trim();
+  const text = input.value.trim();
   if(!text) return;
 
+  // This click is also the user's audio interaction.
+  if("speechSynthesis" in window){
+    speechSynthesis.resume();
+  }
+
   addMessage(text,"user");
-  input.value="";
+  input.value = "";
 
-  const reply=getReply(text);
+  const reply = answer(text);
 
-  setTimeout(()=>{
-    addMessage(reply,"ai");
-    speak(reply);
-  },350);
+  addMessage(reply,"ai");
+
+  // Speak automatically. No Listen button needed.
+  speak(reply);
+}
+
+function ask(text){
+  input.value = text;
+  sendMessage();
 }
 
 input.addEventListener("keydown",function(e){
-  if(e.key==="Enter" && !e.shiftKey){
+  if(e.key === "Enter" && !e.shiftKey){
     e.preventDefault();
     sendMessage();
   }
 });
 
 function startMic(){
-  const Recognition=window.SpeechRecognition || window.webkitSpeechRecognition;
+  const Recognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
 
   if(!Recognition){
-    alert("Voice input is not supported in this browser.");
+    alert("Voice input is not supported in this browser. Try another browser.");
     return;
   }
 
-  const recognition=new Recognition();
-  recognition.lang="en-IN";
-  recognition.onresult=function(event){
-    input.value=event.results[0][0].transcript;
+  const recognition = new Recognition();
+  recognition.lang = "en-IN";
+  recognition.interimResults = false;
+
+  recognition.onresult = function(event){
+    input.value = event.results[0][0].transcript;
     sendMessage();
   };
+
+  recognition.onerror = function(){
+    alert("Microphone problem. Please check microphone permission.");
+  };
+
   recognition.start();
 }
 </script>
