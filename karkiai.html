@@ -7,226 +7,130 @@
 <title>KarkiAI</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-
+*{box-sizing:border-box}
 body{
-  font-family:Arial,Helvetica,sans-serif;
-  background:#101113;
+  margin:0;
+  background:#101114;
   color:#f5f5f5;
-  min-height:100vh;
+  font-family:Arial,sans-serif;
 }
-
 header{
-  height:65px;
-  padding:0 22px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  border-bottom:1px solid #292a2d;
+  padding:20px;
+  border-bottom:1px solid #292a30;
+  font-size:21px;
+  font-weight:bold;
 }
-
-.brand{font-size:21px;font-weight:700}
-.brand span{color:#999}
-
-.status{font-size:12px;color:#aaa}
-
 main{
   max-width:850px;
   margin:auto;
-  padding:35px 18px 150px;
+  padding:25px 18px 120px;
 }
-
-.welcome{
-  text-align:center;
-  padding:25px 0 35px;
-}
-
-.hero-photo{
-  width:105px;
-  height:105px;
-  object-fit:cover;
+.hero{text-align:center;padding:35px 0 25px}
+.hero img{
+  width:105px;height:105px;
   border-radius:50%;
-  border:3px solid #333;
-  margin-bottom:20px;
+  object-fit:cover;
+  border:2px solid #383a40;
 }
-
-.welcome h1{
-  font-size:29px;
-  margin-bottom:10px;
-}
-
-.welcome p{color:#999;font-size:14px}
-
-.chat{
-  display:flex;
-  flex-direction:column;
-  gap:23px;
-}
-
+.hero h2{font-size:25px;margin-bottom:8px}
+.hero p{color:#999}
+#chat{display:flex;flex-direction:column;gap:17px}
 .message{
-  display:flex;
-  align-items:flex-start;
-  gap:12px;
-  line-height:1.65;
-  font-size:15px;
+  padding:14px 17px;
+  border-radius:16px;
+  max-width:85%;
+  line-height:1.6;
+  white-space:pre-wrap;
 }
-
-.message.user{justify-content:flex-end}
-
-.message .avatar{
-  width:35px;
-  height:35px;
+.user{
+  background:#292b32;
+  align-self:flex-end;
+}
+.ai{
+  background:#1b1c21;
+  align-self:flex-start;
+}
+.ai img{
+  width:25px;height:25px;
   border-radius:50%;
   object-fit:cover;
-  flex-shrink:0;
+  vertical-align:middle;
+  margin-right:8px;
 }
-
-.bubble{
-  max-width:80%;
-  padding:12px 16px;
-  border-radius:15px;
-  background:#202124;
-  overflow-wrap:anywhere;
-}
-
-.user .bubble{
-  background:#303136;
-}
-
-.message .actions{
-  display:flex;
-  gap:10px;
-  margin-top:8px;
-}
-
-.actions button{
-  background:none;
-  color:#999;
-  border:none;
-  cursor:pointer;
-  font-size:12px;
-}
-
 .composer{
   position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:linear-gradient(transparent,#101113 20%);
-  padding:20px 15px 18px;
+  bottom:0;left:0;right:0;
+  background:#101114;
+  padding:14px;
+  border-top:1px solid #292a30;
 }
-
 .input-area{
-  max-width:800px;
+  max-width:850px;
   margin:auto;
-  background:#202124;
-  border:1px solid #393a3e;
-  border-radius:17px;
   display:flex;
-  align-items:flex-end;
-  padding:10px;
-  gap:8px;
+  gap:9px;
 }
-
 textarea{
   flex:1;
   resize:none;
-  background:transparent;
+  height:48px;
+  border-radius:15px;
+  padding:14px;
+  background:#24262d;
   color:white;
-  border:none;
+  border:1px solid #383a40;
   outline:none;
-  font-family:inherit;
   font-size:15px;
-  padding:10px;
-  min-height:42px;
-  max-height:120px;
 }
-
-.tool{
+button{
   border:0;
-  border-radius:11px;
-  width:40px;
-  height:40px;
+  border-radius:13px;
+  padding:0 16px;
+  background:#f0f0f0;
+  color:#111;
+  font-size:18px;
   cursor:pointer;
-  background:#303136;
-  color:white;
-  font-size:17px;
 }
-
-.tool:hover{background:#45464b}
-.send{background:#f1f1f1;color:#111}
-.send:hover{background:#ccc}
-
-.hint{
-  text-align:center;
-  color:#777;
-  font-size:11px;
-  margin-top:10px;
-}
-
-.typing{color:#999;font-size:13px}
-
-@media(max-width:600px){
-  header{height:58px;padding:0 15px}
-  main{padding:22px 14px 140px}
-  .welcome{padding:20px 0 30px}
-  .welcome h1{font-size:25px}
-  .hero-photo{width:90px;height:90px}
-  .bubble{max-width:88%;font-size:14px}
-}
+#mic{background:#292b32;color:white}
+.note{text-align:center;color:#777;font-size:11px;margin-top:8px}
 </style>
 </head>
 
 <body>
 
-<header>
-  <div class="brand">Karki<span>AI</span></div>
-  <div class="status">● Online demo</div>
-</header>
+<header>KarkiAI</header>
 
 <main>
-  <section class="welcome" id="welcome">
-    <img class="hero-photo" src="image.png" alt="KarkiAI">
-    <h1>Hey! How can I help you?</h1>
-    <p>Ask me anything. Let's talk.</p>
+  <section class="hero" id="hero">
+    <img src="image.png" alt="KarkiAI">
+    <h2>Hey! How can I help you?</h2>
+    <p>Ask me anything. I'm here to help.</p>
   </section>
 
-  <section class="chat" id="chat"></section>
+  <div id="chat"></div>
 </main>
 
 <div class="composer">
   <div class="input-area">
     <textarea id="input" placeholder="Message KarkiAI..." rows="1"></textarea>
-    <button class="tool" id="mic" title="Speak">🎙</button>
-    <button class="tool send" id="send" title="Send">➤</button>
+    <button id="mic" onclick="startMic()">🎙</button>
+    <button onclick="sendMessage()">➤</button>
   </div>
-  <div class="hint">KarkiAI · Voice and text demo</div>
+  <div class="note">KarkiAI can make mistakes.</div>
 </div>
 
 <script>
-const chat = document.getElementById("chat");
 const input = document.getElementById("input");
-const welcome = document.getElementById("welcome");
+const chat = document.getElementById("chat");
+const hero = document.getElementById("hero");
 
-let indianVoice = null;
+let voices = [];
 
-function chooseVoice(){
-  if(!("speechSynthesis" in window)) return;
-
-  const voices = speechSynthesis.getVoices();
-
-  indianVoice =
-    voices.find(v => v.lang.toLowerCase() === "en-in") ||
-    voices.find(v => v.lang.toLowerCase().startsWith("en-in")) ||
-    voices.find(v => v.lang.toLowerCase().startsWith("en-gb")) ||
-    voices.find(v => v.lang.toLowerCase().startsWith("en"));
-
+function loadVoices(){
+  voices = speechSynthesis.getVoices();
 }
-
-if("speechSynthesis" in window){
-  chooseVoice();
-  speechSynthesis.onvoiceschanged = chooseVoice;
-}
+loadVoices();
+speechSynthesis.onvoiceschanged = loadVoices;
 
 function speak(text){
   if(!("speechSynthesis" in window)) return;
@@ -234,351 +138,168 @@ function speak(text){
   speechSynthesis.cancel();
 
   const utterance = new SpeechSynthesisUtterance(text);
-  chooseVoice();
+  utterance.lang = "en-IN";
+  utterance.rate = 0.9;
+  utterance.pitch = 0.8;
+
+  const indianVoice = voices.find(v =>
+    v.lang.toLowerCase().includes("en-in")
+  );
 
   if(indianVoice) utterance.voice = indianVoice;
-
-  utterance.lang = "en-IN";
-  utterance.rate = 0.88;
-  utterance.pitch = 0.78;
-  utterance.volume = 1;
 
   speechSynthesis.speak(utterance);
 }
 
-function addMessage(text, type, shouldSpeak=false){
-  welcome.style.display = "none";
+function addMessage(text,type){
+  hero.style.display = "none";
 
-  const row = document.createElement("div");
-  row.className = "message " + type;
-
-  if(type === "ai"){
-    const avatar = document.createElement("img");
-    avatar.className = "avatar";
-    avatar.src = "image.png";
-    avatar.alt = "KarkiAI";
-    row.appendChild(avatar);
-  }
-
-  const content = document.createElement("div");
-  content.className = "bubble";
-  content.textContent = text;
+  const div = document.createElement("div");
+  div.className = "message " + type;
 
   if(type === "ai"){
-    const actions = document.createElement("div");
-    actions.className = "actions";
-
-    const voiceButton = document.createElement("button");
-    voiceButton.textContent = "🔊 Listen";
-    voiceButton.onclick = () => speak(text);
-
-    const copyButton = document.createElement("button");
-    copyButton.textContent = "Copy";
-    copyButton.onclick = () => {
-      navigator.clipboard?.writeText(text);
-      copyButton.textContent = "Copied!";
-    };
-
-    actions.append(voiceButton, copyButton);
-    content.appendChild(actions);
+    const img = document.createElement("img");
+    img.src = "image.png";
+    img.alt = "KarkiAI";
+    div.appendChild(img);
   }
 
-  row.appendChild(content);
-  chat.appendChild(row);
-
-  window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
-
-  if(shouldSpeak) speak(text);
+  div.appendChild(document.createTextNode(text));
+  chat.appendChild(div);
+  window.scrollTo(0,document.body.scrollHeight);
 }
 
-function getDemoReply(text){
-  const t = text.toLowerCase().trim();
+function getReply(q){
+  q=q.toLowerCase().trim();
 
-  // GREETINGS
-  if(/^(hi|hello|hey|hii|heyy|yo|sup)\b/.test(t))
-    return "Hey! What's up? What would you like to talk about?";
+  if(/^(hi|hello|hey|hii)\b/.test(q))
+    return "Hey! How are you doing today? What would you like to talk about?";
 
-  if(t.includes("how are you"))
-    return "I'm doing great! Ready to help you with anything I know. How are you?";
+  if(q.includes("how are you"))
+    return "I'm doing great! Thanks for asking. How can I help you today?";
 
-  if(t.includes("your name") || t.includes("who are you"))
-    return "I'm KarkiAI, your friendly AI-style assistant!";
+  if(q.includes("your name"))
+    return "I'm KarkiAI, your personal AI assistant.";
 
-  if(t.includes("who created you") || t.includes("who made you"))
-    return "I was created as part of the KarkiVerse project!";
+  if(q.includes("who made you"))
+    return "I was created as part of the KarkiVerse project.";
 
-  if(t.includes("what can you do") || t.includes("what can u do") ||
-     t.includes("your abilities") || t.includes("your capabilities"))
-    return "I can answer basic questions, explain internet and technology topics, help with school subjects, solve simple maths, write paragraphs, share ideas, tell jokes and chat with you. Ask me anything!";
+  if(q.includes("what can you do"))
+    return "I can help with general knowledge, technology, school subjects, maths, explanations, ideas and everyday questions.";
 
-  if(t.includes("are you real") || t.includes("are you human"))
-    return "I'm a computer program, not a human. I'm KarkiAI!";
+  if(q.includes("internet"))
+    return "The Internet is a worldwide network that connects computers and devices. It allows us to communicate, search for information, watch videos and use websites.";
 
-  if(t.includes("thank"))
-    return "You're welcome! Happy to help. 😊";
+  if(q.includes("www") || q.includes("world wide web"))
+    return "WWW stands for World Wide Web. It is a collection of connected web pages that we access through the Internet.";
 
-  if(t.includes("good morning"))
-    return "Good morning! Hope you have a great day!";
+  if(q.includes("browser"))
+    return "A browser is an application used to visit websites. Examples include Google Chrome, Safari, Firefox and Microsoft Edge.";
 
-  if(t.includes("good night"))
-    return "Good night! Have a peaceful sleep.";
+  if(q.includes("google"))
+    return "Google is a technology company best known for its search engine, which helps people find information on the Internet.";
 
-  // INTERNET AND TECHNOLOGY
-  if(t.includes("what is internet") || t.includes("define internet"))
-    return "The Internet is a worldwide network connecting computers and devices. It lets people communicate, share information and access websites.";
+  if(q.includes("website"))
+    return "A website is a collection of related web pages available on the Internet. Websites are commonly built using HTML, CSS and JavaScript.";
 
-  if(t.includes("what is www") || t.includes("world wide web"))
-    return "WWW stands for World Wide Web. It is a collection of web pages and websites that we access using the Internet.";
+  if(q.includes("html"))
+    return "HTML stands for HyperText Markup Language. It provides the structure and content of a web page.";
 
-  if(t.includes("what is browser"))
-    return "A browser is an application used to open websites. Examples include Chrome, Safari, Firefox and Edge.";
+  if(q.includes("css"))
+    return "CSS stands for Cascading Style Sheets. It controls how a website looks, including its colors, fonts, spacing and layout.";
 
-  if(t.includes("what is google"))
-    return "Google is a technology company. Its search engine helps people find information on the Internet.";
+  if(q.includes("javascript"))
+    return "JavaScript is a programming language that makes websites interactive. It can handle buttons, animations, forms and much more.";
 
-  if(t.includes("google vs chrome") || t.includes("difference between google and chrome"))
-    return "Google is a company and search engine. Chrome is a web browser made by Google.";
+  if(q.includes("wifi"))
+    return "Wi-Fi is a wireless technology that allows devices to connect to a network and access the Internet without a physical cable.";
 
-  if(t.includes("what is search engine"))
-    return "A search engine helps you find information online. Examples include Google, Bing and DuckDuckGo.";
+  if(q.includes("artificial intelligence") || q === "what is ai")
+    return "Artificial intelligence, or AI, is technology that allows computers to perform tasks such as understanding language, recognizing images and answering questions.";
 
-  if(t.includes("what is website"))
-    return "A website is a collection of related web pages that people can visit using a browser.";
+  if(q.includes("server"))
+    return "A server is a computer or software system that provides information or services to other computers over a network.";
 
-  if(t.includes("what is url"))
-    return "URL means Uniform Resource Locator. It is the address of a resource on the Internet.";
+  if(q.includes("gravity"))
+    return "Gravity is the force of attraction between objects that have mass. Earth's gravity keeps us on the ground.";
 
-  if(t.includes("what is html"))
-    return "HTML means HyperText Markup Language. It is used to create the structure of web pages.";
+  if(q.includes("photosynthesis"))
+    return "Photosynthesis is the process by which green plants use sunlight, water and carbon dioxide to produce food and release oxygen.";
 
-  if(t.includes("what is css"))
-    return "CSS means Cascading Style Sheets. It controls the colours, fonts, spacing and design of websites.";
+  if(q.includes("capital of nepal"))
+    return "The capital of Nepal is Kathmandu.";
 
-  if(t.includes("what is javascript"))
-    return "JavaScript is a programming language that makes websites interactive and dynamic.";
-
-  if(t.includes("what is wifi") || t.includes("what is wi-fi"))
-    return "Wi-Fi is a wireless technology that connects devices to a network without needing a physical cable.";
-
-  if(t.includes("what is ip address"))
-    return "An IP address is a numerical address used to identify a device on a network.";
-
-  if(t.includes("what is dns"))
-    return "DNS stands for Domain Name System. It translates website names like google.com into IP addresses.";
-
-  if(t.includes("what is server"))
-    return "A server is a computer or program that provides information or services to other devices.";
-
-  if(t.includes("what is cloud computing"))
-    return "Cloud computing means using services like storage and software over the Internet.";
-
-  if(t.includes("what is http") || t.includes("what is https"))
-    return "HTTP is a protocol used to transfer information on the web. HTTPS is a more secure version that encrypts communication.";
-
-  if(t.includes("what is cybersecurity"))
-    return "Cybersecurity is the practice of protecting computers, networks and information from digital threats.";
-
-  if(t.includes("what is phishing"))
-    return "Phishing is an online scam where someone tries to trick people into sharing private information.";
-
-  if(t.includes("what is vpn"))
-    return "VPN means Virtual Private Network. It creates an encrypted connection between your device and a VPN server.";
-
-  if(t.includes("what is database"))
-    return "A database is an organized collection of information that can be stored, searched and managed.";
-
-  if(t.includes("what is operating system"))
-    return "An operating system manages a device's hardware and software. Examples include Windows, Android, macOS and Linux.";
-
-  if(t.includes("what is ai") || t.includes("artificial intelligence"))
-    return "AI means Artificial Intelligence. It is technology that allows computers to perform tasks that normally require human-like intelligence.";
-
-  if(t.includes("what is email"))
-    return "Email means electronic mail. It allows people to send and receive digital messages.";
-
-  if(t.includes("what is computer"))
-    return "A computer is an electronic device that processes data, performs calculations and stores information.";
-
-  // BASIC SCIENCE
-  if(t.includes("what is gravity"))
-    return "Gravity is a force that attracts objects toward each other. Earth's gravity keeps us on the ground.";
-
-  if(t.includes("what is photosynthesis"))
-    return "Photosynthesis is the process by which green plants use sunlight, water and carbon dioxide to make food.";
-
-  if(t.includes("what is atom"))
-    return "An atom is the basic unit of an element. It contains protons, neutrons and electrons.";
-
-  if(t.includes("what is electricity"))
-    return "Electricity is a form of energy associated with the movement or presence of electric charges.";
-
-  if(t.includes("what is solar system"))
-    return "The Solar System consists of the Sun and all the planets, moons and other objects that orbit it.";
-
-  if(t.includes("how many planets"))
-    return "There are eight planets in our Solar System: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus and Neptune.";
-
-  // GENERAL KNOWLEDGE
-  if(t.includes("capital of nepal"))
-    return "The capital city of Nepal is Kathmandu.";
-
-  if(t.includes("capital of india"))
+  if(q.includes("capital of india"))
     return "The capital of India is New Delhi.";
 
-  if(t.includes("largest planet"))
-    return "Jupiter is the largest planet in our Solar System.";
+  if(q.includes("planets"))
+    return "There are eight planets in our solar system: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus and Neptune.";
 
-  if(t.includes("fastest animal"))
-    return "The peregrine falcon is the fastest animal when diving.";
+  if(q.includes("joke"))
+    return "Why did the computer go to the doctor? Because it caught a virus!";
 
-  if(t.includes("how many continents"))
-    return "There are seven continents: Asia, Africa, North America, South America, Antarctica, Europe and Australia.";
+  if(q.includes("bored"))
+    return "Let's make things interesting! We could try a fun quiz, learn something surprising or come up with a crazy story.";
 
-  if(t.includes("who is the president of nepal"))
-    return "I may not have the latest political information. Please check a current reliable news source.";
+  if(q.includes("sad"))
+    return "I'm sorry you're having a difficult day. Want to talk about what's bothering you?";
 
-  // SCHOOL HELP
-  if(t.includes("what is democracy"))
-    return "Democracy is a system of government in which people have the power to choose their leaders.";
+  if(q.includes("time"))
+    return "You can check the current time on your device. I don't have access to a live clock in this demo.";
 
-  if(t.includes("what is pollution"))
-    return "Pollution is the introduction of harmful substances into the environment, affecting air, water or land.";
-
-  if(t.includes("what is environment"))
-    return "The environment includes all the living and non-living things around us, such as air, water, plants and animals.";
-
-  if(t.includes("what is a noun"))
-    return "A noun is a word used to name a person, place, animal, thing or idea.";
-
-  if(t.includes("what is a verb"))
-    return "A verb is a word that describes an action or state, such as run, eat, think or be.";
-
-  if(t.includes("help me with homework"))
-    return "Of course! Send me your question and I'll try to explain it in simple language.";
-
-  // CONVERSATION AND FUN
-  if(t.includes("tell me a joke") || t.includes("make me laugh"))
-    return "Why did the computer go to the doctor? Because it had a virus! 😂";
-
-  if(t.includes("tell me something interesting"))
-    return "Here's something interesting: octopuses have three hearts, and two of them help move blood through their gills!";
-
-  if(t.includes("i am bored") || t.includes("im bored"))
-    return "Let's fix that! We can talk about technology, football, anime, games or random interesting facts.";
-
-  if(t.includes("i am sad") || t.includes("im sad"))
-    return "I'm sorry you're having a rough day. Want to talk about what's bothering you?";
-
-  if(t.includes("tell me a fact"))
-    return "A day on Venus is longer than its year! Venus rotates very slowly.";
-
-  // SIMPLE MATHS
-  const math = t.match(/(-?\d+(?:\.\d+)?)\s*([+\-*/x])\s*(-?\d+(?:\.\d+)?)/);
-
+  const math = q.match(/^\s*(-?\d+(?:\.\d+)?)\s*([+\-*\/])\s*(-?\d+(?:\.\d+)?)\s*\??\s*$/);
   if(math){
-    const a = Number(math[1]);
-    const b = Number(math[3]);
-    const op = math[2];
-    let answer;
-
-    if(op === "+") answer = a + b;
-    if(op === "-") answer = a - b;
-    if(op === "*" || op === "x") answer = a * b;
-    if(op === "/") answer = b === 0 ? "Cannot divide by zero" : a / b;
-
-    return "The answer is " + answer + " 🧮";
+    const a=Number(math[1]), b=Number(math[3]);
+    let result;
+    switch(math[2]){
+      case "+": result=a+b; break;
+      case "-": result=a-b; break;
+      case "*": result=a*b; break;
+      case "/": result=b===0 ? "undefined (division by zero)" : a/b; break;
+    }
+    return "The answer is " + result + ".";
   }
 
-  // HONEST FALLBACK
-  return "That's an interesting question! I don't have a programmed answer for that yet. I can currently help with basic internet knowledge, technology, general knowledge, school topics and simple maths.";
+  return "That's an interesting question! I'm currently a basic demo assistant, so I don't know the answer to everything yet. I can still help with basic technology, Internet, school topics and general knowledge.";
 }
 
-function sendMessage() {
-  const text = input.value.trim();
-  if (!text) return;
-
-  addMessage(text, "user");
-  input.value = "";
-
-  const reply = getDemoReply(text);
-
-  setTimeout(() => {
-    addMessage(reply, "ai", true);
-
-    // Automatically speak the AI reply
-    window.speechSynthesis.cancel();
-
-    const speech = new SpeechSynthesisUtterance(reply);
-    speech.lang = "en-IN";
-    speech.rate = 0.9;
-    speech.pitch = 0.8;
-
-    window.speechSynthesis.speak(speech);
-  }, 350);
-}
-  const text = input.value.trim();
+function sendMessage(){
+  const text=input.value.trim();
   if(!text) return;
 
   addMessage(text,"user");
-  input.value = "";
-  input.style.height = "42px";
+  input.value="";
 
-  const reply = getDemoReply(text);
+  const reply=getReply(text);
 
-  setTimeout(() => {
-    addMessage(reply,"ai",true);
+  setTimeout(()=>{
+    addMessage(reply,"ai");
+    speak(reply);
   },350);
 }
 
-document.getElementById("send").addEventListener("click",sendMessage);
-
-input.addEventListener("keydown",e=>{
-  if(e.key === "Enter" && !e.shiftKey){
+input.addEventListener("keydown",function(e){
+  if(e.key==="Enter" && !e.shiftKey){
     e.preventDefault();
     sendMessage();
   }
 });
 
-input.addEventListener("input",()=>{
-  input.style.height = "42px";
-  input.style.height = Math.min(input.scrollHeight,120) + "px";
-});
+function startMic(){
+  const Recognition=window.SpeechRecognition || window.webkitSpeechRecognition;
 
-// VOICE INPUT
-const mic = document.getElementById("mic");
+  if(!Recognition){
+    alert("Voice input is not supported in this browser.");
+    return;
+  }
 
-const SpeechRecognition =
-  window.SpeechRecognition || window.webkitSpeechRecognition;
-
-if(SpeechRecognition){
-  const recognition = new SpeechRecognition();
-  recognition.lang = "en-IN";
-  recognition.interimResults = false;
-
-  mic.addEventListener("click",()=>{
-    try{
-      recognition.start();
-      mic.textContent = "🔴";
-    }catch(e){}
-  });
-
-  recognition.onresult = event=>{
-    input.value = event.results[0][0].transcript;
-    mic.textContent = "🎙";
+  const recognition=new Recognition();
+  recognition.lang="en-IN";
+  recognition.onresult=function(event){
+    input.value=event.results[0][0].transcript;
     sendMessage();
   };
-
-  recognition.onend = ()=>{
-    mic.textContent = "🎙";
-  };
-
-  recognition.onerror = ()=>{
-    mic.textContent = "🎙";
-  };
-}else{
-  mic.addEventListener("click",()=>{
-    alert("Voice input is not supported in this browser. Try Chrome.");
-  });
+  recognition.start();
 }
 </script>
 
