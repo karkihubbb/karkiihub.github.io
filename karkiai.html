@@ -16,11 +16,7 @@ body{
   min-height:100vh;
 }
 
-.app{
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-}
+.app{min-height:100vh;display:flex;flex-direction:column}
 
 header{
   height:68px;
@@ -35,70 +31,49 @@ header{
 .brand{display:flex;align-items:center;gap:12px;font-weight:650}
 
 .avatar{
-  width:36px;
-  height:36px;
-  border-radius:50%;
-  object-fit:cover;
-  flex-shrink:0;
+  width:36px;height:36px;border-radius:50%;
+  object-fit:cover;flex-shrink:0;
 }
 
 .status{font-size:12px;color:#a1a1aa}
 
-main{
-  flex:1;
-  overflow-y:auto;
-  width:100%;
-  max-width:850px;
-  margin:auto;
-  padding:35px 22px;
+.header-actions{display:flex;align-items:center;gap:14px}
+
+.clear{
+  border:1px solid #393a3e;
+  background:transparent;color:#aaa;
+  padding:8px 12px;border-radius:10px;
+  cursor:pointer;
 }
 
-.welcome{
-  text-align:center;
-  margin:55px auto 45px;
+main{
+  flex:1;overflow-y:auto;width:100%;
+  max-width:850px;margin:auto;padding:25px 22px;
 }
+
+.welcome{text-align:center;margin:55px auto 40px}
 
 .hero-photo{
-  width:120px;
-  height:120px;
-  border-radius:50%;
-  object-fit:cover;
-  border:3px solid #34363b;
+  width:120px;height:120px;border-radius:50%;
+  object-fit:cover;border:3px solid #34363b;
   margin-bottom:25px;
 }
 
-.welcome h1{
-  font-size:34px;
-  font-weight:600;
-  letter-spacing:-1px;
-}
-
-.welcome p{
-  color:#999ba2;
-  margin-top:12px;
-  font-size:15px;
-}
+.welcome h1{font-size:34px;font-weight:600;letter-spacing:-1px}
+.welcome p{color:#999ba2;margin-top:12px;font-size:14px}
 
 .messages{display:flex;flex-direction:column;gap:22px}
-
 .message{display:flex;gap:12px;align-items:flex-start}
-
 .message.user{justify-content:flex-end}
 
 .bubble{
-  max-width:78%;
-  padding:13px 16px;
-  border-radius:17px;
-  background:#222428;
-  line-height:1.6;
-  font-size:14px;
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
+  max-width:80%;padding:13px 16px;
+  border-radius:17px;background:#222428;
+  line-height:1.65;font-size:14px;
+  white-space:pre-wrap;overflow-wrap:anywhere;
 }
 
 .user .bubble{background:#e9e9eb;color:#171719}
-
-.message .avatar{flex-shrink:0}
 
 .composer-area{
   padding:15px 20px 20px;
@@ -106,61 +81,44 @@ main{
 }
 
 .composer{
-  max-width:780px;
-  margin:auto;
+  max-width:780px;margin:auto;
   border:1px solid #393a3e;
-  border-radius:20px;
-  background:#1c1d20;
-  display:flex;
-  align-items:flex-end;
-  padding:10px;
-  gap:8px;
+  border-radius:20px;background:#1c1d20;
+  display:flex;align-items:flex-end;
+  padding:10px;gap:8px;
 }
 
 textarea{
-  flex:1;
-  resize:none;
-  border:0;
-  outline:0;
-  background:transparent;
-  color:white;
-  font:14px Arial;
-  padding:10px;
-  max-height:130px;
-  min-height:40px;
+  flex:1;resize:none;border:0;outline:0;
+  background:transparent;color:white;
+  font:14px Arial;padding:10px;
+  max-height:130px;min-height:40px;
 }
 
 textarea::placeholder{color:#85858d}
 
 .btn{
-  border:0;
-  border-radius:13px;
-  width:40px;
-  height:40px;
-  background:#303136;
-  color:#eee;
-  cursor:pointer;
-  font-size:17px;
+  border:0;border-radius:13px;width:40px;height:40px;
+  background:#303136;color:#eee;cursor:pointer;font-size:17px;
 }
 
 .btn:hover{background:#414248}
-
 .send{background:#eee;color:#171719}
 .send:hover{background:#ccc}
 
 .note{text-align:center;color:#74757c;font-size:11px;margin-top:12px}
-
-button{touch-action:manipulation}
+.typing{color:#999;font-size:13px;padding:5px 4px}
 
 @media(max-width:600px){
-  header{height:60px;padding:0 16px}
-  main{padding:20px 14px}
+  header{height:60px;padding:0 14px}
+  main{padding:18px 14px}
   .welcome{margin:65px auto 35px}
   .hero-photo{width:105px;height:105px}
-  .welcome h1{font-size:29px}
+  .welcome h1{font-size:28px}
   .welcome p{font-size:13px}
   .bubble{max-width:88%}
   .composer-area{padding:10px 12px 15px}
+  .clear{padding:7px 9px;font-size:11px}
 }
 </style>
 </head>
@@ -176,13 +134,16 @@ button{touch-action:manipulation}
       <div class="status">Personal AI assistant</div>
     </div>
   </div>
-  <div class="status">● Ready</div>
+
+  <div class="header-actions">
+    <span class="status">● Ready</span>
+    <button class="clear" id="clear">Clear chat</button>
+  </div>
 </header>
 
 <main id="chat">
-
   <div class="welcome" id="welcome">
-    <img class="hero-photo" src="image.png" alt="KarkiAI assistant">
+    <img class="hero-photo" src="image.png" alt="KarkiAI">
     <h1>Hey! How can I help you?</h1>
     <p>I'm KarkiAI. Ask me anything.</p>
   </div>
@@ -192,7 +153,8 @@ button{touch-action:manipulation}
 
 <div class="composer-area">
   <div class="composer">
-    <textarea id="input" rows="1" placeholder="Message KarkiAI..."></textarea>
+    <textarea id="input" rows="1"
+      placeholder="Message KarkiAI..."></textarea>
     <button class="btn" id="mic" title="Voice input">🎙</button>
     <button class="btn send" id="send" title="Send">↑</button>
   </div>
@@ -205,6 +167,7 @@ button{touch-action:manipulation}
 const input=document.getElementById("input");
 const messages=document.getElementById("messages");
 const welcome=document.getElementById("welcome");
+const chat=document.getElementById("chat");
 
 function addMessage(text,who){
   const row=document.createElement("div");
@@ -224,13 +187,14 @@ function addMessage(text,who){
   row.appendChild(bubble);
   messages.appendChild(row);
 
-  document.getElementById("chat").scrollTop=
-    document.getElementById("chat").scrollHeight;
+  chat.scrollTop=chat.scrollHeight;
 }
 
 function speak(text){
   if(!("speechSynthesis" in window))return;
+
   speechSynthesis.cancel();
+
   const voice=new SpeechSynthesisUtterance(text);
   voice.lang="en-IN";
   voice.rate=0.95;
@@ -238,21 +202,159 @@ function speak(text){
 }
 
 function getDemoReply(text){
-  const t=text.toLowerCase();
+  const t=text.toLowerCase().trim();
 
-  if(/\b(hi|hello|hey)\b/.test(t))
-    return "Hey! What's up? What are we talking about today?";
+  // Greetings
+  if(/^(hi|hello|hey|hii|heyy|yo)[!. ]*$/.test(t))
+    return "Heyyy! What's up? 😎";
 
+  if(t.includes("good morning"))
+    return "Good morning! Hope you have an amazing day! ☀️";
+
+  if(t.includes("good night"))
+    return "Good night! Sleep well! 🌙";
+
+  // Personal conversation
   if(t.includes("your name"))
     return "I'm KarkiAI, your personal assistant!";
 
-  if(t.includes("how are you"))
-    return "I'm doing good! Ready to chat. How about you?";
+  if(t.includes("who made you")||t.includes("who created you"))
+    return "I was created as part of the KarkiVerse project! 🚀";
 
-  if(t.includes("joke"))
+  if(t.includes("how are you"))
+    return "I'm doing great! Ready to chat. How about you?";
+
+  if(t.includes("what are you doing"))
+    return "Just waiting for you to give me something interesting to do 😂";
+
+  if(t.includes("thank"))
+    return "You're welcome! Always happy to help.";
+
+  if(t.includes("are you real"))
+    return "I'm a chatbot running on your KarkiAI website. I'm not a human, but I'm here to chat!";
+
+  if(t.includes("who am i"))
+    return "You're the creator of this KarkiAI project! 😎";
+
+  if(/\b(bye|goodbye|see you)\b/.test(t))
+    return "See you later! Have an awesome day! 👋";
+
+  // Help and capabilities
+  if(t.includes("what can you do"))
+    return "I can chat, tell jokes, help with basic questions, do simple calculations and play text games. My full AI connection isn't active yet.";
+
+  if(t.includes("help"))
+    return "Of course! Tell me what you need help with. I'll try my best.";
+
+  // School
+  if(t.includes("homework")||t.includes("assignment"))
+    return "Send me your homework question. I'll try to help you understand it!";
+
+  if(t.includes("math")||t.includes("mathematics"))
+    return "Let's do some maths! Send me a calculation or question.";
+
+  if(t.includes("science"))
+    return "Science is fascinating! Which topic are you curious about?";
+
+  if(t.includes("history"))
+    return "History time! Ask me about a historical topic.";
+
+  // Entertainment
+  if(t.includes("joke")||t.includes("funny"))
     return "Why did the computer go to the doctor? Because it had a virus! 😂";
 
-  return "I'm ready to help! My AI brain hasn't been connected yet, so I can't answer that properly just yet.";
+  if(t.includes("anime"))
+    return "Anime time! Are you into action, romance, comedy or something else?";
+
+  if(t.includes("bleach"))
+    return "BLEACH! Great choice. Ichigo's world is full of incredible characters! ⚔️";
+
+  if(t.includes("movie"))
+    return "Movie time! What genre are you looking for: action, romance, comedy or thriller?";
+
+  if(t.includes("music")||t.includes("song"))
+    return "Music makes everything better! What kind of music do you enjoy?";
+
+  // Football
+  if(t.includes("ronaldo")||t.includes("cr7"))
+    return "SIUUUU! 🐐 What's your favourite Ronaldo moment?";
+
+  if(t.includes("messi"))
+    return "A football legend! ⚽ What's your favourite Messi moment?";
+
+  if(t.includes("football")||t.includes("soccer"))
+    return "Football discussion! Which team are we supporting today?";
+
+  if(t.includes("real madrid"))
+    return "HALA MADRID! ⚪ What's your favourite Real Madrid player?";
+
+  if(t.includes("world cup"))
+    return "The World Cup is always exciting! Which country do you think will win?";
+
+  // Everyday conversation
+  if(t.includes("bored"))
+    return "Let's change that! Want a random question, a joke or a little text game?";
+
+  if(t.includes("happy"))
+    return "That's awesome! Tell me what happened! 😁";
+
+  if(t.includes("sad")||t.includes("upset"))
+    return "Sorry things aren't going so well. Want to talk about what's bothering you?";
+
+  if(t.includes("friend"))
+    return "Friends make life interesting! What's happening with your friends?";
+
+  if(t.includes("love"))
+    return "Love is a complicated topic! 😂 What's on your mind?";
+
+  if(t.includes("school"))
+    return "School life! Are you talking about classes, friends or homework?";
+
+  // Simple information
+  if(t.includes("meaning of"))
+    return "Tell me the exact word and I'll try to explain its meaning.";
+
+  if(t.includes("time"))
+    return "Your device's current time is "+new Date().toLocaleTimeString()+".";
+
+  if(t.includes("date")||t.includes("today"))
+    return "Today's date is "+new Date().toLocaleDateString()+".";
+
+  // Basic arithmetic
+  const math=t.match(/^\s*(-?\d+(?:\.\d+)?)\s*([+\-*/x])\s*(-?\d+(?:\.\d+)?)\s*\??\s*$/);
+
+  if(math){
+    const a=Number(math[1]);
+    const op=math[2];
+    const b=Number(math[3]);
+    let result;
+
+    if(op==="+")result=a+b;
+    if(op==="-")result=a-b;
+    if(op==="*"||op==="x")result=a*b;
+    if(op==="/")result=b===0?"Cannot divide by zero.":a/b;
+
+    return "The answer is "+result+". 🧮";
+  }
+
+  // Random conversation
+  if(t.includes("what do you think"))
+    return "Interesting question! Tell me a little more so I can give you a useful response.";
+
+  if(t.includes("tell me something"))
+    return "Here's something interesting: Octopuses have three hearts! 🐙";
+
+  if(t.includes("surprise me"))
+    return "Random fact: Honey can stay preserved for an incredibly long time! 🍯";
+
+  if(t.includes("how old are you"))
+    return "I don't have a human age. I'm your KarkiAI chatbot!";
+
+  if(t.includes("good"))
+    return "Nice! Tell me more 😄";
+
+  // Fallback
+  return "Hmm, that's interesting! I don't have the answer to that yet. Try explaining it another way, or ask me something else! 😊";
 }
 
 function send(){
@@ -261,6 +363,7 @@ function send(){
 
   welcome.style.display="none";
   addMessage(text,"user");
+
   input.value="";
   input.style.height="40px";
 
@@ -269,7 +372,7 @@ function send(){
   setTimeout(()=>{
     addMessage(reply,"ai");
     speak(reply);
-  },350);
+  },450);
 }
 
 document.getElementById("send").addEventListener("click",send);
@@ -284,6 +387,12 @@ input.addEventListener("keydown",e=>{
 input.addEventListener("input",()=>{
   input.style.height="40px";
   input.style.height=Math.min(input.scrollHeight,130)+"px";
+});
+
+document.getElementById("clear").addEventListener("click",()=>{
+  messages.innerHTML="";
+  welcome.style.display="block";
+  if("speechSynthesis" in window)speechSynthesis.cancel();
 });
 
 const SpeechRecognition=window.SpeechRecognition||
@@ -303,8 +412,13 @@ document.getElementById("mic").addEventListener("click",()=>{
     send();
   };
 
+  recognition.onerror=()=>{
+    alert("Couldn't hear you. Please try again.");
+  };
+
   recognition.start();
 });
 </script>
+
 </body>
 </html>
