@@ -303,35 +303,48 @@ async function onlineAnswer(question){
  return null;
 }
 
+const conversation=[];
+
 async function sendMessage(){
  const question=input.value.trim();
- if(!question)return;
+ if(!question || sendBtn.disabled)return;
 
  stopSpeaking();
  addMessage(question,"user");
-
  input.value="";
  sendBtn.disabled=true;
 
  const loading=addMessage("Thinking...","bot");
 
- let answer=localAnswer(question);
+ try{
+  conversation.push({role:"user",content:question});
 
- if(!answer && shouldSearchWikipedia(question)){
-  answer=await onlineAnswer(question);
+  const response=await fetch("https://karki-ai-backend.sarwagyakarki999.workers.dev/",{
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({messages:conversation})
+  });
+
+  const data=await response.json();
+
+  if(!response.ok || !data.reply){
+   throw new Error(data.error || "KarkiAI could not respond. Please try again.");
+  }
+
+  const answer=data.reply;
+  conversation.push({role:"assistant",content:answer});
+  loading.querySelector(".bot-content").lastElementChild.textContent=answer;
+  chat.scrollTop=chat.scrollHeight;
+  speak(answer);
+
+ }catch(error){
+  const message="Sorry, I couldn't connect to KarkiAI right now. "+(error.message || "Please try again.");
+  loading.querySelector(".bot-content").lastElementChild.textContent=message;
+  conversation.pop();
+ }finally{
+  sendBtn.disabled=false;
+  input.focus();
  }
-
- if(!answer){
-  answer="I’m not sure I understood that yet. Could you rephrase it or tell me a little more? I’ll do my best to help.";
- }
-
- loading.querySelector("span").textContent=answer;
-
- chat.scrollTop=chat.scrollHeight;
- sendBtn.disabled=false;
-
- speak(answer);
- input.focus();
 }
 
 input.addEventListener("keydown",e=>{
