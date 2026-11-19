@@ -90,11 +90,62 @@ h1{font:800 clamp(56px,8.4vw,128px)/.92 Geist,system-ui,sans-serif;letter-spacin
 .spark{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-top:24px;padding:20px 24px;border:1px solid #ffffff1b;border-radius:9px;background:#ffffff06}.spark p{font-size:17px;color:#ddd;margin:8px 0 0}.spark button{flex:none;width:42px;height:42px;border-radius:50%;border:1px solid #ffffff35;background:#ffffff09;color:#fff;font-size:22px;cursor:pointer;transition:transform .3s,background .2s}.spark button:hover{transform:rotate(90deg);background:#ffffff18}
 @media(max-width:700px){.signal{grid-template-columns:1fr;min-height:0;padding:28px 24px}.signal-orb{width:145px;margin:10px auto 8px}.orb-core{width:76px}.quick{align-items:flex-start;flex-direction:column}.quick-links{width:100%}.quick-links a{flex:1;text-align:center;padding:10px 8px}.spark{padding:17px}.spark p{font-size:15px}}
 @media(prefers-reduced-motion:reduce){.orb-ring{animation:none}}
+
+/* Tiny pixel Ronaldo celebration — monochrome world, five iconic kits */
+.ronaldo-show{grid-area:photo;position:relative;justify-self:end;align-self:center;width:210px;min-height:260px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-right:0;isolation:isolate}
+.ronaldo-show:before{content:"";position:absolute;width:180px;height:180px;border:1px solid #ffffff20;border-radius:50%;box-shadow:0 0 0 14px #ffffff05,0 0 55px #ffffff0c;z-index:-1}
+.siuuu-bubble{position:absolute;top:0;right:-2px;padding:7px 12px;border:1px solid #ffffff55;border-radius:7px;background:#111114;color:#fff;font-size:13px;font-weight:800;letter-spacing:.13em;box-shadow:0 5px 24px #0008;animation:bubble-pop .8s cubic-bezier(.2,.8,.2,1) both, bubble-float 2.8s ease-in-out 1s infinite}
+.siuuu-bubble:after{content:"";position:absolute;left:19px;bottom:-6px;width:10px;height:10px;background:#111114;border-right:1px solid #ffffff55;border-bottom:1px solid #ffffff55;transform:rotate(45deg)}
+.ronaldo-sprite{width:150px;height:188px;overflow:visible;image-rendering:pixelated;filter:drop-shadow(0 10px 12px #0009);animation:ronaldo-entry 1s cubic-bezier(.16,.8,.25,1) both, ronaldo-siuuu 2.8s ease-in-out 1s infinite}
+.ronaldo-sprite .shirt{fill:#e7e7e7;animation:shirt-tour 12s steps(1,end) 1s infinite}
+.ronaldo-sprite .shorts{fill:#171717;animation:shorts-tour 12s steps(1,end) 1s infinite}
+.kit-caption{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:-1px;text-align:center}
+.kit-name{font-size:9px;font-weight:800;letter-spacing:.12em;color:#eee;animation:kit-name-tour 12s steps(1,end) 1s infinite}
+.kit-sub{font-size:8px;letter-spacing:.2em;color:#777}
+@keyframes ronaldo-entry{0%{opacity:0;transform:translateX(90px) translateY(25px) scale(.7)}65%{opacity:1;transform:translateX(-8px) translateY(-13px) scale(1.04)}100%{opacity:1;transform:translateX(0) translateY(0) scale(1)}}
+@keyframes ronaldo-siuuu{0%,12%,100%{transform:translateY(0) rotate(0)}24%{transform:translateY(-25px) rotate(-3deg)}37%{transform:translateY(-29px) rotate(2deg)}50%{transform:translateY(0) rotate(0)}58%{transform:translateY(-7px)}68%{transform:translateY(0)}}
+@keyframes bubble-pop{0%{opacity:0;transform:scale(.4) rotate(-8deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes bubble-float{0%,100%{translate:0 0}50%{translate:0 -5px}}
+@keyframes shirt-tour{0%,19.99%{fill:#e7e7e7}20%,39.99%{fill:#f1f1f1}40%,59.99%{fill:#171717}60%,79.99%{fill:#e8b85d}80%,100%{fill:#d8d8d8}}
+@keyframes shorts-tour{0%,19.99%{fill:#171717}20%,39.99%{fill:#f1f1f1}40%,59.99%{fill:#f1f1f1}60%,79.99%{fill:#171717}80%,100%{fill:#171717}}
+@keyframes kit-name-tour{0%,19.99%{content:"";}0%,19.99%{opacity:1}20%,39.99%{opacity:1}40%,59.99%{opacity:1}60%,79.99%{opacity:1}80%,100%{opacity:1}}
+@media(max-width:860px){.ronaldo-show{width:150px;min-height:220px}.ronaldo-sprite{width:125px;height:156px}.ronaldo-show:before{width:135px;height:135px}.siuuu-bubble{font-size:11px;right:-4px}}
+@media(max-width:560px){.ronaldo-show{width:104px;min-height:150px;margin:0 5px 0 0}.ronaldo-sprite{width:90px;height:113px}.ronaldo-show:before{width:100px;height:100px}.siuuu-bubble{top:-3px;right:-10px;padding:5px 7px;font-size:9px}.kit-caption{margin-top:0}.kit-name{font-size:7px;letter-spacing:.06em}.kit-sub{font-size:6px}}
+@media(prefers-reduced-motion:reduce){.ronaldo-sprite,.siuuu-bubble,.kit-name,.ronaldo-sprite .shirt,.ronaldo-sprite .shorts{animation:none}}
 </style><title>KarkiVerse</title></head><body class="kv"><div class="shader" id="shader" aria-hidden="true"></div><header class="kv-header"><div class="kv-bar"><a class="kv-logo" href="index.html">KarkiVerse</a><button class="kv-burger" aria-label="Menu" aria-expanded="false" aria-controls="nav">☰</button><div class="kv-nav" id="nav" role="navigation" aria-label="Main"><a href="index.html">Home</a><a href="about.html">My Life</a><a href="games.html">Games</a><a href="voices.html">Voice</a><a href="karkiai.html">KarkiAI</a></div></div></header>
 <main class="kv-wrap">
 <section class="hero">
  <div class="intro"><span class="eyebrow"><i></i> A LITTLE WORLD BY SARWAGYA KARKI</span><p>I&rsquo;m Sarwagya Karki. Welcome to my corner of the internet — a place for the things I create, the places I explore, and ideas I&rsquo;m building.</p><a href="about.html">Discover my world <span>↗</span></a></div>
- <button class="disc" id="heroPhoto" type="button" aria-label="Show next photo"><span class="ph"><img id="heroPhotoImg" src="assets/mylife/IMG_1252.jpeg" alt="Me looking out over green hills" fetchpriority="high"></span><span class="photo-hint">A glimpse of my world <b>↗</b></span></button>
+ <div class="ronaldo-show" aria-label="Pixel-art footballer celebrating SIUUU">
+  <div class="siuuu-bubble" aria-hidden="true">SUIIII!</div>
+  <svg class="ronaldo-sprite" viewBox="0 0 128 160" role="img" aria-label="Pixel-art number seven footballer jumping with both arms raised">
+   <g shape-rendering="crispEdges">
+    <ellipse cx="65" cy="148" rx="29" ry="5" fill="#fff" opacity=".16"/>
+    <g class="player-body">
+     <path d="M45 47h38v36H45z" fill="#d8b18b"/>
+     <path d="M47 43h34v9H47zM47 52h8v5h-8zM74 52h8v5h-8z" fill="#171717"/>
+     <path d="M51 64h25v7H51z" fill="#4a2d24"/>
+     <path d="M43 80h42v34H43z" class="shirt"/>
+     <path d="M56 85h16v5H56z" fill="#fff" opacity=".9"/>
+     <path d="M59 94h10v13H59z" fill="#fff" opacity=".95"/>
+     <path d="M35 79h10v29H35zM84 79h10v29H84z" class="shirt"/>
+     <path d="M33 73h12v10H33zM84 73h12v10H84z" fill="#d8b18b"/>
+     <path d="M45 111h38v19H45z" class="shorts"/>
+     <path d="M47 128h12v14H47zM69 128h12v14H69z" fill="#d8b18b"/>
+     <path d="M44 139h17v8H44zM67 139h18v8H67z" fill="#f0f0f0"/>
+     <path d="M39 145h23v7H39zM65 145h25v7H65z" fill="#151515"/>
+     <path d="M35 76l-7-15-5-13 6-3 10 17 7 13zM93 76l7-15 5-13-6-3-10 17-7 13z" fill="#d8b18b"/>
+     <path d="M22 43h8v8h-8zM99 43h8v8h-8z" fill="#d8b18b"/>
+     <path d="M48 26h32v22H48z" fill="#d8b18b"/>
+     <path d="M45 25h38v9H45zM49 18h30v8H49zM54 13h22v7H54zM43 31h7v11h-7z" fill="#171717"/>
+     <path d="M51 37h6v3h-6zM72 37h6v3h-6z" fill="#171717"/>
+     <path d="M57 42h14v3H57z" fill="#754a3a"/>
+     <path d="M62 45h7v2h-7z" fill="#fff"/>
+    </g>
+   </g>
+  </svg>
+  <div class="kit-caption"><span class="kit-name">MANCHESTER UNITED</span><span class="kit-sub">THE SIUUU TOUR · NO. 7</span></div>
+ </div>
  <h1>Karki<br>Verse<span class="hero-period">.</span></h1>
  <div class="hero-bottom"><p>EXPLORE. PLAY. CREATE.</p><a href="#explore">SCROLL TO EXPLORE <span>↓</span></a></div>
 </section>
@@ -248,18 +299,4 @@ if(!calm&&matchMedia('(hover:hover) and (pointer:fine)').matches){
  addEventListener('pointerdown',e=>{point(e.clientX,e.clientY);sparkBurst(e.clientX,e.clientY,30);burst=1;radius=.02;wake();},{passive:true});
  addEventListener('resize',()=>{resize();resizeSparks()},{passive:true});resizeSparks();document.addEventListener('visibilitychange',()=>{visible=!document.hidden;if(!visible&&raf){cancelAnimationFrame(raf);raf=0;}else wake();});
  resize();wake();
-})();</script><script>
-(()=>{const button=document.getElementById('heroPhoto'),img=document.getElementById('heroPhotoImg');if(!button||!img)return;
- const photos=[
- ['assets/mylife/IMG_1252.jpeg','Me looking out over green hills'],
- ['assets/mylife/IMG_1398(1).jpeg','Open sky and green hills'],
- ['assets/mylife/IMG_1235.jpeg','Dharan clock tower'],
- ['assets/mylife/IMG_1236.jpeg','A path surrounded by trees'],
- ['assets/mylife/IMG_1405.jpeg','A walk through nature'],
- ['assets/mylife/IMG_1468.jpeg','A bridge between the hills'],
- ['assets/mylife/IMG_1475.jpeg','Waterfall view'],
- ['assets/mylife/IMG_1361.jpeg','A winding road through green countryside']
- ];let index=0,busy=false;
- photos.slice(1).forEach(p=>{const preload=new Image();preload.src=p[0]});
- button.addEventListener('click',()=>{if(busy)return;busy=true;index=(index+1)%photos.length;button.classList.add('changing');setTimeout(()=>{img.src=photos[index][0];img.alt=photos[index][1];button.classList.remove('changing');busy=false;},220);});
 })();</script><script>(()=>{const lines=["Big ideas often begin with one curious question.","Make something today that did not exist yesterday.","Explore more. Wonder often. Keep creating.","Your next idea could become your favourite project.","A little progress is still progress."];let i=0;const line=document.getElementById('sparkLine'),btn=document.getElementById('sparkNext');if(btn&&line)btn.addEventListener('click',()=>{i=(i+1)%lines.length;line.animate([{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}],{duration:260});line.textContent=lines[i]})})();</script></body></html>
