@@ -66,7 +66,7 @@ h1{font:800 clamp(56px,8.4vw,128px)/.92 Geist,system-ui,sans-serif;letter-spacin
 .shader{opacity:.82}
 @media(max-width:860px){.hero{grid-template-columns:minmax(0,1fr) 150px;grid-template-areas:"intro photo" "title photo";text-align:left;gap:20px;min-height:calc(85svh - 64px);padding:34px 0}.intro{align-self:end}.hero h1{font-size:clamp(60px,12vw,100px);text-align:left}.disc{width:135px;justify-self:end;align-self:center}.intro p{margin:0}}
 @media(max-width:560px){.hero{grid-template-columns:1fr 104px;grid-template-areas:"intro photo" "title title";gap:22px 10px;min-height:0;padding:55px 0 35px;text-align:left}.intro{align-self:center}.intro p{font-size:13px}.intro a{margin-top:9px}.disc{width:94px;align-self:center;margin:0 5px 0 0}.hero h1{font-size:clamp(64px,17vw,100px);margin:5px 0 0}.zones{margin-top:42px}}
-</style><title>KarkiVerse</title></head><body class="kv"><div class="shader" id="shader" aria-hidden="true"></div><header class="kv-header"><div class="kv-bar"><a class="kv-logo" href="index.html">KarkiVerse</a><button class="kv-burger" aria-label="Menu" aria-expanded="false" aria-controls="nav">☰</button><div class="kv-nav" id="nav" role="navigation" aria-label="Main"><a href="index.html">Home</a><a href="about.html">My Life</a><a href="games.html">Games</a><a href="voices.html">Voice</a><a href="karkiai.html">KarkiAI</a></div></div></header>
+.insta-link{gap:10px;white-space:nowrap;max-width:100%;padding:0 18px}.insta-link strong{font-size:14px;letter-spacing:.01em}.insta-label{font-weight:500;opacity:.72}.insta-link>span:last-child{font-size:17px}@media(max-width:420px){.insta-link{padding:0 12px;gap:7px;font-size:13px}.insta-link strong{font-size:13px}}</style><title>KarkiVerse</title></head><body class="kv"><div class="shader" id="shader" aria-hidden="true"></div><header class="kv-header"><div class="kv-bar"><a class="kv-logo" href="index.html">KarkiVerse</a><button class="kv-burger" aria-label="Menu" aria-expanded="false" aria-controls="nav">☰</button><div class="kv-nav" id="nav" role="navigation" aria-label="Main"><a href="index.html">Home</a><a href="about.html">My Life</a><a href="games.html">Games</a><a href="voices.html">Voice</a><a href="karkiai.html">KarkiAI</a></div></div></header>
 <main class="kv-wrap">
 <section class="hero">
  <div class="intro"><p>I&rsquo;m Sarwagya Karki. This site has my photos from around Dharan, some games, a text-to-speech tool and KarkiAI.</p><a href="about.html">Photos</a></div>
@@ -80,7 +80,7 @@ h1{font:800 clamp(56px,8.4vw,128px)/.92 Geist,system-ui,sans-serif;letter-spacin
  <a class="zone rv" href="voices.html"><h2>Voice Zone</h2><p>Type something and hear it read aloud.</p></a>
  <a class="zone rv" href="karkiai.html"><h2>KarkiAI</h2><p>Ask questions by typing or talking.</p></a>
 </section>
-<section class="contact rv"><div><h2>Need a website?</h2><p>Message me on Instagram and tell me what you need.</p></div><a class="kv-btn" data-mag href="https://www.instagram.com/karkii_7/" target="_blank" rel="noopener noreferrer">Instagram</a></section>
+<section class="contact rv"><div><h2>Need a website?</h2><p>Message me on Instagram and tell me what you need.</p></div><a class="kv-btn insta-link" data-mag href="https://www.instagram.com/karkii_7/" target="_blank" rel="noopener noreferrer"><span class="insta-label">Instagram</span><strong>@karkii_7</strong><span aria-hidden="true">↗</span></a></section>
 </main><footer class="kv-foot"><div class="kv-wrap"><span>© 2026 KarkiVerse</span><span>Made by Sarwagya Karki</span></div></footer>
 <script>(()=>{
 const d=document,root=d.documentElement,calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -124,39 +124,51 @@ if(!calm&&matchMedia('(hover:hover) and (pointer:fine)').matches){
  const fragment=`precision highp float;
  uniform vec2 resolution;uniform vec2 mouse;uniform vec2 previous;uniform float energy;
  float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+ float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);return mix(mix(hash(i),hash(i+vec2(1.,0.)),f.x),mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),f.x),f.y);}
  void main(){
   vec2 uv=gl_FragCoord.xy/resolution;
-  vec2 p=(uv-.5)*vec2(resolution.x/resolution.y,1.0);
-  vec2 m=(mouse-.5)*vec2(resolution.x/resolution.y,1.0);
-  vec2 old=(previous-.5)*vec2(resolution.x/resolution.y,1.0);
+  vec2 aspect=vec2(resolution.x/resolution.y,1.0);
+  vec2 p=(uv-.5)*aspect;
+  vec2 m=(mouse-.5)*aspect;
   vec2 d=p-m;float dist=length(d);
-  float influence=exp(-dist*2.0)*energy;
-  float angle=atan(d.y,d.x);
-  float shards=abs(sin(angle*19.0+dist*27.0+hash(floor(p*9.0))*2.0));
-  float facets=step(.79,shards)*exp(-dist*1.7);
-  float rings=abs(sin(dist*25.0+angle*2.0));
-  float ringGlow=exp(-abs(rings-.10)*22.0)*exp(-dist*2.1);
-  vec2 flow=p+(d/max(dist,.025))*influence*.16;
-  float grid=abs(sin(flow.x*24.0+sin(flow.y*8.0))*sin(flow.y*20.0));
-  float streak=exp(-grid*24.0)*exp(-dist*1.25);
-  float trail=exp(-length(p-old)*3.5)*energy;
-  vec3 col=vec3(.012,.014,.023);
-  col+=vec3(.13,.28,.72)*facets*influence*1.7;
-  col+=vec3(.34,.22,.82)*ringGlow*influence*1.5;
-  col+=vec3(.16,.48,.9)*streak*influence*.65;
-  col+=vec3(.20,.42,.95)*trail*.20;
-  col+=vec3(.035,.045,.075)*exp(-dist*1.4);
-  gl_FragColor=vec4(col,1.0);
+  float influence=exp(-dist*3.0)*energy;
+  float ang=atan(d.y,d.x);
+  float push=exp(-dist*2.7)*influence*.085;
+  vec2 warped=p-(d/max(dist,.001))*push;
+  float cellSize=22.0;
+  vec2 grid=warped*resolution.y/cellSize;
+  vec2 id=floor(grid),f=fract(grid);
+  float rnd=hash(id);
+  float cluster=noise(id*.11);
+  float active=step(.53,rnd)*step(.30,cluster);
+  float shape=step(.20,f.x)*step(f.x,.84)*step(.16,f.y)*step(f.y,.82);
+  float cut=step(.22,abs(f.x-f.y)+.04*hash(id+4.));
+  float block=active*shape*cut;
+  float edge=min(min(f.x,1.-f.x),min(f.y,1.-f.y));
+  float bevel=1.-smoothstep(.015,.09,edge);
+  float glow=exp(-dist*2.0)*influence;
+  float ripple=exp(-abs(dist-(.055+energy*.20+sin(ang*7.)*.009))*.065)*energy;
+  float streak=step(.82,noise(id*.18+floor(energy*4.)))*block;
+  vec3 ink=vec3(.015,.017,.023);
+  vec3 silver=mix(vec3(.10,.12,.16),vec3(.52,.57,.66),rnd);
+  silver+=vec3(.18,.22,.29)*bevel;
+  float lighting=clamp(.45+.35*sin(ang+id.x*.17)+.3*cos(id.y*.19),.12,1.);
+  vec3 art=silver*lighting*block;
+  art+=vec3(.34,.43,.58)*streak*.55;
+  art+=vec3(.48,.60,.82)*glow*block*1.7;
+  art+=vec3(.22,.31,.48)*ripple*.55;
+  float alpha=block*.72+glow*.12*block+ripple*.12;
+  gl_FragColor=vec4(art,clamp(alpha,0.,.88));
  }`;
  function compile(type,src){const sh=gl.createShader(type);gl.shaderSource(sh,src);gl.compileShader(sh);if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS))return null;return sh;}
  const vs=compile(gl.VERTEX_SHADER,vertex),fs=compile(gl.FRAGMENT_SHADER,fragment);if(!vs||!fs){box.style.display='none';return;}
  const program=gl.createProgram();gl.attachShader(program,vs);gl.attachShader(program,fs);gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS)){box.style.display='none';return;}
- gl.useProgram(program);const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);
+ gl.useProgram(program);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.clearColor(0,0,0,0);const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);
  const loc=gl.getAttribLocation(program,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
  const res=gl.getUniformLocation(program,'resolution'),mouseLoc=gl.getUniformLocation(program,'mouse'),prevLoc=gl.getUniformLocation(program,'previous'),energyLoc=gl.getUniformLocation(program,'energy');
  let target=[.5,.5],current=[.5,.5],previous=[.5,.5],energy=0,raf=0,w=0,h=0;
  function resize(){const d=Math.min(devicePixelRatio||1,1.5),nw=Math.floor(innerWidth*d),nh=Math.floor(innerHeight*d);if(w!==nw||h!==nh){w=nw;h=nh;canvas.width=w;canvas.height=h;gl.viewport(0,0,w,h);gl.uniform2f(res,w,h);draw();}}
- function draw(){gl.uniform2f(mouseLoc,current[0],current[1]);gl.uniform2f(prevLoc,previous[0],previous[1]);gl.uniform1f(energyLoc,energy);gl.drawArrays(gl.TRIANGLES,0,6);}
+ function draw(){gl.clear(gl.COLOR_BUFFER_BIT);gl.uniform2f(mouseLoc,current[0],current[1]);gl.uniform2f(prevLoc,previous[0],previous[1]);gl.uniform1f(energyLoc,energy);gl.drawArrays(gl.TRIANGLES,0,6);}
  function animate(){raf=0;previous[0]=current[0];previous[1]=current[1];current[0]+=(target[0]-current[0])*.19;current[1]+=(target[1]-current[1])*.19;energy*=.965;if(Math.abs(target[0]-current[0])>.0007||Math.abs(target[1]-current[1])>.0007||energy>.015){draw();raf=requestAnimationFrame(animate);}else{current=target.slice();energy=0;draw();}}
  function move(x,y){target=[x/innerWidth,1-y/innerHeight];energy=1;if(!raf)raf=requestAnimationFrame(animate);}
  addEventListener('pointermove',e=>move(e.clientX,e.clientY),{passive:true});
