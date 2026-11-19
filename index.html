@@ -121,8 +121,8 @@ if(!calm&&matchMedia('(hover:hover) and (pointer:fine)').matches){
  const sparkCtx=sparkCanvas.getContext('2d');let sparks=[],sparkW=0,sparkH=0,sparkD=1,lastSparkPoint=null;
  const resizeSparks=()=>{sparkD=Math.min(devicePixelRatio||1,1.5);sparkW=innerWidth;sparkH=innerHeight;sparkCanvas.width=Math.floor(sparkW*sparkD);sparkCanvas.height=Math.floor(sparkH*sparkD);sparkCtx.setTransform(sparkD,0,0,sparkD,0,0)};
  const addSpark=(x,y,vx,vy,life,size,kind)=>sparks.push({x,y,vx,vy,life,max:life,size,kind,rot:Math.random()*6.28,spin:(Math.random()-.5)*.12});
- function sparkBurst(x,y,count=22){for(let i=0;i<count;i++){const a=Math.random()*Math.PI*2,s=1+Math.random()*4;addSpark(x,y,Math.cos(a)*s,Math.sin(a)*s,35+Math.random()*35,1.5+Math.random()*3.5,i%3===0?1:0)}}
- function sparkMove(x,y){if(lastSparkPoint){const dx=x-lastSparkPoint.x,dy=y-lastSparkPoint.y,dist=Math.hypot(dx,dy),n=Math.min(7,Math.ceil(dist/9));for(let i=0;i<n;i++){const t=(i+1)/n;addSpark(lastSparkPoint.x+dx*t,lastSparkPoint.y+dy*t,(Math.random()-.5)*1.4,(Math.random()-.5)*1.4,24+Math.random()*26,1.2+Math.random()*2.8,Math.random()<.28?1:0)}}lastSparkPoint={x,y}}
+ function sparkBurst(x,y,count=44){for(let i=0;i<count;i++){const a=Math.random()*Math.PI*2,s=1.5+Math.random()*5;addSpark(x,y,Math.cos(a)*s,Math.sin(a)*s,42+Math.random()*42,4+Math.random()*5.5,i%2===0?1:0)}}
+ function sparkMove(x,y){if(lastSparkPoint){const dx=x-lastSparkPoint.x,dy=y-lastSparkPoint.y,dist=Math.hypot(dx,dy),n=Math.min(16,Math.ceil(dist/5));for(let i=0;i<n;i++){const t=(i+1)/n;addSpark(lastSparkPoint.x+dx*t,lastSparkPoint.y+dy*t,(Math.random()-.5)*1.8,(Math.random()-.5)*1.8,34+Math.random()*34,3.2+Math.random()*4.8,Math.random()<.42?1:0)}}lastSparkPoint={x,y}}
  const gl=canvas.getContext('webgl',{alpha:true,antialias:false,powerPreference:'low-power'});
  if(!gl){box.style.display='none';return;}
  const vertex='attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}';
@@ -200,9 +200,9 @@ if(!calm&&matchMedia('(hover:hover) and (pointer:fine)').matches){
    const fade=Math.min(1,s.life/12)*Math.min(1,(s.max-s.life+5)/8),pulse=.72+.28*Math.sin((s.max-s.life)*.35);
    const alpha=fade*pulse,sz=s.size*(.7+.3*alpha);
    sparkCtx.save();sparkCtx.translate(s.x,s.y);sparkCtx.rotate(s.rot);sparkCtx.globalAlpha=alpha;
-   sparkCtx.shadowColor='rgba(220,235,255,.95)';sparkCtx.shadowBlur=s.kind?19:10;
+   sparkCtx.shadowColor='rgba(220,235,255,.95)';sparkCtx.shadowBlur=s.kind?32:22;
    sparkCtx.fillStyle=s.kind?'rgba(255,255,255,.98)':'rgba(218,230,246,.9)';
-   if(s.kind){sparkCtx.fillRect(-sz*.28,-sz*2.2,sz*.56,sz*4.4);sparkCtx.fillRect(-sz*2.2,-sz*.28,sz*4.4,sz*.56)}
+   if(s.kind){sparkCtx.fillRect(-sz*.48,-sz*3.1,sz*.96,sz*6.2);sparkCtx.fillRect(-sz*3.1,-sz*.48,sz*6.2,sz*.96)}
    else{sparkCtx.beginPath();sparkCtx.arc(0,0,sz,0,Math.PI*2);sparkCtx.fill()}
    sparkCtx.restore();
   }
