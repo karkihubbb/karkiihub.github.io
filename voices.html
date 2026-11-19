@@ -1,177 +1,82 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KarkiVerse | Voice Zone</title>
-
-<style>
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #eaf4ff, #f4edff, #ffffff);
-  color: #25263b;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#09090b"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700;800&display=swap" rel="stylesheet"><style>:root{--bg:#09090b;--s1:#111114;--line:#27272a;--tx:#fafafa;--mu:#a1a1aa;--ac:#fafafa;--ease:cubic-bezier(.2,.7,.2,1)}
+@view-transition{navigation:auto}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body.kv{margin:0;background:var(--bg);color:var(--tx);font:400 16px/1.65 Geist,system-ui,sans-serif;overflow-x:hidden}
+.kv a{color:inherit}
+.kv :focus-visible{outline:2px solid var(--ac);outline-offset:3px;border-radius:4px}
+.kv-wrap{width:min(1100px,92%);margin:auto}
+.kv-header{position:sticky;top:0;z-index:30;background:#09090be6;backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.kv-bar{width:min(1100px,92%);margin:auto;height:64px;display:flex;align-items:center;justify-content:space-between}
+.kv-logo{font-weight:800;font-size:19px;letter-spacing:-.02em;text-decoration:none}
+.kv-nav{position:relative;display:flex;gap:2px}
+.kv-nav a{padding:21px 14px;color:var(--mu);text-decoration:none;font-size:14px;font-weight:500;transition:color .2s}
+.kv-nav a:hover,.kv-nav a[aria-current=page]{color:var(--tx)}
+.kv-ind{position:absolute;bottom:-1px;left:0;height:2px;width:0;background:var(--ac);transition:left .35s var(--ease),width .35s var(--ease)}
+.kv-burger{display:none;background:none;border:1px solid var(--line);color:var(--tx);width:44px;height:44px;border-radius:8px;cursor:pointer}
+.kv-btn{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 24px;border-radius:8px;background:var(--ac);color:var(--bg);font:700 15px Geist,sans-serif;text-decoration:none;border:0;cursor:pointer;transition:transform .15s var(--ease),filter .2s}
+.kv-btn:hover{filter:brightness(1.1)}.kv-btn:active{transform:scale(.96)}
+.kv-btn.ghost{background:none;color:var(--tx);border:1px solid var(--line)}
+.kv-foot{border-top:1px solid var(--line);margin-top:80px;padding:26px 0 40px;color:var(--mu);font-size:14px}
+.kv-foot .kv-wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+html.js .rv{opacity:0;transform:translateY(16px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+html.js .rv.in{opacity:1;transform:none}
+@media(max-width:720px){
+ .kv-burger{display:block}
+ .kv-nav{position:fixed;inset:64px 0 auto 0;flex-direction:column;background:var(--bg);border-bottom:1px solid var(--line);padding:8px 4%;transform:translateY(-12px);opacity:0;visibility:hidden;transition:.25s var(--ease)}
+ .kv-nav.open{transform:none;opacity:1;visibility:visible}
+ .kv-nav a{padding:16px 4px;font-size:17px;border-bottom:1px solid var(--line)}
+ .kv-ind{display:none}
 }
-
-.container {
-  width: 100%;
-  max-width: 650px;
-  background: rgba(255,255,255,0.8);
-  border: 1px solid white;
-  border-radius: 25px;
-  padding: 30px;
-  box-shadow: 0 15px 45px rgba(100,100,150,0.12);
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}html.js .rv{opacity:1;transform:none;transition:none}*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+</style><title>Voice Zone | KarkiVerse</title><style>
+.w{max-width:680px;padding:64px 0}h1{font:800 clamp(34px,6vw,56px)/1.05 Geist,system-ui,sans-serif;letter-spacing:-.035em;margin:0 0 10px}.w>p{color:var(--mu);margin:0 0 28px}
+label{display:block;font-weight:500;margin:20px 0 8px}textarea,select{width:100%;background:var(--s1);color:var(--tx);border:1px solid var(--line);border-radius:8px;padding:14px;font:16px Geist,sans-serif}textarea{min-height:150px;resize:vertical}
+.row{display:flex;gap:12px;margin-top:22px}.row .kv-btn{flex:1;justify-content:center}#msg{color:var(--mu);min-height:24px;margin-top:14px;font-size:14px}small{color:var(--mu)}
+</style></head><body class="kv"><header class="kv-header"><div class="kv-bar"><a class="kv-logo" href="index.html">KarkiVerse</a><button class="kv-burger" aria-label="Menu" aria-expanded="false" aria-controls="nav">☰</button><div class="kv-nav" id="nav" role="navigation" aria-label="Main"><a href="index.html">Home</a><a href="about.html">My Life</a><a href="games.html">Games</a><a href="voices.html">Voice</a><a href="karkiai.html">KarkiAI</a></div></div></header><main class="kv-wrap w"><h1>Voice Zone</h1><p>Type something, pick a voice, and hear it spoken.</p>
+<label for="text">Your text</label><textarea id="text" placeholder="Type what the voice should say"></textarea>
+<label for="voice">Voice</label><select id="voice"><option>Loading voices…</option></select>
+<label for="deepVoice">Slow and deep delivery</label><select id="deepVoice"><option value="">Off</option></select>
+<div class="row"><button class="kv-btn" data-mag onclick="speakText()">Speak</button><button class="kv-btn ghost" onclick="stopText()">Stop</button></div><div id="msg" role="status"></div>
+<small>Voices come from your device and browser, so they differ between phones and computers.</small></main><footer class="kv-foot"><div class="kv-wrap"><span>© 2026 KarkiVerse</span><span>Made by Sarwagya Karki</span></div></footer><script>(()=>{
+const d=document,root=d.documentElement,calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+root.classList.add('js');
+const nav=d.querySelector('.kv-nav'),burger=d.querySelector('.kv-burger');
+if(nav){
+ const here=location.pathname.split('/').pop()||'index.html';
+ const links=[...nav.querySelectorAll('a')];
+ links.forEach(a=>{if(a.getAttribute('href')===here)a.setAttribute('aria-current','page')});
+ const ind=d.createElement('span');ind.className='kv-ind';nav.appendChild(ind);
+ const to=a=>{if(!a){ind.style.width='0';return}ind.style.left=a.offsetLeft+'px';ind.style.width=a.offsetWidth+'px'};
+ const cur=()=>nav.querySelector('[aria-current=page]');
+ links.forEach(a=>{a.addEventListener('pointerenter',()=>to(a));a.addEventListener('focus',()=>to(a))});
+ nav.addEventListener('pointerleave',()=>to(cur()));addEventListener('resize',()=>to(cur()));
+ requestAnimationFrame(()=>to(cur()));
+ if(burger){
+  burger.addEventListener('click',()=>{const o=nav.classList.toggle('open');burger.setAttribute('aria-expanded',o);burger.textContent=o?'✕':'☰'});
+  links.forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
+ }
 }
-
-.back {
-  color: #7774b9;
-  text-decoration: none;
-  font-weight: bold;
+const io='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12}):null;
+d.querySelectorAll('.rv').forEach(el=>io?io.observe(el):el.classList.add('in'));
+if(!calm&&matchMedia('(hover:hover) and (pointer:fine)').matches){
+ d.querySelectorAll('[data-mag]').forEach(el=>{
+  el.addEventListener('pointermove',e=>{const r=el.getBoundingClientRect();el.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.18}px,${(e.clientY-r.top-r.height/2)*.28}px)`});
+  el.addEventListener('pointerleave',()=>{el.style.transform=''});
+ });
+ const px=[...d.querySelectorAll('[data-parallax]')];
+ if(px.length){let t=false;addEventListener('scroll',()=>{if(t)return;t=true;requestAnimationFrame(()=>{px.forEach(el=>{const r=el.parentElement.getBoundingClientRect();el.style.transform=`translateY(${(r.top+r.height/2-innerHeight/2)*-.08}px) scale(1.12)`});t=false})},{passive:true})}
 }
-
-h1 {
-  text-align: center;
-  font-size: 35px;
-  margin-bottom: 8px;
-}
-
-.subtitle {
-  text-align: center;
-  color: #777;
-  margin-bottom: 28px;
-}
-
-textarea {
-  width: 100%;
-  min-height: 160px;
-  padding: 18px;
-  border: 1px solid #dcd9f5;
-  border-radius: 15px;
-  resize: vertical;
-  font-size: 16px;
-  outline: none;
-  background: #fbfaff;
-}
-
-select {
-  width: 100%;
-  padding: 14px;
-  margin-top: 15px;
-  border: 1px solid #dcd9f5;
-  border-radius: 12px;
-  background: white;
-  font-size: 15px;
-}
-
-.voice-card {
-  margin-top: 18px;
-  padding: 18px;
-  border: 1px solid #dcd9f5;
-  border-radius: 16px;
-  background: linear-gradient(120deg, #f0efff, #eaf4ff);
-}
-
-.voice-card h3 {
-  margin: 0 0 7px;
-}
-
-.voice-card p {
-  color: #777;
-  font-size: 13px;
-  margin: 0 0 12px;
-}
-
-.voice-card select {
-  margin-top: 0;
-}
-
-.buttons {
-  display: flex;
-  gap: 12px;
-  margin-top: 18px;
-}
-
-button {
-  flex: 1;
-  padding: 14px;
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.speak {
-  background: #8b83dc;
-  color: white;
-}
-
-.stop {
-  background: #eeeafa;
-  color: #514b85;
-}
-
-button:hover {
-  opacity: 0.85;
-}
-
-.note {
-  text-align: center;
-  color: #888;
-  font-size: 12px;
-  margin-top: 22px;
-}
-</style>
-</head>
-
-<body>
-<div class="container">
-
-<a class="back" href="index.html">← Back to KarkiVerse</a>
-
-<h1>🎙️ Voice Zone</h1>
-<p class="subtitle">Type anything. Choose a voice. Let AI speak it.</p>
-
-<textarea id="text" placeholder="Type anything you want the voice to say..."></textarea>
-
-<select id="voice">
-  <option value="">Loading voices...</option>
-</select>
-
-<div class="voice-card">
-  <h3>⚽ Ronaldo-Inspired Voice</h3>
-  <p>Energetic, confident delivery with a football-inspired feel. AI-generated, not Ronaldo's actual voice.</p>
-
-  <select id="ronaldoVoice">
-    <option value="">Choose a device voice</option>
-  </select>
-</div>
-
-<div class="buttons">
-  <button class="speak" onclick="speakText()">▶ Speak</button>
-  <button class="stop" onclick="stopText()">■ Stop</button>
-</div>
-
-<p class="note">Available voices depend on your device and browser.</p>
-
-</div>
-
-<script>
+})();
+</script><script>
 const voiceSelect = document.getElementById("voice");
-const ronaldoSelect = document.getElementById("ronaldoVoice");
+const deepSelect = document.getElementById("deepVoice");
 
 function loadVoices() {
   const voices = speechSynthesis.getVoices();
 
   voiceSelect.innerHTML = "";
-  ronaldoSelect.innerHTML = '<option value="">Choose a device voice</option>';
+  deepSelect.innerHTML = '<option value="">Choose a device voice</option>';
 
   voices.forEach((voice, index) => {
     const label = voice.name + " (" + voice.lang + ")";
@@ -179,8 +84,8 @@ function loadVoices() {
     const normalOption = new Option(label, index);
     voiceSelect.add(normalOption);
 
-    const ronaldoOption = new Option(label, index);
-    ronaldoSelect.add(ronaldoOption);
+    const deepOption = new Option(label, index);
+    deepSelect.add(deepOption);
   });
 
   if (voices.length > 0) {
@@ -190,7 +95,7 @@ function loadVoices() {
 
     if (englishVoice >= 0) {
       voiceSelect.value = englishVoice;
-      ronaldoSelect.value = englishVoice;
+      deepSelect.value = englishVoice;
     }
   }
 }
@@ -199,7 +104,7 @@ function speakText() {
   const text = document.getElementById("text").value.trim();
 
   if (!text) {
-    alert("Please type something first!");
+    document.getElementById("msg").textContent="Type something first.";
     return;
   }
 
@@ -208,16 +113,16 @@ function speakText() {
   const speech = new SpeechSynthesisUtterance(text);
   const voices = speechSynthesis.getVoices();
 
-  const ronaldoMode = ronaldoSelect.value !== "";
-  const selected = ronaldoMode
-    ? ronaldoSelect.value
+  const deepMode = deepSelect.value !== "";
+  const selected = deepMode
+    ? deepSelect.value
     : voiceSelect.value;
 
   if (selected !== "" && voices[selected]) {
     speech.voice = voices[selected];
   }
 
-  if (ronaldoMode) {
+  if (deepMode) {
     speech.rate = 0.94;
     speech.pitch = 0.92;
   } else {
@@ -225,7 +130,7 @@ function speakText() {
     speech.pitch = 1;
   }
 
-  speechSynthesis.speak(speech);
+  document.getElementById("msg").textContent="Speaking…";speech.onend=()=>document.getElementById("msg").textContent="";speechSynthesis.speak(speech);
 }
 
 function stopText() {
@@ -234,7 +139,4 @@ function stopText() {
 
 loadVoices();
 speechSynthesis.onvoiceschanged = loadVoices;
-</script>
-
-</body>
-</html>
+</script></body></html>

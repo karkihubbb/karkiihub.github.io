@@ -2,8 +2,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#09090b"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700;800&display=swap" rel="stylesheet"><style>:root{--bg:#09090b;--s1:#111114;--line:#27272a;--tx:#fafafa;--mu:#a1a1aa;--ac:#fafafa;--ease:cubic-bezier(.2,.7,.2,1)}
+@view-transition{navigation:auto}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body.kv{margin:0;background:var(--bg);color:var(--tx);font:400 16px/1.65 Geist,system-ui,sans-serif;overflow-x:hidden}
+.kv a{color:inherit}
+.kv :focus-visible{outline:2px solid var(--ac);outline-offset:3px;border-radius:4px}
+.kv-wrap{width:min(1100px,92%);margin:auto}
+.kv-header{position:sticky;top:0;z-index:30;background:#09090be6;backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.kv-bar{width:min(1100px,92%);margin:auto;height:64px;display:flex;align-items:center;justify-content:space-between}
+.kv-logo{font-weight:800;font-size:19px;letter-spacing:-.02em;text-decoration:none}
+.kv-nav{position:relative;display:flex;gap:2px}
+.kv-nav a{padding:21px 14px;color:var(--mu);text-decoration:none;font-size:14px;font-weight:500;transition:color .2s}
+.kv-nav a:hover,.kv-nav a[aria-current=page]{color:var(--tx)}
+.kv-ind{position:absolute;bottom:-1px;left:0;height:2px;width:0;background:var(--ac);transition:left .35s var(--ease),width .35s var(--ease)}
+.kv-burger{display:none;background:none;border:1px solid var(--line);color:var(--tx);width:44px;height:44px;border-radius:8px;cursor:pointer}
+.kv-btn{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 24px;border-radius:8px;background:var(--ac);color:var(--bg);font:700 15px Geist,sans-serif;text-decoration:none;border:0;cursor:pointer;transition:transform .15s var(--ease),filter .2s}
+.kv-btn:hover{filter:brightness(1.1)}.kv-btn:active{transform:scale(.96)}
+.kv-btn.ghost{background:none;color:var(--tx);border:1px solid var(--line)}
+.kv-foot{border-top:1px solid var(--line);margin-top:80px;padding:26px 0 40px;color:var(--mu);font-size:14px}
+.kv-foot .kv-wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+html.js .rv{opacity:0;transform:translateY(16px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+html.js .rv.in{opacity:1;transform:none}
+@media(max-width:720px){
+ .kv-burger{display:block}
+ .kv-nav{position:fixed;inset:64px 0 auto 0;flex-direction:column;background:var(--bg);border-bottom:1px solid var(--line);padding:8px 4%;transform:translateY(-12px);opacity:0;visibility:hidden;transition:.25s var(--ease)}
+ .kv-nav.open{transform:none;opacity:1;visibility:visible}
+ .kv-nav a{padding:16px 4px;font-size:17px;border-bottom:1px solid var(--line)}
+ .kv-ind{display:none}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}html.js .rv{opacity:1;transform:none;transition:none}*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+</style>
 <title>KarkiVerse | Game Zone</title>
 
 <style>
@@ -305,25 +335,18 @@ footer {
     width: min(360px,90vw);
   }
 }
+body.kv{background:var(--bg)!important}.kv .game button{background:var(--tx);color:var(--bg);font-weight:600}.kv #snakeControls button,.kv .rps-buttons button{background:var(--s1);color:var(--tx);border:1px solid var(--line)}.kv .score{color:var(--tx)}.kv .game{border-color:var(--line)}body.kv::before{display:none}.kv .game{border-radius:12px;background:var(--s1);backdrop-filter:none}.kv-header{padding:0;text-align:left}.kv-burger{padding:0}main{padding-top:30px}
 </style>
 </head>
 
-<body>
+<body class="kv">
 
-<header>
-  <h1>🎮 Game Zone</h1>
-  <p>ENTER THE ARCADE · PICK A GAME · BEAT YOUR BEST SCORE</p>
-</header>
+<header class="kv-header"><div class="kv-bar"><a class="kv-logo" href="index.html">KarkiVerse</a><button class="kv-burger" aria-label="Menu" aria-expanded="false" aria-controls="nav">☰</button><div class="kv-nav" id="nav" role="navigation" aria-label="Main"><a href="index.html">Home</a><a href="about.html">My Life</a><a href="games.html">Games</a><a href="voices.html">Voice</a><a href="karkiai.html">KarkiAI</a></div></div></header>
 
-<nav>
-  <a href="index.html">Home</a>
-  <a href="games.html">Game Zone</a>
-</nav>
-
-<main>
+<main><h1 style="font:800 clamp(34px,6vw,56px)/1.05 Geist,sans-serif;letter-spacing:-.035em;margin:20px 0 6px">Game Zone</h1>
 
 <section class="game">
-  <h2>🐍 Snake</h2>
+  <h2>Snake</h2>
   <p class="description">Eat the red food. Don't hit the walls or yourself!</p>
 
   <div class="game-area">
@@ -344,7 +367,7 @@ footer {
 </section>
 
 <section class="game">
-  <h2>🐤 Flappy Bird</h2>
+  <h2>Flappy Bird</h2>
   <p class="description">Tap to fly through the pipes. Don't hit anything!</p>
 
   <div class="game-area">
@@ -352,13 +375,13 @@ footer {
     <canvas id="flappyCanvas" width="360" height="480"></canvas>
     <div class="status" id="flappyStatus">Tap Start, then tap to fly!</div>
     <button onclick="startFlappy()">Start / Restart</button>
-    <button onclick="flap()">TAP TO FLY</button>
+    <button onclick="flap()">Flap</button>
     <p class="description">Phone: tap the screen. Laptop: press Space.</p>
   </div>
 </section>
 
 <section class="game">
-  <h2>🔢 2048</h2>
+  <h2>2048</h2>
   <p class="description">Combine matching numbers to reach 2048!</p>
 
   <div class="game-area">
@@ -371,7 +394,7 @@ footer {
 </section>
 
 <section class="game">
-  <h2>✊ Rock Paper Scissors</h2>
+  <h2>Rock Paper Scissors</h2>
   <p class="description">Choose your move and beat the computer!</p>
 
   <div class="game-area">
@@ -382,9 +405,9 @@ footer {
     </div>
 
     <div class="rps-buttons">
-      <button onclick="playRPS('Rock')">✊ Rock</button>
-      <button onclick="playRPS('Paper')">✋ Paper</button>
-      <button onclick="playRPS('Scissors')">✌️ Scissors</button>
+      <button onclick="playRPS('Rock')">Rock</button>
+      <button onclick="playRPS('Paper')">Paper</button>
+      <button onclick="playRPS('Scissors')">Scissors</button>
     </div>
 
     <div id="rpsResult" class="status">Make your move!</div>
@@ -395,7 +418,7 @@ footer {
 </main>
 
 <footer>
-  Made with 💙 in KarkiVerse
+  © 2026 KarkiVerse
 </footer>
 
 <script>
@@ -913,6 +936,35 @@ function resetRPS() {
 
 </script>
 
-</body>
+<script>(()=>{
+const d=document,root=d.documentElement,calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+root.classList.add('js');
+const nav=d.querySelector('.kv-nav'),burger=d.querySelector('.kv-burger');
+if(nav){
+ const here=location.pathname.split('/').pop()||'index.html';
+ const links=[...nav.querySelectorAll('a')];
+ links.forEach(a=>{if(a.getAttribute('href')===here)a.setAttribute('aria-current','page')});
+ const ind=d.createElement('span');ind.className='kv-ind';nav.appendChild(ind);
+ const to=a=>{if(!a){ind.style.width='0';return}ind.style.left=a.offsetLeft+'px';ind.style.width=a.offsetWidth+'px'};
+ const cur=()=>nav.querySelector('[aria-current=page]');
+ links.forEach(a=>{a.addEventListener('pointerenter',()=>to(a));a.addEventListener('focus',()=>to(a))});
+ nav.addEventListener('pointerleave',()=>to(cur()));addEventListener('resize',()=>to(cur()));
+ requestAnimationFrame(()=>to(cur()));
+ if(burger){
+  burger.addEventListener('click',()=>{const o=nav.classList.toggle('open');burger.setAttribute('aria-expanded',o);burger.textContent=o?'✕':'☰'});
+  links.forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
+ }
+}
+const io='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12}):null;
+d.querySelectorAll('.rv').forEach(el=>io?io.observe(el):el.classList.add('in'));
+if(!calm&&matchMedia('(hover:hover) and (pointer:fine)').matches){
+ d.querySelectorAll('[data-mag]').forEach(el=>{
+  el.addEventListener('pointermove',e=>{const r=el.getBoundingClientRect();el.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.18}px,${(e.clientY-r.top-r.height/2)*.28}px)`});
+  el.addEventListener('pointerleave',()=>{el.style.transform=''});
+ });
+ const px=[...d.querySelectorAll('[data-parallax]')];
+ if(px.length){let t=false;addEventListener('scroll',()=>{if(t)return;t=true;requestAnimationFrame(()=>{px.forEach(el=>{const r=el.parentElement.getBoundingClientRect();el.style.transform=`translateY(${(r.top+r.height/2-innerHeight/2)*-.08}px) scale(1.12)`});t=false})},{passive:true})}
+}
+})();
+</script></body>
 </html>
-
