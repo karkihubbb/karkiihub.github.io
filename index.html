@@ -122,55 +122,70 @@ if(!calm&&matchMedia('(hover:hover) and (pointer:fine)').matches){
  if(!gl){box.style.display='none';return;}
  const vertex='attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}';
  const fragment=`precision highp float;
- uniform vec2 resolution;uniform vec2 mouse;uniform vec2 previous;uniform float energy;
+ uniform vec2 resolution;uniform vec2 mouse;uniform float time;uniform float energy;uniform float burst;uniform float burstRadius;
  float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
- float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);return mix(mix(hash(i),hash(i+vec2(1.,0.)),f.x),mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),f.x),f.y);}
+ float waveA(float x){return -.18+.19*sin(x*2.45+time*.34)+.055*sin(x*7.1-time*.55);}
+ float waveB(float x){return .27+.135*sin(x*2.05-time*.27+1.3)+.045*sin(x*6.2+time*.42);}
  void main(){
   vec2 uv=gl_FragCoord.xy/resolution;
-  vec2 aspect=vec2(resolution.x/resolution.y,1.0);
+  vec2 aspect=vec2(resolution.x/resolution.y,1.);
   vec2 p=(uv-.5)*aspect;
   vec2 m=(mouse-.5)*aspect;
-  vec2 d=p-m;float dist=length(d);float ang=atan(d.y,d.x);
-  float influence=exp(-dist*2.35)*energy;
-  float push=exp(-dist*2.2)*influence*.12;
-  vec2 warped=p-(d/max(dist,.001))*push;
-  float cellSize=27.0;
-  vec2 grid=warped*resolution.y/cellSize;
-  vec2 id=floor(grid),f=fract(grid);
-  float rnd=hash(id),cluster=noise(id*.075);
-  float active=step(.27,rnd)*step(.18,cluster);
-  float margin=.075+.055*hash(id+7.);
-  float inside=step(margin,f.x)*step(f.x,1.-margin)*step(margin,f.y)*step(f.y,1.-margin);
-  float diagonal=step(.13,abs(f.x-f.y)+.12*hash(id+3.));
-  float block=active*inside*diagonal;
+  vec2 delta=p-m;float r=length(delta);float a=atan(delta.y,delta.x);
+  float pull=exp(-r*2.8)*energy;
+  float twist=exp(-r*2.0)*pull*.42;
+  p+=vec2(-delta.y,delta.x)*twist;
+  p-=normalize(delta+vec2(.0001))*(exp(-r*2.6)*pull*.075);
+  float shock=abs(r-burstRadius);
+  float ring=exp(-shock*42.)*burst;
+  float inner=exp(-abs(r-(burstRadius-.055))*28.)*burst*.42;
+  p+=normalize(delta+vec2(.0001))*ring*.025;
+  float cell=resolution.y/112.;
+  vec2 g=p*resolution.y/cell;
+  vec2 id=floor(g),f=fract(g);
+  vec2 center=(id+.5)*cell/resolution.y;
+  float x=(center.x-.5)*aspect.x;
+  float y=(center.y-.5);
+  float wa=waveA(x),wb=waveB(x);
+  float da=abs(y-wa),db=abs(y-wb);
+  float d=min(da,db);
+  float band=1.-smoothstep(.018,.105,d);
+  float rand=hash(id);
+  float breakup=step(.18,rand);
+  float fragments=step(.045,rand)*step(d,.18)*smoothstep(.10,.20,d);
+  float keep=max(band*breakup,fragments*.58);
   float edge=min(min(f.x,1.-f.x),min(f.y,1.-f.y));
-  float bevel=1.-smoothstep(.015,.12,edge);
-  float lighting=clamp(.48+.28*sin(ang+id.x*.12)+.24*cos(id.y*.16),.2,1.);
-  vec3 silver=mix(vec3(.19,.21,.25),vec3(.72,.76,.82),rnd);
-  vec3 art=silver*lighting*block+vec3(.16,.19,.24)*bevel*block;
-  float glow=exp(-dist*2.1)*influence;
-  float ripple=exp(-abs(dist-(.06+energy*.19+sin(ang*8.)*.008))*48.)*energy;
-  float trail=exp(-length(p-(previous-.5)*aspect)*3.0)*energy;
-  art+=vec3(.42,.53,.72)*glow*block*2.1;
-  art+=vec3(.30,.43,.68)*ripple*.65+vec3(.22,.34,.58)*trail*.18;
-  float alpha=block*.94+glow*.18*block+ripple*.16;
-  gl_FragColor=vec4(art,clamp(alpha,0.,.96));
+  float bevel=1.-smoothstep(.035,.22,edge);
+  float slope= .5+.5*cos(x*3.4+time*.35+(da<db?0.:2.));
+  float face=clamp(.36+.42*slope+.22*(1.-f.y),.12,1.);
+  float silver=mix(.34,.98,hash(id+17.));
+  vec3 col=vec3(.72,.77,.84)*silver*face;
+  col+=vec3(.16,.18,.22)*bevel;
+  col+=vec3(.28,.31,.37)*step(.74,f.y)*.18;
+  float cursorGlow=exp(-r*3.1)*pull;
+  col+=vec3(.75,.84,1.)*cursorGlow*.8;
+  float alpha=keep*.91;
+  alpha=max(alpha,ring*.36+inner*.2);
+  col+=vec3(.78,.86,1.)*(ring*.95+inner*.45);
+  float glint=pow(max(0.,1.-abs(fract(x*34.+time*.3)-.5)*2.),16.)*band;
+  col+=vec3(.7,.76,.84)*glint*.12;
+  gl_FragColor=vec4(col,clamp(alpha,0.,.96));
  }`;
- function compile(type,src){const sh=gl.createShader(type);gl.shaderSource(sh,src);gl.compileShader(sh);if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS))return null;return sh;}
+ function compile(type,src){const sh=gl.createShader(type);gl.shaderSource(sh,src);gl.compileShader(sh);if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS)){console.warn(gl.getShaderInfoLog(sh));return null;}return sh;}
  const vs=compile(gl.VERTEX_SHADER,vertex),fs=compile(gl.FRAGMENT_SHADER,fragment);if(!vs||!fs){box.style.display='none';return;}
  const program=gl.createProgram();gl.attachShader(program,vs);gl.attachShader(program,fs);gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS)){box.style.display='none';return;}
- gl.useProgram(program);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.clearColor(0,0,0,0);const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);
+ gl.useProgram(program);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
+ const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);
  const loc=gl.getAttribLocation(program,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
- const res=gl.getUniformLocation(program,'resolution'),mouseLoc=gl.getUniformLocation(program,'mouse'),prevLoc=gl.getUniformLocation(program,'previous'),energyLoc=gl.getUniformLocation(program,'energy');
- let target=[.5,.5],current=[.5,.5],previous=[.5,.5],energy=0,raf=0,w=0,h=0;
- function resize(){const d=Math.min(devicePixelRatio||1,1.5),nw=Math.floor(innerWidth*d),nh=Math.floor(innerHeight*d);if(w!==nw||h!==nh){w=nw;h=nh;canvas.width=w;canvas.height=h;gl.viewport(0,0,w,h);gl.uniform2f(res,w,h);draw();}}
- function draw(){gl.clear(gl.COLOR_BUFFER_BIT);gl.uniform2f(mouseLoc,current[0],current[1]);gl.uniform2f(prevLoc,previous[0],previous[1]);gl.uniform1f(energyLoc,energy);gl.drawArrays(gl.TRIANGLES,0,6);}
- function animate(){raf=0;previous[0]=current[0];previous[1]=current[1];current[0]+=(target[0]-current[0])*.19;current[1]+=(target[1]-current[1])*.19;energy*=.965;if(Math.abs(target[0]-current[0])>.0007||Math.abs(target[1]-current[1])>.0007||energy>.015){draw();raf=requestAnimationFrame(animate);}else{current=target.slice();energy=0;draw();}}
- function move(x,y){target=[x/innerWidth,1-y/innerHeight];energy=1;if(!raf)raf=requestAnimationFrame(animate);}
- addEventListener('pointermove',e=>move(e.clientX,e.clientY),{passive:true});
- addEventListener('pointerdown',e=>move(e.clientX,e.clientY),{passive:true});
- addEventListener('touchmove',e=>{if(e.touches[0])move(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});
- addEventListener('resize',resize,{passive:true});document.addEventListener('visibilitychange',()=>{if(document.hidden&&raf){cancelAnimationFrame(raf);raf=0;}});
- resize();draw();
-})();
-</script></body></html>
+ const U=n=>gl.getUniformLocation(program,n),res=U('resolution'),mouseLoc=U('mouse'),timeLoc=U('time'),energyLoc=U('energy'),burstLoc=U('burst'),radiusLoc=U('burstRadius');
+ let w=0,h=0,mouse=[.5,.5],energy=0,burst=0,radius=0,last=0,raf=0,visible=true;
+ function resize(){const d=Math.min(devicePixelRatio||1,1.35),nw=Math.floor(innerWidth*d),nh=Math.floor(innerHeight*d);if(w!==nw||h!==nh){w=nw;h=nh;canvas.width=w;canvas.height=h;gl.viewport(0,0,w,h);gl.uniform2f(res,w,h);}}
+ function render(now){raf=0;if(!visible)return;const t=now*.001;energy*=.935;burst*=.955;radius=Math.min(.9,radius+.012);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);gl.uniform2f(mouseLoc,mouse[0],mouse[1]);gl.uniform1f(timeLoc,t);gl.uniform1f(energyLoc,energy);gl.uniform1f(burstLoc,burst);gl.uniform1f(radiusLoc,radius);gl.drawArrays(gl.TRIANGLES,0,6);raf=requestAnimationFrame(render);}
+ function wake(){if(!raf&&visible)raf=requestAnimationFrame(render);}
+ function point(x,y){mouse=[x/innerWidth,1-y/innerHeight];energy=1;wake();}
+ addEventListener('pointermove',e=>point(e.clientX,e.clientY),{passive:true});
+ addEventListener('pointerdown',e=>{point(e.clientX,e.clientY);burst=1;radius=.025;wake();},{passive:true});
+ addEventListener('resize',resize,{passive:true});
+ document.addEventListener('visibilitychange',()=>{visible=!document.hidden;if(!visible&&raf){cancelAnimationFrame(raf);raf=0;}else wake();});
+ resize();wake();
+})();</script></body></html>
