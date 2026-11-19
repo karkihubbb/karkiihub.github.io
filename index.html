@@ -116,9 +116,10 @@ h1{font:800 clamp(56px,8.4vw,128px)/.92 Geist,system-ui,sans-serif;letter-spacin
 <main class="kv-wrap">
 <section class="hero">
  <div class="intro"><span class="eyebrow"><i></i> A LITTLE WORLD BY SARWAGYA KARKI</span><p>I&rsquo;m Sarwagya Karki. Welcome to my corner of the internet — a place for the things I create, the places I explore, and ideas I&rsquo;m building.</p><a href="about.html">Discover my world <span>↗</span></a></div>
- <div class="ronaldo-show" aria-label="Cristiano Ronaldo running animation">
+ <div class="ronaldo-show players-show" aria-label="Cristiano Ronaldo and Kylian Mbappé celebrations">
   <div class="siuuu-bubble" aria-hidden="true">SUIIII!</div>
   <img class="ronaldo-sprite" src="ronaldo-run.gif.gif" alt="Cristiano Ronaldo running" loading="eager">
+  <img class="mbappe-sprite" src="mbappe-kneeslide.gif.gif" alt="Kylian Mbappé knee-slide celebration" loading="eager">
  </div>
  <h1>Karki<br>Verse<span class="hero-period">.</span></h1>
  <div class="hero-bottom"><p>EXPLORE. PLAY. CREATE.</p><a href="#explore">SCROLL TO EXPLORE <span>↓</span></a></div>
@@ -281,3 +282,27 @@ if(!calm&&matchMedia('(hover:hover) and (pointer:fine)').matches){
 @media(max-width:860px){.ronaldo-sprite{width:140px;max-height:190px}}
 @media(max-width:560px){.ronaldo-sprite{width:100px;max-height:135px}}
 </style>
+
+<style id="duo-players-layout">
+/* Ronaldo + Mbappé: display the original transparent GIFs as a duo */
+.players-show{grid-area:photo;width:370px;min-height:260px;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:6px;position:relative;isolation:isolate}
+.players-show:before{width:320px;height:190px;left:50%;top:50%;transform:translate(-50%,-50%)}
+.players-show .ronaldo-sprite,.players-show .mbappe-sprite{display:block;flex:0 1 50%;width:170px;height:215px;max-height:215px;object-fit:contain;image-rendering:auto;filter:drop-shadow(0 10px 14px #0009);animation:none!important}
+.players-show .siuuu-bubble{top:0;left:53px;right:auto;z-index:2}
+@media(max-width:860px){
+ .hero{grid-template-columns:minmax(0,1fr) 320px;grid-template-areas:"intro photo" "title title" "bottom bottom"}
+ .players-show{width:320px;min-height:220px}
+ .players-show:before{width:280px;height:165px}
+ .players-show .ronaldo-sprite,.players-show .mbappe-sprite{width:145px;height:185px;max-height:185px}
+ .players-show .siuuu-bubble{left:43px}
+}
+@media(max-width:560px){
+ .hero{grid-template-columns:minmax(0,1fr) 190px;grid-template-areas:"intro photo" "title title" "bottom bottom"}
+ .players-show{width:190px;min-height:155px;gap:0;margin:0 0 0 auto}
+ .players-show:before{width:172px;height:112px}
+ .players-show .ronaldo-sprite,.players-show .mbappe-sprite{flex-basis:50%;width:94px;height:128px;max-height:128px}
+ .players-show .siuuu-bubble{top:-4px;left:22px;padding:4px 6px;font-size:8px}
+ .players-show .siuuu-bubble:after{left:13px}
+}
+</style>
+
