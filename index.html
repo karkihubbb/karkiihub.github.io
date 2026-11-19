@@ -116,35 +116,9 @@ h1{font:800 clamp(56px,8.4vw,128px)/.92 Geist,system-ui,sans-serif;letter-spacin
 <main class="kv-wrap">
 <section class="hero">
  <div class="intro"><span class="eyebrow"><i></i> A LITTLE WORLD BY SARWAGYA KARKI</span><p>I&rsquo;m Sarwagya Karki. Welcome to my corner of the internet — a place for the things I create, the places I explore, and ideas I&rsquo;m building.</p><a href="about.html">Discover my world <span>↗</span></a></div>
- <div class="ronaldo-show" aria-label="Pixel-art footballer celebrating SIUUU">
+ <div class="ronaldo-show" aria-label="Cristiano Ronaldo running animation">
   <div class="siuuu-bubble" aria-hidden="true">SUIIII!</div>
-  <svg class="ronaldo-sprite" viewBox="0 0 128 160" role="img" aria-label="Pixel-art number seven footballer jumping with both arms raised">
-   <g shape-rendering="crispEdges">
-    <ellipse cx="65" cy="148" rx="29" ry="5" fill="#fff" opacity=".16"/>
-    <g class="player-body">
-     <path d="M45 47h38v36H45z" fill="#d8b18b"/>
-     <path d="M47 43h34v9H47zM47 52h8v5h-8zM74 52h8v5h-8z" fill="#171717"/>
-     <path d="M51 64h25v7H51z" fill="#4a2d24"/>
-     <path d="M43 80h42v34H43z" class="shirt"/>
-     <path d="M56 85h16v5H56z" fill="#fff" opacity=".9"/>
-     <path d="M59 94h10v13H59z" fill="#fff" opacity=".95"/>
-     <path d="M35 79h10v29H35zM84 79h10v29H84z" class="shirt"/>
-     <path d="M33 73h12v10H33zM84 73h12v10H84z" fill="#d8b18b"/>
-     <path d="M45 111h38v19H45z" class="shorts"/>
-     <path d="M47 128h12v14H47zM69 128h12v14H69z" fill="#d8b18b"/>
-     <path d="M44 139h17v8H44zM67 139h18v8H67z" fill="#f0f0f0"/>
-     <path d="M39 145h23v7H39zM65 145h25v7H65z" fill="#151515"/>
-     <path d="M35 76l-7-15-5-13 6-3 10 17 7 13zM93 76l7-15 5-13-6-3-10 17-7 13z" fill="#d8b18b"/>
-     <path d="M22 43h8v8h-8zM99 43h8v8h-8z" fill="#d8b18b"/>
-     <path d="M48 26h32v22H48z" fill="#d8b18b"/>
-     <path d="M45 25h38v9H45zM49 18h30v8H49zM54 13h22v7H54zM43 31h7v11h-7z" fill="#171717"/>
-     <path d="M51 37h6v3h-6zM72 37h6v3h-6z" fill="#171717"/>
-     <path d="M57 42h14v3H57z" fill="#754a3a"/>
-     <path d="M62 45h7v2h-7z" fill="#fff"/>
-    </g>
-   </g>
-  </svg>
-  <div class="kit-caption"><span class="kit-name" aria-label="Manchester United, Real Madrid, Juventus, Al Nassr and Portugal"></span><span class="kit-sub">THE SIUUU TOUR · NO. 7</span></div>
+  <img class="ronaldo-sprite" src="ronaldo-run.gif.gif" alt="Cristiano Ronaldo running" loading="eager">
  </div>
  <h1>Karki<br>Verse<span class="hero-period">.</span></h1>
  <div class="hero-bottom"><p>EXPLORE. PLAY. CREATE.</p><a href="#explore">SCROLL TO EXPLORE <span>↓</span></a></div>
@@ -300,3 +274,10 @@ if(!calm&&matchMedia('(hover:hover) and (pointer:fine)').matches){
  addEventListener('resize',()=>{resize();resizeSparks()},{passive:true});resizeSparks();document.addEventListener('visibilitychange',()=>{visible=!document.hidden;if(!visible&&raf){cancelAnimationFrame(raf);raf=0;}else wake();});
  resize();wake();
 })();</script><script>(()=>{const lines=["Big ideas often begin with one curious question.","Make something today that did not exist yesterday.","Explore more. Wonder often. Keep creating.","Your next idea could become your favourite project.","A little progress is still progress."];let i=0;const line=document.getElementById('sparkLine'),btn=document.getElementById('sparkNext');if(btn&&line)btn.addEventListener('click',()=>{i=(i+1)%lines.length;line.animate([{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}],{duration:260});line.textContent=lines[i]})})();</script></body></html>
+<style>
+/* Use the uploaded original Ronaldo animation, not the pixel-art placeholder. */
+.ronaldo-sprite{display:block;width:190px;height:auto;max-height:230px;object-fit:contain;image-rendering:auto;filter:drop-shadow(0 10px 14px #0009);animation:none!important}
+.kit-caption{display:none!important}
+@media(max-width:860px){.ronaldo-sprite{width:140px;max-height:190px}}
+@media(max-width:560px){.ronaldo-sprite{width:100px;max-height:135px}}
+</style>
