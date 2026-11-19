@@ -100,7 +100,7 @@ h1{font:800 clamp(56px,8.4vw,128px)/.92 Geist,system-ui,sans-serif;letter-spacin
 .ronaldo-sprite .shirt{fill:#e7e7e7;animation:shirt-tour 12s steps(1,end) 1s infinite}
 .ronaldo-sprite .shorts{fill:#171717;animation:shorts-tour 12s steps(1,end) 1s infinite}
 .kit-caption{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:-1px;text-align:center}
-.kit-name{font-size:9px;font-weight:800;letter-spacing:.12em;color:#eee;animation:kit-name-tour 12s steps(1,end) 1s infinite}
+.kit-name{font-size:9px;font-weight:800;letter-spacing:.12em;color:#eee}.kit-name:after{content:"MANCHESTER UNITED";animation:kit-name-tour 12s steps(1,end) 1s infinite}
 .kit-sub{font-size:8px;letter-spacing:.2em;color:#777}
 @keyframes ronaldo-entry{0%{opacity:0;transform:translateX(90px) translateY(25px) scale(.7)}65%{opacity:1;transform:translateX(-8px) translateY(-13px) scale(1.04)}100%{opacity:1;transform:translateX(0) translateY(0) scale(1)}}
 @keyframes ronaldo-siuuu{0%,12%,100%{transform:translateY(0) rotate(0)}24%{transform:translateY(-25px) rotate(-3deg)}37%{transform:translateY(-29px) rotate(2deg)}50%{transform:translateY(0) rotate(0)}58%{transform:translateY(-7px)}68%{transform:translateY(0)}}
@@ -108,7 +108,7 @@ h1{font:800 clamp(56px,8.4vw,128px)/.92 Geist,system-ui,sans-serif;letter-spacin
 @keyframes bubble-float{0%,100%{translate:0 0}50%{translate:0 -5px}}
 @keyframes shirt-tour{0%,19.99%{fill:#e7e7e7}20%,39.99%{fill:#f1f1f1}40%,59.99%{fill:#171717}60%,79.99%{fill:#e8b85d}80%,100%{fill:#d8d8d8}}
 @keyframes shorts-tour{0%,19.99%{fill:#171717}20%,39.99%{fill:#f1f1f1}40%,59.99%{fill:#f1f1f1}60%,79.99%{fill:#171717}80%,100%{fill:#171717}}
-@keyframes kit-name-tour{0%,19.99%{content:"";}0%,19.99%{opacity:1}20%,39.99%{opacity:1}40%,59.99%{opacity:1}60%,79.99%{opacity:1}80%,100%{opacity:1}}
+@keyframes kit-name-tour{0%,19.99%{content:"MANCHESTER UNITED"}20%,39.99%{content:"REAL MADRID"}40%,59.99%{content:"JUVENTUS"}60%,79.99%{content:"AL NASSR"}80%,100%{content:"PORTUGAL"}}
 @media(max-width:860px){.ronaldo-show{width:150px;min-height:220px}.ronaldo-sprite{width:125px;height:156px}.ronaldo-show:before{width:135px;height:135px}.siuuu-bubble{font-size:11px;right:-4px}}
 @media(max-width:560px){.ronaldo-show{width:104px;min-height:150px;margin:0 5px 0 0}.ronaldo-sprite{width:90px;height:113px}.ronaldo-show:before{width:100px;height:100px}.siuuu-bubble{top:-3px;right:-10px;padding:5px 7px;font-size:9px}.kit-caption{margin-top:0}.kit-name{font-size:7px;letter-spacing:.06em}.kit-sub{font-size:6px}}
 @media(prefers-reduced-motion:reduce){.ronaldo-sprite,.siuuu-bubble,.kit-name,.ronaldo-sprite .shirt,.ronaldo-sprite .shorts{animation:none}}
@@ -144,7 +144,7 @@ h1{font:800 clamp(56px,8.4vw,128px)/.92 Geist,system-ui,sans-serif;letter-spacin
     </g>
    </g>
   </svg>
-  <div class="kit-caption"><span class="kit-name">MANCHESTER UNITED</span><span class="kit-sub">THE SIUUU TOUR · NO. 7</span></div>
+  <div class="kit-caption"><span class="kit-name" aria-label="Manchester United, Real Madrid, Juventus, Al Nassr and Portugal"></span><span class="kit-sub">THE SIUUU TOUR · NO. 7</span></div>
  </div>
  <h1>Karki<br>Verse<span class="hero-period">.</span></h1>
  <div class="hero-bottom"><p>EXPLORE. PLAY. CREATE.</p><a href="#explore">SCROLL TO EXPLORE <span>↓</span></a></div>
