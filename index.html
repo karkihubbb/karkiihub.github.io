@@ -30,7 +30,7 @@ html.js .rv.in{opacity:1;transform:none}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}html.js .rv{opacity:1;transform:none;transition:none}*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
 
-.shader{position:fixed;inset:0;z-index:0;opacity:.5;pointer-events:none;overflow:hidden}
+.shader{position:fixed;inset:0;z-index:0;opacity:.27;pointer-events:none;overflow:hidden;isolation:isolate}
 .shader canvas{display:block;width:100%;height:100%}
 .kv main{position:relative;z-index:1}
 .hero{min-height:calc(100svh - 64px);display:grid;grid-template-columns:1fr 1.15fr 1.2fr;align-items:center;gap:20px;padding:30px 0 20px}
@@ -208,7 +208,7 @@ if(!calm&&matchMedia('(hover:hover) and (pointer:fine)').matches){
   const iw=photo.naturalWidth,ih=photo.naturalHeight;
   // Frame the central reach: keep Adam's and God's hands together in view.
   // The same wide composition is pinned to the viewport on desktop and mobile.
-  const sx=iw*.035,sy=ih*.18,sw=iw*.82,sh=ih*.48;
+  const sx=iw*.15,sy=ih*.24,sw=iw*.62,sh=ih*.44;
   const aspect=sw/sh;
   let dw=cols,dh=dw/aspect;
   if(dh>rows){dh=rows;dw=dh*aspect;}
