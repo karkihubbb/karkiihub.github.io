@@ -186,7 +186,7 @@ if(!calm&&matchMedia('(hover:hover) and (pointer:fine)').matches){
  const photo=new Image();
  photo.crossOrigin='anonymous';
  photo.decoding='async';
- photo.src='https://upload.wikimedia.org/wikipedia/commons/0/0c/Creation_of_Adam_Michelangelo.jpg';
+ photo.src='https://upload.wikimedia.org/wikipedia/commons/1/1e/Michelangelo_-_Creation_of_Adam_%28hand_crop%29.jpg';
  const bayer=[[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
  const pointer={x:-9999,y:-9999,down:false,active:0};
  let w=0,h=0,dpr=1,cols=0,rows=0,pixels=null,raf=0,visible=!document.hidden,last=0;
@@ -206,15 +206,18 @@ if(!calm&&matchMedia('(hover:hover) and (pointer:fine)').matches){
  function readSource(){
   if(!photo.complete||!photo.naturalWidth)return;
   const iw=photo.naturalWidth,ih=photo.naturalHeight;
-  // Frame the central reach: keep Adam's and God's hands together in view.
-  // The same wide composition is pinned to the viewport on desktop and mobile.
-  const sx=iw*.15,sy=ih*.24,sw=iw*.62,sh=ih*.44;
-  const aspect=sw/sh;
-  let dw=cols,dh=dw/aspect;
-  if(dh>rows){dh=rows;dw=dh*aspect;}
-  const dx=(cols-dw)/2,dy=(rows-dh)/2;
+  // This source is already a dedicated crop of BOTH reaching hands.
+  // Draw the entire image with contain-style fitting: never crop or zoom it.
+  const aspect=iw/ih;
+  const maxW=cols*.88;
+  const maxH=rows*.92;
+  let dw=maxW,dh=dw/aspect;
+  if(dh>maxH){dh=maxH;dw=dh*aspect;}
+  const dx=(cols-dw)/2;
+  // Keep the artwork optically centered and fixed in the viewport.
+  const dy=(rows-dh)/2;
   sampleCtx.clearRect(0,0,cols,rows);
-  sampleCtx.drawImage(photo,sx,sy,sw,sh,dx,dy,dw,dh);
+  sampleCtx.drawImage(photo,0,0,iw,ih,dx,dy,dw,dh);
   try{pixels=sampleCtx.getImageData(0,0,cols,rows).data;}catch(e){pixels=null;}
  }
  function draw(now){
