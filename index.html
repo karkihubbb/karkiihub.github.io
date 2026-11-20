@@ -63,7 +63,7 @@ h1{font:800 clamp(56px,8.4vw,128px)/.92 Geist,system-ui,sans-serif;letter-spacin
 .intro{grid-area:intro;align-self:end}.hero h1{grid-area:title;align-self:start}
 .disc{grid-area:photo;justify-self:end;align-self:center;width:190px;aspect-ratio:1;margin-right:4px;animation:pop .9s var(--ease) .1s backwards}
 .disc .ph{inset:7%}.disc{padding:0;border:0;background:transparent;color:inherit;cursor:pointer;display:block}.disc .ph img{transition:opacity .28s ease,transform .55s cubic-bezier(.2,.7,.2,1)}.disc.changing .ph img{opacity:0;transform:scale(.94) rotate(-3deg)}.disc:focus-visible{outline:2px solid #fff;outline-offset:8px}.disc:before{content:"";position:absolute;inset:-8%;border:1px solid rgba(255,255,255,.12);border-radius:50%;transform:rotate(-18deg)}
-.shader{opacity:.29}
+.shader{opacity:.62}
 @media(max-width:860px){.hero{grid-template-columns:minmax(0,1fr) 150px;grid-template-areas:"intro photo" "title photo";text-align:left;gap:20px;min-height:calc(85svh - 64px);padding:34px 0}.intro{align-self:end}.hero h1{font-size:clamp(60px,12vw,100px);text-align:left}.disc{width:135px;justify-self:end;align-self:center}.intro p{margin:0}}
 @media(max-width:560px){.hero{grid-template-columns:1fr 104px;grid-template-areas:"intro photo" "title title";gap:22px 10px;min-height:0;padding:55px 0 35px;text-align:left}.intro{align-self:center}.intro p{font-size:13px}.intro a{margin-top:9px}.disc{width:94px;align-self:center;margin:0 5px 0 0}.hero h1{font-size:clamp(64px,17vw,100px);margin:5px 0 0}.zones{margin-top:42px}}
 .kv a.kv-btn.insta-link{color:#09090b!important}.kv a.kv-btn.insta-link span,.kv a.kv-btn.insta-link strong{color:#09090b!important}.insta-link{gap:10px;white-space:nowrap;max-width:100%;padding:0 18px}.insta-link strong{font-size:14px;letter-spacing:.01em}.insta-label{font-weight:500;opacity:.72}.insta-link>span:last-child{font-size:17px}@media(max-width:420px){.insta-link{padding:0 12px;gap:7px;font-size:13px}.insta-link strong{font-size:13px}}
@@ -206,18 +206,10 @@ if(!calm&&matchMedia('(hover:hover) and (pointer:fine)').matches){
  function readSource(){
   if(!photo.complete||!photo.naturalWidth)return;
   const iw=photo.naturalWidth,ih=photo.naturalHeight;
-  // This source is already a dedicated crop of BOTH reaching hands.
-  // Draw the entire image with contain-style fitting: never crop or zoom it.
-  const aspect=iw/ih;
-  const maxW=cols*.88;
-  const maxH=rows*.92;
-  let dw=maxW,dh=dw/aspect;
-  if(dh>maxH){dh=maxH;dw=dh*aspect;}
-  const dx=(cols-dw)/2;
-  // Keep the artwork optically centered and fixed in the viewport.
-  const dy=(rows-dh)/2;
+  // Spread the complete two-hand artwork across the full fixed viewport.
+  // This removes the small central rectangle and keeps both hands in frame.
   sampleCtx.clearRect(0,0,cols,rows);
-  sampleCtx.drawImage(photo,0,0,iw,ih,dx,dy,dw,dh);
+  sampleCtx.drawImage(photo,0,0,iw,ih,0,0,cols,rows);
   try{pixels=sampleCtx.getImageData(0,0,cols,rows).data;}catch(e){pixels=null;}
  }
  function draw(now){
@@ -242,14 +234,14 @@ if(!calm&&matchMedia('(hover:hover) and (pointer:fine)').matches){
     const influence=pointer.active*Math.max(0,1-dist/230);
     const threshold=(bayer[gy&3][gx&3]+.5)*16;
     const tone=lum/255;
-    const dot= Math.max(0,Math.min(1,(tone*1.22)-(threshold/255)*.48));
+    const dot=Math.max(0,Math.min(1,(tone*1.48)-(threshold/255)*.22));
     if(dot<.045)continue;
     const ripple=1+Math.sin(t*.72-(dist*.018))*influence*.10;
     const radius=Math.min(cell*.43,cell*(.08+dot*.36))*pulse*ripple;
-    const alpha=Math.min(.66,.12+dot*.53+influence*.13);
+    const alpha=Math.min(.92,.38+dot*.52+influence*.08);
     const ox=dx/(dist||1)*influence*3.4;
     const oy=dy/(dist||1)*influence*3.4;
-    const shade=Math.round(174+tone*66);
+    const shade=Math.round(238+tone*17);
     ctx.fillStyle='rgba('+shade+','+(shade+3)+','+(shade+9)+','+alpha+')';
     ctx.beginPath();ctx.arc(x-ox,y-oy,radius,0,Math.PI*2);ctx.fill();
    }
