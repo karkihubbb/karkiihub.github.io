@@ -63,7 +63,7 @@ h1{font:800 clamp(56px,8.4vw,128px)/.92 Geist,system-ui,sans-serif;letter-spacin
 .intro{grid-area:intro;align-self:end}.hero h1{grid-area:title;align-self:start}
 .disc{grid-area:photo;justify-self:end;align-self:center;width:190px;aspect-ratio:1;margin-right:4px;animation:pop .9s var(--ease) .1s backwards}
 .disc .ph{inset:7%}.disc{padding:0;border:0;background:transparent;color:inherit;cursor:pointer;display:block}.disc .ph img{transition:opacity .28s ease,transform .55s cubic-bezier(.2,.7,.2,1)}.disc.changing .ph img{opacity:0;transform:scale(.94) rotate(-3deg)}.disc:focus-visible{outline:2px solid #fff;outline-offset:8px}.disc:before{content:"";position:absolute;inset:-8%;border:1px solid rgba(255,255,255,.12);border-radius:50%;transform:rotate(-18deg)}
-.shader{opacity:.38}
+.shader{opacity:.29}
 @media(max-width:860px){.hero{grid-template-columns:minmax(0,1fr) 150px;grid-template-areas:"intro photo" "title photo";text-align:left;gap:20px;min-height:calc(85svh - 64px);padding:34px 0}.intro{align-self:end}.hero h1{font-size:clamp(60px,12vw,100px);text-align:left}.disc{width:135px;justify-self:end;align-self:center}.intro p{margin:0}}
 @media(max-width:560px){.hero{grid-template-columns:1fr 104px;grid-template-areas:"intro photo" "title title";gap:22px 10px;min-height:0;padding:55px 0 35px;text-align:left}.intro{align-self:center}.intro p{font-size:13px}.intro a{margin-top:9px}.disc{width:94px;align-self:center;margin:0 5px 0 0}.hero h1{font-size:clamp(64px,17vw,100px);margin:5px 0 0}.zones{margin-top:42px}}
 .kv a.kv-btn.insta-link{color:#09090b!important}.kv a.kv-btn.insta-link span,.kv a.kv-btn.insta-link strong{color:#09090b!important}.insta-link{gap:10px;white-space:nowrap;max-width:100%;padding:0 18px}.insta-link strong{font-size:14px;letter-spacing:.01em}.insta-label{font-weight:500;opacity:.72}.insta-link>span:last-child{font-size:17px}@media(max-width:420px){.insta-link{padding:0 12px;gap:7px;font-size:13px}.insta-link strong{font-size:13px}}
@@ -206,9 +206,15 @@ if(!calm&&matchMedia('(hover:hover) and (pointer:fine)').matches){
  function readSource(){
   if(!photo.complete||!photo.naturalWidth)return;
   const iw=photo.naturalWidth,ih=photo.naturalHeight;
-  const scale=Math.min(cols/iw,rows/ih),dw=iw*scale,dh=ih*scale;
+  // Frame the central reach: keep Adam's and God's hands together in view.
+  // The same wide composition is pinned to the viewport on desktop and mobile.
+  const sx=iw*.035,sy=ih*.18,sw=iw*.82,sh=ih*.48;
+  const aspect=sw/sh;
+  let dw=cols,dh=dw/aspect;
+  if(dh>rows){dh=rows;dw=dh*aspect;}
+  const dx=(cols-dw)/2,dy=(rows-dh)/2;
   sampleCtx.clearRect(0,0,cols,rows);
-  sampleCtx.drawImage(photo,(cols-dw)/2,(rows-dh)/2,dw,dh);
+  sampleCtx.drawImage(photo,sx,sy,sw,sh,dx,dy,dw,dh);
   try{pixels=sampleCtx.getImageData(0,0,cols,rows).data;}catch(e){pixels=null;}
  }
  function draw(now){
