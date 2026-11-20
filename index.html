@@ -206,7 +206,7 @@ if(!calm&&matchMedia('(hover:hover) and (pointer:fine)').matches){
  function readSource(){
   if(!photo.complete||!photo.naturalWidth)return;
   const iw=photo.naturalWidth,ih=photo.naturalHeight;
-  const scale=Math.max(cols/iw,rows/ih),dw=iw*scale,dh=ih*scale;
+  const scale=Math.min(cols/iw,rows/ih),dw=iw*scale,dh=ih*scale;
   sampleCtx.clearRect(0,0,cols,rows);
   sampleCtx.drawImage(photo,(cols-dw)/2,(rows-dh)/2,dw,dh);
   try{pixels=sampleCtx.getImageData(0,0,cols,rows).data;}catch(e){pixels=null;}
