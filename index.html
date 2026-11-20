@@ -63,7 +63,7 @@ h1{font:800 clamp(56px,8.4vw,128px)/.92 Geist,system-ui,sans-serif;letter-spacin
 .intro{grid-area:intro;align-self:end}.hero h1{grid-area:title;align-self:start}
 .disc{grid-area:photo;justify-self:end;align-self:center;width:190px;aspect-ratio:1;margin-right:4px;animation:pop .9s var(--ease) .1s backwards}
 .disc .ph{inset:7%}.disc{padding:0;border:0;background:transparent;color:inherit;cursor:pointer;display:block}.disc .ph img{transition:opacity .28s ease,transform .55s cubic-bezier(.2,.7,.2,1)}.disc.changing .ph img{opacity:0;transform:scale(.94) rotate(-3deg)}.disc:focus-visible{outline:2px solid #fff;outline-offset:8px}.disc:before{content:"";position:absolute;inset:-8%;border:1px solid rgba(255,255,255,.12);border-radius:50%;transform:rotate(-18deg)}
-.shader{opacity:.52}
+.shader{opacity:.38}
 @media(max-width:860px){.hero{grid-template-columns:minmax(0,1fr) 150px;grid-template-areas:"intro photo" "title photo";text-align:left;gap:20px;min-height:calc(85svh - 64px);padding:34px 0}.intro{align-self:end}.hero h1{font-size:clamp(60px,12vw,100px);text-align:left}.disc{width:135px;justify-self:end;align-self:center}.intro p{margin:0}}
 @media(max-width:560px){.hero{grid-template-columns:1fr 104px;grid-template-areas:"intro photo" "title title";gap:22px 10px;min-height:0;padding:55px 0 35px;text-align:left}.intro{align-self:center}.intro p{font-size:13px}.intro a{margin-top:9px}.disc{width:94px;align-self:center;margin:0 5px 0 0}.hero h1{font-size:clamp(64px,17vw,100px);margin:5px 0 0}.zones{margin-top:42px}}
 .kv a.kv-btn.insta-link{color:#09090b!important}.kv a.kv-btn.insta-link span,.kv a.kv-btn.insta-link strong{color:#09090b!important}.insta-link{gap:10px;white-space:nowrap;max-width:100%;padding:0 18px}.insta-link strong{font-size:14px;letter-spacing:.01em}.insta-label{font-weight:500;opacity:.72}.insta-link>span:last-child{font-size:17px}@media(max-width:420px){.insta-link{padding:0 12px;gap:7px;font-size:13px}.insta-link strong{font-size:13px}}
@@ -175,104 +175,103 @@ if(!calm&&matchMedia('(hover:hover) and (pointer:fine)').matches){
 <script>
 (()=> {
  const box=document.getElementById('shader');
- if(!box || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
- const canvas=document.createElement('canvas');box.appendChild(canvas);
- const sparkCanvas=document.createElement('canvas');sparkCanvas.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none';box.appendChild(sparkCanvas);
- const sparkCtx=sparkCanvas.getContext('2d');let sparks=[],sparkW=0,sparkH=0,sparkD=1,lastSparkPoint=null;
- const resizeSparks=()=>{sparkD=Math.min(devicePixelRatio||1,1.5);sparkW=innerWidth;sparkH=innerHeight;sparkCanvas.width=Math.floor(sparkW*sparkD);sparkCanvas.height=Math.floor(sparkH*sparkD);sparkCtx.setTransform(sparkD,0,0,sparkD,0,0)};
- const addSpark=(x,y,vx,vy,life,size,kind)=>sparks.push({x,y,vx,vy,life,max:life,size,kind,rot:Math.random()*6.28,spin:(Math.random()-.5)*.12});
- function sparkBurst(x,y,count=44){for(let i=0;i<count;i++){const a=Math.random()*Math.PI*2,s=1.5+Math.random()*5;addSpark(x,y,Math.cos(a)*s,Math.sin(a)*s,42+Math.random()*42,4+Math.random()*5.5,i%2===0?1:0)}}
- function sparkMove(x,y){if(lastSparkPoint){const dx=x-lastSparkPoint.x,dy=y-lastSparkPoint.y,dist=Math.hypot(dx,dy),n=Math.min(16,Math.ceil(dist/5));for(let i=0;i<n;i++){const t=(i+1)/n;addSpark(lastSparkPoint.x+dx*t,lastSparkPoint.y+dy*t,(Math.random()-.5)*1.8,(Math.random()-.5)*1.8,34+Math.random()*34,3.2+Math.random()*4.8,Math.random()<.42?1:0)}}lastSparkPoint={x,y}}
- const gl=canvas.getContext('webgl',{alpha:true,antialias:false,powerPreference:'low-power'});
- if(!gl){box.style.display='none';return;}
- const vertex='attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}';
- const fragment=`precision highp float;
- uniform vec2 resolution;uniform vec2 mouse;uniform float time;uniform float energy;uniform float burst;uniform float burstRadius;
- float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
- float wave(float x,float base,float amp,float freq,float phase){return base+amp*sin(x*freq+phase)+.035*sin(x*freq*2.7-phase*.8);}
- void main(){
-  vec2 uv=gl_FragCoord.xy/resolution;vec2 aspect=vec2(resolution.x/resolution.y,1.);
-  vec2 p=(uv-.5)*aspect;vec2 m=(mouse-.5)*aspect;vec2 delta=p-m;float r=length(delta);float a=atan(delta.y,delta.x);
-  float pull=exp(-r*2.5)*energy;float twist=exp(-r*1.8)*pull*.34;
-  p+=vec2(-delta.y,delta.x)*twist;p-=normalize(delta+vec2(.0001))*exp(-r*2.4)*pull*.055;
-  float ring=exp(-abs(r-burstRadius)*38.)*burst;float inner=exp(-abs(r-(burstRadius-.06))*25.)*burst*.4;
-  p+=normalize(delta+vec2(.0001))*ring*.018;
-  float cell=resolution.y/82.;vec2 g=p*resolution.y/cell;vec2 id=floor(g),f=fract(g);
-  vec2 center=(id+.5)*cell/resolution.y;float x=(center.x-.5)*aspect.x;float y=center.y-.5;
-  float w1=wave(x,-.30,.12,2.4,time*.27);float w2=wave(x,.02,.15,2.0,-time*.22+1.2);float w3=wave(x,.34,.10,2.8,time*.19+2.4);
-  float d=min(abs(y-w1),min(abs(y-w2),abs(y-w3)));
-  float band=1.-smoothstep(.012,.072,d);float rnd=hash(id);float block=step(.30,rnd)*band;
-  float fragments=step(.08,rnd)*step(d,.16)*smoothstep(.07,.16,d);
-  float edge=min(min(f.x,1.-f.x),min(f.y,1.-f.y));float bevel=1.-smoothstep(.04,.24,edge);
-  float face=clamp(.42+.35*cos(x*3.+time*.25)+.23*(1.-f.y),.18,1.);
-  float silver=mix(.27,.78,hash(id+17.));vec3 col=vec3(.68,.72,.78)*silver*face+vec3(.13,.15,.18)*bevel;
-  col+=vec3(.55,.62,.72)*exp(-r*3.)*pull*.35;
-  float alpha=block*.72+fragments*.24;alpha=max(alpha,ring*.32+inner*.18);
-  col+=vec3(.82,.87,.94)*(ring+inner*.5);
-
-  // Deep monochrome star field: tiny stars, brighter twinkles and cross-shaped flares.
-  vec2 sg=uv*vec2(150.,92.);
-  vec2 sid=floor(sg),sf=fract(sg)-.5;
-  float sr=hash(sid+41.7);
-  float starMask=step(.965,sr);
-  float starSize=mix(.018,.075,hash(sid+8.3));
-  float starDot=1.-smoothstep(starSize,starSize+.018,length(sf));
-  float twinkle=.48+.52*sin(time*(1.2+sr*3.8)+sr*45.);
-  float stars=starMask*starDot*twinkle;
-  float flareMask=step(.994,sr);
-  float flare=max(1.-smoothstep(.008,.018,abs(sf.x)),1.-smoothstep(.008,.018,abs(sf.y)));
-  flare*=1.-smoothstep(.015,.24,length(sf));
-  float flares=flareMask*flare*(.55+.45*sin(time*1.7+sr*60.));
-  vec3 starColor=vec3(.76,.82,.91)*(stars*.72+flares*.95);
-
-  // Soft silver nebula haze behind the waves, with slow drifting light.
-  float hazeA=exp(-pow((uv.y-(.28+.045*sin(uv.x*5.+time*.08)))*5.2,2.));
-  float hazeB=exp(-pow((uv.y-(.76+.035*cos(uv.x*4.-time*.07)))*7.0,2.));
-  float hazeNoise=.65+.35*sin(uv.x*19.+uv.y*13.+time*.12);
-  vec3 haze=vec3(.22,.26,.33)*(hazeA*.10+hazeB*.075)*hazeNoise;
-
-  // A rare, fine diagonal shooting star that travels across the upper sky.
-  float meteorPhase=fract(time*.055);
-  vec2 meteorPos=vec2(meteorPhase*.9-.08,.78-meteorPhase*.48);
-  vec2 meteorVec=uv-meteorPos;
-  float meteor=exp(-pow(meteorVec.x+meteorVec.y*.72,2.)*18000.)*
-               exp(-max(0.,dot(meteorVec,vec2(1.,-.72)))*16.)*
-               step(.66,fract(time*.055+0.18));
-  vec3 meteorColor=vec3(.72,.82,.98)*meteor*.75;
-
-  col+=starColor+haze+meteorColor;
-  alpha=max(alpha,stars*.85+flares*.55+meteor*.55+hazeA*.035+hazeB*.025);
-  gl_FragColor=vec4(col,clamp(alpha,0.,.9));
- }`;
- function compile(type,src){const sh=gl.createShader(type);gl.shaderSource(sh,src);gl.compileShader(sh);if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS)){console.warn(gl.getShaderInfoLog(sh));return null;}return sh;}
- const vs=compile(gl.VERTEX_SHADER,vertex),fs=compile(gl.FRAGMENT_SHADER,fragment);if(!vs||!fs){box.style.display='none';return;}
- const program=gl.createProgram();gl.attachShader(program,vs);gl.attachShader(program,fs);gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS)){box.style.display='none';return;}
- gl.useProgram(program);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
- const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);
- const loc=gl.getAttribLocation(program,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
- const U=n=>gl.getUniformLocation(program,n),res=U('resolution'),mouseLoc=U('mouse'),timeLoc=U('time'),energyLoc=U('energy'),burstLoc=U('burst'),radiusLoc=U('burstRadius');
- let w=0,h=0,mouse=[.5,.5],energy=0,burst=0,radius=0,raf=0,visible=true;
- function resize(){const d=Math.min(devicePixelRatio||1,1.25),nw=Math.floor(innerWidth*d),nh=Math.floor(innerHeight*d);if(w!==nw||h!==nh){w=nw;h=nh;canvas.width=w;canvas.height=h;gl.viewport(0,0,w,h);gl.uniform2f(res,w,h);}}
- function drawSparks(){
-  sparkCtx.clearRect(0,0,sparkW,sparkH);
-  for(let i=sparks.length-1;i>=0;i--){const s=sparks[i];s.x+=s.vx;s.y+=s.vy;s.vx*=.985;s.vy=s.vy*.985+.012;s.life--;s.rot+=s.spin;
-   if(s.life<=0){sparks.splice(i,1);continue}
-   const fade=Math.min(1,s.life/12)*Math.min(1,(s.max-s.life+5)/8),pulse=.72+.28*Math.sin((s.max-s.life)*.35);
-   const alpha=fade*pulse,sz=s.size*(.7+.3*alpha);
-   sparkCtx.save();sparkCtx.translate(s.x,s.y);sparkCtx.rotate(s.rot);sparkCtx.globalAlpha=alpha;
-   sparkCtx.shadowColor='rgba(220,235,255,.95)';sparkCtx.shadowBlur=s.kind?32:22;
-   sparkCtx.fillStyle=s.kind?'rgba(255,255,255,.98)':'rgba(218,230,246,.9)';
-   if(s.kind){sparkCtx.fillRect(-sz*.48,-sz*3.1,sz*.96,sz*6.2);sparkCtx.fillRect(-sz*3.1,-sz*.48,sz*6.2,sz*.96)}
-   else{sparkCtx.beginPath();sparkCtx.arc(0,0,sz,0,Math.PI*2);sparkCtx.fill()}
-   sparkCtx.restore();
+ if(!box) return;
+ const canvas=document.createElement('canvas');
+ canvas.setAttribute('aria-hidden','true');
+ box.appendChild(canvas);
+ const ctx=canvas.getContext('2d',{alpha:true,desynchronized:true});
+ if(!ctx) return;
+ const sample=document.createElement('canvas');
+ const sampleCtx=sample.getContext('2d',{willReadFrequently:true});
+ const photo=new Image();
+ photo.crossOrigin='anonymous';
+ photo.decoding='async';
+ photo.src='https://upload.wikimedia.org/wikipedia/commons/0/0c/Creation_of_Adam_Michelangelo.jpg';
+ const bayer=[[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
+ const pointer={x:-9999,y:-9999,down:false,active:0};
+ let w=0,h=0,dpr=1,cols=0,rows=0,pixels=null,raf=0,visible=!document.hidden,last=0;
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const cell=9;
+ function resize(){
+  dpr=Math.min(devicePixelRatio||1,1.15);
+  w=innerWidth;h=innerHeight;
+  canvas.width=Math.max(1,Math.round(w*dpr));canvas.height=Math.max(1,Math.round(h*dpr));
+  canvas.style.width='100%';canvas.style.height='100%';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  cols=Math.ceil(w/cell);rows=Math.ceil(h/cell);
+  sample.width=cols;sample.height=rows;
+  readSource();
+  draw(performance.now());
+ }
+ function readSource(){
+  if(!photo.complete||!photo.naturalWidth)return;
+  const iw=photo.naturalWidth,ih=photo.naturalHeight;
+  const scale=Math.max(cols/iw,rows/ih),dw=iw*scale,dh=ih*scale;
+  sampleCtx.clearRect(0,0,cols,rows);
+  sampleCtx.drawImage(photo,(cols-dw)/2,(rows-dh)/2,dw,dh);
+  try{pixels=sampleCtx.getImageData(0,0,cols,rows).data;}catch(e){pixels=null;}
+ }
+ function draw(now){
+  if(!ctx)return;
+  const t=now*.001;
+  ctx.clearRect(0,0,w,h);
+  if(!pixels){
+   ctx.fillStyle='rgba(190,205,224,.12)';
+   for(let i=0;i<90;i++){const x=(i*137.5)%w,y=(i*79.7)%h,r=.5+(i%4)*.35;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();}
+   return;
+  }
+  const pulse=1+Math.sin(t*.72)*.035;
+  const px=pointer.x,py=pointer.y;
+  for(let gy=0;gy<rows;gy++){
+   for(let gx=0;gx<cols;gx++){
+    const idx=(gy*cols+gx)*4;
+    const sx=pixels[idx],sy=pixels[idx+1],sz=pixels[idx+2];
+    let lum=(.2126*sx+.7152*sy+.0722*sz-128)*1.58+128;
+    lum=Math.max(0,Math.min(255,lum));
+    const x=gx*cell+cell*.5,y=gy*cell+cell*.5;
+    const dx=x-px,dy=y-py,dist=Math.hypot(dx,dy);
+    const influence=pointer.active*Math.max(0,1-dist/230);
+    const threshold=(bayer[gy&3][gx&3]+.5)*16;
+    const tone=lum/255;
+    const dot= Math.max(0,Math.min(1,(tone*1.22)-(threshold/255)*.48));
+    if(dot<.045)continue;
+    const ripple=1+Math.sin(t*.72-(dist*.018))*influence*.10;
+    const radius=Math.min(cell*.43,cell*(.08+dot*.36))*pulse*ripple;
+    const alpha=Math.min(.66,.12+dot*.53+influence*.13);
+    const ox=dx/(dist||1)*influence*3.4;
+    const oy=dy/(dist||1)*influence*3.4;
+    const shade=Math.round(174+tone*66);
+    ctx.fillStyle='rgba('+shade+','+(shade+3)+','+(shade+9)+','+alpha+')';
+    ctx.beginPath();ctx.arc(x-ox,y-oy,radius,0,Math.PI*2);ctx.fill();
+   }
+  }
+  // A quiet blue-white halo follows pointer and touch without covering the text.
+  if(pointer.active>.01){
+   const g=ctx.createRadialGradient(px,py,0,px,py,190);
+   g.addColorStop(0,'rgba(105,165,235,'+(pointer.active*.075)+')');
+   g.addColorStop(1,'rgba(105,165,235,0)');
+   ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
   }
  }
- function render(now){raf=0;if(!visible)return;const t=now*.001;energy*=.93;burst*=.955;radius=Math.min(.95,radius+.012);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);gl.uniform2f(mouseLoc,mouse[0],mouse[1]);gl.uniform1f(timeLoc,t);gl.uniform1f(energyLoc,energy);gl.uniform1f(burstLoc,burst);gl.uniform1f(radiusLoc,radius);gl.drawArrays(gl.TRIANGLES,0,6);drawSparks();raf=requestAnimationFrame(render);}
- function wake(){if(!raf&&visible)raf=requestAnimationFrame(render);}
- function point(x,y){mouse=[x/innerWidth,1-y/innerHeight];energy=1;sparkMove(x,y);wake();}
- addEventListener('pointermove',e=>point(e.clientX,e.clientY),{passive:true});
- addEventListener('pointerdown',e=>{point(e.clientX,e.clientY);sparkBurst(e.clientX,e.clientY,30);burst=1;radius=.02;wake();},{passive:true});
- addEventListener('resize',()=>{resize();resizeSparks()},{passive:true});resizeSparks();document.addEventListener('visibilitychange',()=>{visible=!document.hidden;if(!visible&&raf){cancelAnimationFrame(raf);raf=0;}else wake();});
+ function frame(now){
+  raf=0;if(!visible)return;
+  if(!last||now-last>25){pointer.active+=(pointer.down?1:0.7-pointer.active)*.08;draw(now);last=now;}
+  if(!reduced)raf=requestAnimationFrame(frame);
+ }
+ function wake(){if(!raf&&visible&&!reduced)raf=requestAnimationFrame(frame);}
+ function setPointer(e){
+  pointer.x=e.clientX;pointer.y=e.clientY;pointer.active=1;
+  wake();
+ }
+ addEventListener('pointermove',setPointer,{passive:true});
+ addEventListener('pointerdown',e=>{setPointer(e);pointer.down=true;draw(performance.now());},{passive:true});
+ addEventListener('pointerup',()=>{pointer.down=false;},{passive:true});
+ addEventListener('pointercancel',()=>{pointer.down=false;pointer.active=0;},{passive:true});
+ addEventListener('pointerleave',()=>{pointer.down=false;pointer.active=0;},{passive:true});
+ addEventListener('resize',resize,{passive:true});
+ document.addEventListener('visibilitychange',()=>{visible=!document.hidden;if(!visible&&raf){cancelAnimationFrame(raf);raf=0;}else wake();});
+ photo.onload=()=>{readSource();draw(performance.now());wake();};
+ photo.onerror=()=>{pixels=null;draw(performance.now());};
  resize();wake();
 })();</script><script>(()=>{const lines=["Big ideas often begin with one curious question.","Make something today that did not exist yesterday.","Explore more. Wonder often. Keep creating.","Your next idea could become your favourite project.","A little progress is still progress."];let i=0;const line=document.getElementById('sparkLine'),btn=document.getElementById('sparkNext');if(btn&&line)btn.addEventListener('click',()=>{i=(i+1)%lines.length;line.animate([{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}],{duration:260});line.textContent=lines[i]})})();</script></body></html>
 <style>
