@@ -255,7 +255,7 @@ if(!calm&&matchMedia('(hover:hover) and (pointer:fine)').matches){
  }
  function frame(now){
   raf=0;if(!visible)return;
-  if(!last||now-last>25){pointer.active+=(pointer.down?1:0.7-pointer.active)*.08;draw(now);last=now;}
+  if(!last||now-last>25){pointer.active=pointer.down?Math.min(1,pointer.active+.08):pointer.active*.965;draw(now);last=now;}
   if(!reduced)raf=requestAnimationFrame(frame);
  }
  function wake(){if(!raf&&visible&&!reduced)raf=requestAnimationFrame(frame);}
