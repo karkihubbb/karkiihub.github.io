@@ -113,30 +113,8 @@ h1{font:800 clamp(56px,8.4vw,128px)/.92 Geist,system-ui,sans-serif;letter-spacin
 @media(max-width:860px){.ronaldo-show{width:150px;min-height:220px}.ronaldo-sprite{width:125px;height:156px}.ronaldo-show:before{width:135px;height:135px}.siuuu-bubble{font-size:11px;right:-4px}}
 @media(max-width:560px){.ronaldo-show{width:104px;min-height:150px;margin:0 5px 0 0}.ronaldo-sprite{width:90px;height:113px}.ronaldo-show:before{width:100px;height:100px}.siuuu-bubble{top:-3px;right:-10px;padding:5px 7px;font-size:9px}.kit-caption{margin-top:0}.kit-name{font-size:7px;letter-spacing:.06em}.kit-sub{font-size:6px}}
 @media(prefers-reduced-motion:reduce){.ronaldo-sprite,.siuuu-bubble,.kit-name,.ronaldo-sprite .shirt,.ronaldo-sprite .shorts{animation:none}}
-
-/* Cinematic lyric film — full frame preserved at every screen size */
-.kv-film{position:relative;isolation:isolate;width:100vw;margin-left:calc(50% - 50vw);height:min(760px,calc(100svh - 64px));min-height:540px;display:grid;place-items:center;overflow:hidden;background:#f8f8f6;border-bottom:1px solid rgba(20,20,20,.10)}
-.kv-film__video{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:contain;object-position:center;background:#f8f8f6}
-.kv-film__meta{position:absolute;z-index:1;left:max(4%,calc((100vw - 1100px)/2));right:max(4%,calc((100vw - 1100px)/2));bottom:22px;display:flex;align-items:center;justify-content:space-between;gap:14px;pointer-events:none}
-.kv-film__caption{color:#55565a;font-size:9px;font-weight:700;letter-spacing:.19em;text-transform:uppercase;text-shadow:0 1px 0 rgba(255,255,255,.8)}
-.kv-film__sound{pointer-events:auto;display:inline-flex;align-items:center;gap:10px;min-height:42px;padding:0 16px;border:1px solid rgba(20,20,20,.82);border-radius:999px;background:rgba(18,18,20,.94);color:#fff;font:700 10px/1 Geist,system-ui,sans-serif;letter-spacing:.13em;text-transform:uppercase;cursor:pointer;box-shadow:0 5px 24px rgba(0,0,0,.13);transition:transform .2s ease,background .2s ease}
-.kv-film__sound:hover{background:#303034;transform:translateY(-2px)}
-.kv-film__sound:focus-visible{outline:2px solid #111;outline-offset:4px}
-.kv-film__sound-dot{width:7px;height:7px;border-radius:50%;background:#aaa;box-shadow:0 0 0 3px rgba(255,255,255,.13)}
-.kv-film__sound[aria-pressed=true] .kv-film__sound-dot{background:#b9f4c9;box-shadow:0 0 0 3px rgba(185,244,201,.15),0 0 12px rgba(185,244,201,.5)}
-@media(max-width:720px){.kv-film{height:clamp(330px,70svh,520px);min-height:330px}.kv-film__meta{left:5%;right:5%;bottom:16px}.kv-film__caption{font-size:8px;letter-spacing:.13em}.kv-film__sound{min-height:40px;padding:0 13px;font-size:9px}}
-@media(prefers-reduced-motion:reduce){.kv-film__sound{transition:none}}
 </style><title>KarkiVerse</title></head><body class="kv"><div class="shader" id="shader" aria-hidden="true"></div><header class="kv-header"><div class="kv-bar"><a class="kv-logo" href="index.html">KarkiVerse</a><button class="kv-burger" aria-label="Menu" aria-expanded="false" aria-controls="nav">☰</button><div class="kv-nav" id="nav" role="navigation" aria-label="Main"><a href="index.html">Home</a><a href="about.html">My Life</a><a href="games.html">Games</a><a href="voices.html">Voice</a><a href="karkiai.html">KarkiAI</a></div></div></header>
 <main class="kv-wrap">
-<section class="kv-film" aria-label="KarkiVerse cinematic video">
- <video class="kv-film__video" id="kv-film-video" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-label="Cinematic lyric video with original audio">
-  <source src="videos/background.mp4" type="video/mp4">
- </video>
- <div class="kv-film__meta">
-  <span class="kv-film__caption">KARKIVERSE / A MOVING MOMENT</span>
-  <button class="kv-film__sound" id="kv-film-sound" type="button" aria-label="Turn original video sound on" aria-pressed="false"><span class="kv-film__sound-dot" aria-hidden="true"></span><span data-sound-label>Sound off</span></button>
- </div>
-</section>
 <section class="hero">
  <div class="intro"><span class="eyebrow"><i></i> A LITTLE WORLD BY SARWAGYA KARKI</span><p>I&rsquo;m Sarwagya Karki. Welcome to my corner of the internet — a place for the things I create, the places I explore, and ideas I&rsquo;m building.</p><a href="about.html">Discover my world <span>↗</span></a></div>
  <div class="ronaldo-show players-show" aria-label="Cristiano Ronaldo and Kylian Mbappé celebrations">
@@ -297,27 +275,7 @@ if(!calm&&matchMedia('(hover:hover) and (pointer:fine)').matches){
  photo.onload=()=>{readSource();draw(performance.now());wake();};
  photo.onerror=()=>{pixels=null;draw(performance.now());};
  resize();wake();
-})();</script><script>(()=>{const lines=["Big ideas often begin with one curious question.","Make something today that did not exist yesterday.","Explore more. Wonder often. Keep creating.","Your next idea could become your favourite project.","A little progress is still progress."];let i=0;const line=document.getElementById('sparkLine'),btn=document.getElementById('sparkNext');if(btn&&line)btn.addEventListener('click',()=>{i=(i+1)%lines.length;line.animate([{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}],{duration:260});line.textContent=lines[i]})})();</script>
-<script>
-(()=>{
- const film=document.getElementById('kv-film-video');
- const sound=document.getElementById('kv-film-sound');
- if(!film)return;
- const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
- if(reduced){film.pause();film.removeAttribute('autoplay');}
- else{const start=film.play();if(start&&typeof start.catch==='function')start.catch(()=>{});}
- if(sound)sound.addEventListener('click',()=>{
-  film.muted=!film.muted;
-  if(!film.muted)film.volume=.9;
-  const enabled=!film.muted;
-  sound.setAttribute('aria-pressed',String(enabled));
-  sound.setAttribute('aria-label',enabled?'Turn original video sound off':'Turn original video sound on');
-  const label=sound.querySelector('[data-sound-label]');
-  if(label)label.textContent=enabled?'Sound on':'Sound off';
-  if(film.paused){const attempt=film.play();if(attempt&&typeof attempt.catch==='function')attempt.catch(()=>{});}
- });
-})();
-</script></body></html>
+})();</script><script>(()=>{const lines=["Big ideas often begin with one curious question.","Make something today that did not exist yesterday.","Explore more. Wonder often. Keep creating.","Your next idea could become your favourite project.","A little progress is still progress."];let i=0;const line=document.getElementById('sparkLine'),btn=document.getElementById('sparkNext');if(btn&&line)btn.addEventListener('click',()=>{i=(i+1)%lines.length;line.animate([{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}],{duration:260});line.textContent=lines[i]})})();</script></body></html>
 <style>
 /* Use the uploaded original Ronaldo animation, not the pixel-art placeholder. */
 .ronaldo-sprite{display:block;width:190px;height:auto;max-height:230px;object-fit:contain;image-rendering:auto;filter:drop-shadow(0 10px 14px #0009);animation:none!important}
