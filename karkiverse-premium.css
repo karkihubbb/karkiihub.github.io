@@ -1,6 +1,6 @@
 /* KarkiVerse shared refraction background and editorial footer */
-.shader{position:fixed!important;inset:0!important;z-index:0!important;overflow:hidden!important;pointer-events:none!important;isolation:isolate;background:#08090b!important}
-.shader canvas{display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;opacity:.96}
+.shader{position:fixed!important;inset:0!important;z-index:0!important;opacity:1!important;overflow:hidden!important;pointer-events:none!important;isolation:isolate;background:#08090b!important}
+.shader canvas{display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;max-width:none!important;opacity:1!important}
 .shader:before,.shader:after{content:none!important}
 body.kv>header,body.kv>main,body.kv>section,body.kv>footer{position:relative;z-index:1}
 body.kv>.kv-header{z-index:50}
