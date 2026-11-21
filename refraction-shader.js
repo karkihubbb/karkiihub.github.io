@@ -1,7 +1,7 @@
 (() => {
   const host = document.querySelector(".shader");
-  if (!host || host.dataset.minimalParticlesReady) return;
-  host.dataset.minimalParticlesReady = "true";
+  if (!host || host.dataset.localizedParticlesReady) return;
+  host.dataset.localizedParticlesReady = "true";
 
   const mobile = matchMedia("(max-width: 760px), (pointer: coarse)").matches;
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -11,10 +11,7 @@
   host.replaceChildren(canvas);
 
   const ctx = canvas.getContext("2d", { alpha: true, desynchronized: true });
-  if (!ctx) {
-    host.classList.add("shader-fallback");
-    return;
-  }
+  if (!ctx) return;
 
   let width = 1;
   let height = 1;
@@ -24,50 +21,89 @@
   let visible = !document.hidden;
   let particles = [];
 
-  const count = mobile ? 13 : 23;
+  // Keep the motion inside one quiet pocket; the rest of the page stays black.
+  const count = mobile ? 5 : 8;
   const frameInterval = mobile ? 1000 / 24 : 1000 / 30;
+  let centerX = 0;
+  let centerY = 0;
+  let radiusX = 0;
+  let radiusY = 0;
+
+  function layoutField() {
+    centerX = width * (mobile ? 0.72 : 0.76);
+    centerY = height * (mobile ? 0.38 : 0.40);
+    radiusX = Math.min(width * (mobile ? 0.19 : 0.17), mobile ? 84 : 210);
+    radiusY = Math.min(height * (mobile ? 0.13 : 0.16), mobile ? 82 : 150);
+  }
 
   function makeParticles() {
-    particles = Array.from({ length: count }, () => {
+    particles = Array.from({ length: count }, (_, index) => {
       const angle = Math.random() * Math.PI * 2;
-      const speed = 1.2 + Math.random() * 3.2;
+      const orbit = 0.24 + Math.random() * 0.72;
       return {
-        x: Math.random() * width,
-        y: Math.random() * height,
-        radius: 0.55 + Math.random() * 0.72,
-        alpha: 0.10 + Math.random() * 0.13,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed * 0.62,
+        angle,
+        orbitX: radiusX * orbit,
+        orbitY: radiusY * orbit,
+        speed: (0.035 + Math.random() * 0.045) * (index % 2 ? -1 : 1),
+        radius: 0.72 + Math.random() * 0.55,
+        alpha: 0.12 + Math.random() * 0.10,
         phase: Math.random() * Math.PI * 2,
-        breathe: 0.025 + Math.random() * 0.035
+        drift: 0.018 + Math.random() * 0.025,
+        x: centerX,
+        y: centerY
       };
     });
+    placeParticles();
+  }
+
+  function placeParticles() {
+    for (const p of particles) {
+      p.x = centerX + Math.cos(p.angle) * p.orbitX;
+      p.y = centerY + Math.sin(p.angle) * p.orbitY;
+    }
   }
 
   function resize() {
     const rect = host.getBoundingClientRect();
-    const nextWidth = Math.max(1, rect.width);
-    const nextHeight = Math.max(1, rect.height);
+    width = Math.max(1, rect.width);
+    height = Math.max(1, rect.height);
     dpr = Math.min(window.devicePixelRatio || 1, mobile ? 1.1 : 1.25);
-    width = nextWidth;
-    height = nextHeight;
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    layoutField();
     if (!particles.length) makeParticles();
     else {
       for (const p of particles) {
-        p.x = Math.min(width, p.x);
-        p.y = Math.min(height, p.y);
+        p.orbitX = Math.min(p.orbitX, radiusX * 0.92);
+        p.orbitY = Math.min(p.orbitY, radiusY * 0.92);
       }
+      placeParticles();
     }
     paint(0);
   }
 
   function paint(time) {
     ctx.clearRect(0, 0, width, height);
+
+    // A very low-contrast localized haze gives the dots a little depth.
+    const glow = ctx.createRadialGradient(
+      centerX, centerY, 0,
+      centerX, centerY, Math.max(radiusX, radiusY) * 1.08
+    );
+    glow.addColorStop(0, "rgba(145, 151, 166, 0.018)");
+    glow.addColorStop(0.62, "rgba(145, 151, 166, 0.009)");
+    glow.addColorStop(1, "rgba(145, 151, 166, 0)");
+    ctx.fillStyle = glow;
+    ctx.fillRect(
+      centerX - radiusX * 1.1,
+      centerY - radiusY * 1.1,
+      radiusX * 2.2,
+      radiusY * 2.2
+    );
+
     for (const p of particles) {
-      const pulse = 1 + Math.sin(time * 0.00035 + p.phase) * p.breathe;
+      const pulse = 0.94 + Math.sin(time * 0.00042 + p.phase) * 0.06;
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.radius * pulse, 0, Math.PI * 2);
       ctx.fillStyle = "rgba(218, 222, 232, " + p.alpha + ")";
@@ -87,13 +123,10 @@
     lastTime = now;
 
     for (const p of particles) {
-      p.x += p.vx * dt;
-      p.y += p.vy * dt;
-
-      if (p.x < -3) p.x = width + 3;
-      if (p.x > width + 3) p.x = -3;
-      if (p.y < -3) p.y = height + 3;
-      if (p.y > height + 3) p.y = -3;
+      p.angle += p.speed * dt;
+      const sway = Math.sin(now * 0.00012 + p.phase) * p.drift;
+      p.x = centerX + Math.cos(p.angle) * p.orbitX + sway * radiusX;
+      p.y = centerY + Math.sin(p.angle) * p.orbitY + Math.cos(now * 0.00010 + p.phase) * p.drift * radiusY;
     }
 
     paint(now);
@@ -101,9 +134,7 @@
   }
 
   function start() {
-    if (!reducedMotion && visible && !raf) {
-      raf = requestAnimationFrame(draw);
-    }
+    if (!reducedMotion && visible && !raf) raf = requestAnimationFrame(draw);
   }
 
   function onVisibilityChange() {
