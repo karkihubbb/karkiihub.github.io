@@ -198,109 +198,7 @@ if(!calm&&matchMedia('(hover:hover) and (pointer:fine)').matches){
 }
 })();
 </script>
-<script>
-(()=> {
- const box=document.getElementById('shader');
- if(!box) return;
- const canvas=document.createElement('canvas');
- canvas.setAttribute('aria-hidden','true');
- box.appendChild(canvas);
- const ctx=canvas.getContext('2d',{alpha:true,desynchronized:true});
- if(!ctx) return;
- const sample=document.createElement('canvas');
- const sampleCtx=sample.getContext('2d',{willReadFrequently:true});
- const photo=new Image();
- photo.crossOrigin='anonymous';
- photo.decoding='async';
- photo.src='https://upload.wikimedia.org/wikipedia/commons/1/1e/Michelangelo_-_Creation_of_Adam_%28hand_crop%29.jpg';
- const bayer=[[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
- const pointer={x:-9999,y:-9999,down:false,active:0};
- let w=0,h=0,dpr=1,cols=0,rows=0,pixels=null,raf=0,visible=!document.hidden,last=0;
- const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
- const cell=9;
- function resize(){
-  dpr=Math.min(devicePixelRatio||1,1.15);
-  w=innerWidth;h=innerHeight;
-  canvas.width=Math.max(1,Math.round(w*dpr));canvas.height=Math.max(1,Math.round(h*dpr));
-  canvas.style.width='100%';canvas.style.height='100%';
-  ctx.setTransform(dpr,0,0,dpr,0,0);
-  cols=Math.ceil(w/cell);rows=Math.ceil(h/cell);
-  sample.width=cols;sample.height=rows;
-  readSource();
-  draw(performance.now());
- }
- function readSource(){
-  if(!photo.complete||!photo.naturalWidth)return;
-  const iw=photo.naturalWidth,ih=photo.naturalHeight;
-  // Spread the complete two-hand artwork across the full fixed viewport.
-  // This removes the small central rectangle and keeps both hands in frame.
-  sampleCtx.clearRect(0,0,cols,rows);
-  sampleCtx.drawImage(photo,0,0,iw,ih,0,0,cols,rows);
-  try{pixels=sampleCtx.getImageData(0,0,cols,rows).data;}catch(e){pixels=null;}
- }
- function draw(now){
-  if(!ctx)return;
-  const t=now*.001;
-  ctx.clearRect(0,0,w,h);
-  if(!pixels){
-   ctx.fillStyle='rgba(190,205,224,.12)';
-   for(let i=0;i<90;i++){const x=(i*137.5)%w,y=(i*79.7)%h,r=.5+(i%4)*.35;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();}
-   return;
-  }
-  const pulse=1+Math.sin(t*.72)*.035;
-  const px=pointer.x,py=pointer.y;
-  for(let gy=0;gy<rows;gy++){
-   for(let gx=0;gx<cols;gx++){
-    const idx=(gy*cols+gx)*4;
-    const sx=pixels[idx],sy=pixels[idx+1],sz=pixels[idx+2];
-    let lum=(.2126*sx+.7152*sy+.0722*sz-128)*1.58+128;
-    lum=Math.max(0,Math.min(255,lum));
-    const x=gx*cell+cell*.5,y=gy*cell+cell*.5;
-    const dx=x-px,dy=y-py,dist=Math.hypot(dx,dy);
-    const influence=pointer.active*Math.max(0,1-dist/230);
-    const threshold=(bayer[gy&3][gx&3]+.5)*16;
-    const tone=lum/255;
-    const dot=Math.max(0,Math.min(1,(tone*1.48)-(threshold/255)*.22));
-    if(dot<.045)continue;
-    const ripple=1+Math.sin(t*.72-(dist*.018))*influence*.10;
-    const radius=Math.min(cell*.38,cell*(.07+dot*.32))*pulse*ripple;
-    const alpha=Math.min(.72,.24+dot*.43+influence*.06);
-    const ox=dx/(dist||1)*influence*3.4;
-    const oy=dy/(dist||1)*influence*3.4;
-    const shade=Math.round(238+tone*17);
-    ctx.fillStyle='rgba('+shade+','+(shade+3)+','+(shade+9)+','+alpha+')';
-    ctx.beginPath();ctx.arc(x-ox,y-oy,radius,0,Math.PI*2);ctx.fill();
-   }
-  }
-  // A quiet blue-white halo follows pointer and touch without covering the text.
-  if(pointer.active>.01){
-   const g=ctx.createRadialGradient(px,py,0,px,py,190);
-   g.addColorStop(0,'rgba(105,165,235,'+(pointer.active*.075)+')');
-   g.addColorStop(1,'rgba(105,165,235,0)');
-   ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
-  }
- }
- function frame(now){
-  raf=0;if(!visible)return;
-  if(!last||now-last>25){pointer.active=pointer.down?Math.min(1,pointer.active+.08):pointer.active*.965;draw(now);last=now;}
-  if(!reduced)raf=requestAnimationFrame(frame);
- }
- function wake(){if(!raf&&visible&&!reduced)raf=requestAnimationFrame(frame);}
- function setPointer(e){
-  pointer.x=e.clientX;pointer.y=e.clientY;pointer.active=1;
-  wake();
- }
- addEventListener('pointermove',setPointer,{passive:true});
- addEventListener('pointerdown',e=>{setPointer(e);pointer.down=true;draw(performance.now());},{passive:true});
- addEventListener('pointerup',()=>{pointer.down=false;},{passive:true});
- addEventListener('pointercancel',()=>{pointer.down=false;pointer.active=0;},{passive:true});
- addEventListener('pointerleave',()=>{pointer.down=false;pointer.active=0;},{passive:true});
- addEventListener('resize',resize,{passive:true});
- document.addEventListener('visibilitychange',()=>{visible=!document.hidden;if(!visible&&raf){cancelAnimationFrame(raf);raf=0;}else wake();});
- photo.onload=()=>{readSource();draw(performance.now());wake();};
- photo.onerror=()=>{pixels=null;draw(performance.now());};
- resize();wake();
-})();</script><script>(()=>{const lines=["Big ideas often begin with one curious question.","Make something today that did not exist yesterday.","Explore more. Wonder often. Keep creating.","Your next idea could become your favourite project.","A little progress is still progress."];let i=0;const line=document.getElementById('sparkLine'),btn=document.getElementById('sparkNext');if(btn&&line)btn.addEventListener('click',()=>{i=(i+1)%lines.length;line.animate([{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}],{duration:260});line.textContent=lines[i]})})();</script>
+<script>(()=>{const lines=["Big ideas often begin with one curious question.","Make something today that did not exist yesterday.","Explore more. Wonder often. Keep creating.","Your next idea could become your favourite project.","A little progress is still progress."];let i=0;const line=document.getElementById('sparkLine'),btn=document.getElementById('sparkNext');if(btn&&line)btn.addEventListener('click',()=>{i=(i+1)%lines.length;line.animate([{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}],{duration:260});line.textContent=lines[i]})})();</script>
 
 
 <style id="kv-premium-nav-refresh">
@@ -358,9 +256,7 @@ if(!calm&&matchMedia('(hover:hover) and (pointer:fine)').matches){
  .zone-arrow{grid-area:arrow;align-self:end;font-size:10px}
  .explore{margin-top:42px}
 }
-</style><link rel="stylesheet" href="https://karkiverse-preview-nrychxzlx-karki-ai.vercel.app/assets/spider-entry-BhKz-lsk.css" crossorigin="anonymous">
-<script type="module" src="https://karkiverse-preview-nrychxzlx-karki-ai.vercel.app/assets/spider-entry-rThUYqWn.js" crossorigin="anonymous"></script>
-</body></html>
+</style></body></html>
 <style>
 /* Use the uploaded original Ronaldo animation, not the pixel-art placeholder. */
 .ronaldo-sprite{display:block;width:190px;height:auto;max-height:230px;object-fit:contain;image-rendering:auto;filter:drop-shadow(0 10px 14px #0009);animation:none!important}
@@ -392,3 +288,74 @@ if(!calm&&matchMedia('(hover:hover) and (pointer:fine)').matches){
 }
 </style>
 
+
+
+<style id="kv-2026-premium-refresh">
+:root{--kv-ink:#f5f5f7;--kv-muted:#a1a1aa;--kv-rule:rgba(255,255,255,.13);--kv-red:#ef4935}
+html{background:#08090b}
+body.kv,body{background:#08090b;color:var(--kv-ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+.kv-header,.topbar{z-index:50!important;background:rgba(8,9,11,.76)!important;border-bottom:1px solid rgba(255,255,255,.09)!important;backdrop-filter:saturate(150%) blur(22px)!important;-webkit-backdrop-filter:saturate(150%) blur(22px)!important}
+.kv-bar{height:72px!important}
+.kv-logo,.brand{font-size:18px;letter-spacing:-.045em;font-weight:750}
+.kv-nav{gap:clamp(10px,1.7vw,25px)!important}
+.kv-nav a{position:relative;padding:25px 4px!important;font-size:13px!important;letter-spacing:.015em;color:#aaa!important;transition:color .25s ease!important}
+.kv-nav a:hover,.kv-nav a[aria-current=page]{color:#fff!important}
+.kv-ind{height:2px;background:var(--kv-red)!important}
+.kv-wrap{width:min(1160px,88%)!important}
+h1,.page-title{font-size:clamp(64px,10.4vw,142px)!important;line-height:.91!important;letter-spacing:-.078em!important;font-weight:700!important;text-wrap:balance}
+h2{letter-spacing:-.045em}
+p{letter-spacing:-.012em}
+.kv-btn{border-radius:4px!important;min-height:48px!important;letter-spacing:-.01em}
+.kv-btn.ghost{border-color:rgba(255,255,255,.2)!important}
+.kv-foot{border-color:var(--kv-rule)!important}
+.shader{position:fixed!important;inset:0!important;z-index:0!important;opacity:1!important;overflow:hidden!important;pointer-events:none!important;background:
+ radial-gradient(ellipse 42% 48% at 76% 22%,rgba(76,91,119,.16),transparent 72%),
+ radial-gradient(ellipse 36% 40% at 14% 74%,rgba(90,55,52,.11),transparent 74%),
+ radial-gradient(ellipse 80% 72% at 50% 48%,rgba(26,29,36,.42),transparent 82%),
+ linear-gradient(145deg,#090a0d 0%,#0d0e12 48%,#08090b 100%)!important;
+}
+.shader canvas{display:none!important}
+.shader:before{content:"";position:absolute;inset:-20%;background:
+ radial-gradient(ellipse at 52% 48%,transparent 0 34%,rgba(255,255,255,.045) 34.1%,transparent 34.35%),
+ radial-gradient(ellipse at 52% 48%,transparent 0 47%,rgba(255,255,255,.025) 47.1%,transparent 47.3%),
+ radial-gradient(ellipse at 72% 24%,rgba(255,255,255,.11),transparent 1.2%),
+ radial-gradient(ellipse at 72% 24%,rgba(255,255,255,.035),transparent 24%);
+ transform:rotate(-13deg);filter:blur(.2px);opacity:.75}
+.shader:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,5,7,.12),rgba(4,5,7,.4));pointer-events:none}
+.hero{position:relative;z-index:1}
+.hero h1{max-width:100%;font-size:clamp(76px,11.5vw,158px)!important;letter-spacing:-.085em!important;line-height:.84!important}
+.intro p{font-size:clamp(14px,1.3vw,17px)!important;line-height:1.8!important;color:#b3b3bb!important}
+.eyebrow{letter-spacing:.2em!important;color:#a5a5ad!important}
+.explore{margin-top:clamp(54px,8vw,100px)!important}
+.section-heading h2{font-size:clamp(34px,5vw,58px)!important;line-height:1.02!important;letter-spacing:-.065em!important}
+.zones{display:flex!important;flex-direction:column!important;gap:0!important;border-top:1px solid var(--kv-rule);margin-top:24px!important}
+.zone,.zone:last-child{position:relative!important;display:grid!important;grid-template-columns:70px minmax(170px,.75fr) minmax(0,1.5fr) auto!important;grid-template-areas:"num title desc arrow"!important;align-items:center!important;gap:clamp(12px,2vw,26px)!important;min-height:112px!important;padding:24px 8px!important;border:0!important;border-bottom:1px solid var(--kv-rule)!important;border-radius:0!important;background:transparent!important;overflow:visible!important;transform:none!important;transition:padding .28s ease,background .28s ease!important}
+.zone:before{display:none!important}
+.zone-no{grid-area:num!important;color:#777780!important;font-size:10px!important;letter-spacing:.16em!important}
+.zone-icon{display:none!important}
+.zone h2{grid-area:title!important;margin:0!important;font-size:clamp(22px,2.6vw,32px)!important;line-height:1.08!important;letter-spacing:-.055em!important}
+.zone p{grid-area:desc!important;margin:0!important;max-width:48ch!important;color:#a3a3ac!important;font-size:14px!important;line-height:1.7!important}
+.zone-arrow{grid-area:arrow!important;display:flex!important;align-items:center!important;gap:10px!important;margin:0!important;padding:0!important;color:#eee!important;font-size:12px!important;white-space:nowrap}
+.zone-arrow span{transition:transform .25s ease}
+.zone:hover,.zone:focus-visible{padding:24px 18px!important;background:linear-gradient(90deg,rgba(255,255,255,.055),transparent 85%)!important}
+.zone:hover .zone-arrow span{transform:translate(3px,-3px)}
+.contact,.signal{border-radius:6px!important;background:linear-gradient(135deg,rgba(255,255,255,.065),rgba(255,255,255,.012))!important;border-color:rgba(255,255,255,.12)!important}
+a:focus-visible,button:focus-visible{outline:2px solid var(--kv-red)!important;outline-offset:4px!important}
+@media(max-width:720px){
+ .kv-bar{height:64px!important}.kv-wrap{width:88%!important}
+ .kv-nav{gap:0!important}
+ .kv-nav a{padding:15px 4px!important;font-size:16px!important}
+ h1,.page-title{font-size:clamp(56px,15vw,94px)!important}
+ .hero{padding-top:46px!important}
+ .hero h1{font-size:clamp(62px,17vw,106px)!important;line-height:.88!important}
+ .zones{margin-top:14px!important}
+ .zone,.zone:last-child{grid-template-columns:36px minmax(0,1fr) auto!important;grid-template-rows:auto auto!important;grid-template-areas:"num title arrow" ". desc desc"!important;gap:8px 12px!important;min-height:0!important;padding:21px 3px!important}
+ .zone h2{font-size:23px!important}
+ .zone p{font-size:12px!important;line-height:1.65!important}
+ .zone-arrow{font-size:10px!important}
+ .zone:hover,.zone:focus-visible{padding:21px 8px!important}
+ .contact,.signal{padding:23px!important}
+}
+@media(max-width:380px){.kv-logo{font-size:16px}.kv-nav a{font-size:14px!important}.hero h1{font-size:clamp(56px,16vw,76px)!important}}
+@media(prefers-reduced-motion:reduce){.zone,.zone-arrow span{transition:none!important}}
+</style>
