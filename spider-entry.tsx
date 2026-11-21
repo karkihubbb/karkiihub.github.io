@@ -17,7 +17,7 @@ createRoot(host).render(
     seedWebs: window.matchMedia("(max-width: 760px)").matches ? 7 : 12,
     maxThreads: window.matchMedia("(max-width: 760px)").matches ? 48 : 85,
     maxDpr: window.matchMedia("(max-width: 760px)").matches ? 1.5 : 2,
-    zIndex: 2147483000,
+    zIndex: 20,
     fly: true,
     enter: true
   })
