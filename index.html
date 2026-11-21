@@ -128,6 +128,15 @@ h1{font:800 clamp(56px,8.4vw,128px)/.92 Geist,system-ui,sans-serif;letter-spacin
 @media(max-width:767px){.kv-top-video{width:92%;margin:23px auto 0}.kv-video-heading{font-size:9px}.kv-video-heading span:last-child{font-size:8px}.kv-video-frame{border-radius:11px}.kv-video-caption{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.kv-video-frame{scroll-behavior:auto}}
 </style>
+
+<meta name="author" content="Sarwagya Karki">
+<meta name="description" content="Explore KarkiVerse, a personal website by Sarwagya Karki featuring projects, games, photos, voice tools and KarkiAI.">
+<meta property="og:site_name" content="KarkiVerse">
+<meta property="og:type" content="website">
+<meta property="og:title" content="KarkiVerse">
+<meta property="og:description" content="Explore KarkiVerse, a personal website by Sarwagya Karki featuring projects, games, photos, voice tools and KarkiAI.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/karkiverse-premium.css">
 </head><body class="kv"><div class="shader" id="shader" aria-hidden="true"></div><header class="kv-header"><div class="kv-bar"><a class="kv-logo" href="index.html">KarkiVerse</a><button class="kv-burger" aria-label="Menu" aria-expanded="false" aria-controls="nav">☰</button><div class="kv-nav" id="nav" role="navigation" aria-label="Main"><a href="index.html">Home</a><a href="about.html">My Life</a><a href="games.html">Games</a><a href="voices.html">Voice</a><a href="karkiai.html">KarkiAI</a></div></div></header>
 <section class="kv-top-video" aria-label="KarkiVerse featured video">
  <div class="kv-video-heading"><span><i></i> KARKIVERSE / FEATURED</span><span>ONE MOMENT. ONE WORLD.</span></div>
@@ -166,7 +175,31 @@ h1{font:800 clamp(56px,8.4vw,128px)/.92 Geist,system-ui,sans-serif;letter-spacin
 <section class="quick rv" aria-label="Quick links"><div><span class="eyebrow"><i></i> QUICK ACCESS</span><h2>Where to next?</h2></div><div class="quick-links"><a href="games.html">Play a game <span>↗</span></a><a href="about.html">View photos <span>↗</span></a><a href="voices.html">Try voice tools <span>↗</span></a></div></section>
 <section class="spark rv"><div><span class="eyebrow"><i></i> A RANDOM SPARK</span><p id="sparkLine">Big ideas often begin with one curious question.</p></div><button id="sparkNext" type="button" aria-label="Show another thought">↻</button></section>
 <section class="contact rv"><div><h2>Need a website?</h2><p>Message me on Instagram and tell me what you need.</p></div><a class="kv-btn insta-link" data-mag href="https://www.instagram.com/karkii_7/" target="_blank" rel="noopener noreferrer"><span class="insta-label">Instagram</span><strong>@karkii_7</strong><span aria-hidden="true">↗</span></a></section>
-</main><footer class="kv-foot"><div class="kv-wrap"><span>© 2026 KarkiVerse</span><span>Made by Sarwagya Karki</span></div></footer>
+</main><footer class="kv-site-footer">
+  <div class="kv-footer-main">
+    <div class="kv-footer-about">
+      <a class="kv-footer-brand" href="index.html">KarkiVerse<span>.</span></a>
+      <p>A personal corner for the things I create, the places I explore and the ideas I’m building.</p>
+    </div>
+    <nav class="kv-footer-links" aria-label="Explore KarkiVerse">
+      <span class="kv-footer-label">EXPLORE</span>
+      <a href="index.html">Home</a>
+      <a href="about.html">My Life</a>
+      <a href="games.html">Game Zone</a>
+      <a href="voices.html">Voice Zone</a>
+      <a href="karkiai.html">KarkiAI</a>
+    </nav>
+    <div class="kv-footer-connect">
+      <span class="kv-footer-label">CONNECT</span>
+      <a href="https://www.instagram.com/karkii_7/" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+      <a href="karkiai.html">Visit KarkiAI ↗</a>
+    </div>
+  </div>
+  <div class="kv-footer-bottom">
+    <span>© 2026 KarkiVerse. All rights reserved.</span>
+    <span>Designed &amp; built by <strong>Sarwagya Karki</strong></span>
+  </div>
+</footer>
 <script>(()=>{
 const d=document,root=d.documentElement,calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
 root.classList.add('js');
@@ -256,7 +289,8 @@ if(!calm&&matchMedia('(hover:hover) and (pointer:fine)').matches){
  .zone-arrow{grid-area:arrow;align-self:end;font-size:10px}
  .explore{margin-top:42px}
 }
-</style><script type="module" src="/spider-entry.tsx"></script>
+</style><script type="module" src="/refraction-shader.js"></script>
+<script type="module" src="/spider-entry.tsx"></script>
 </body></html>
 <style>
 /* Use the uploaded original Ronaldo animation, not the pixel-art placeholder. */
@@ -309,20 +343,7 @@ p{letter-spacing:-.012em}
 .kv-btn{border-radius:4px!important;min-height:48px!important;letter-spacing:-.01em}
 .kv-btn.ghost{border-color:rgba(255,255,255,.2)!important}
 .kv-foot{border-color:var(--kv-rule)!important}
-.shader{position:fixed!important;inset:0!important;z-index:0!important;opacity:1!important;overflow:hidden!important;pointer-events:none!important;background:
- radial-gradient(ellipse 42% 48% at 76% 22%,rgba(76,91,119,.16),transparent 72%),
- radial-gradient(ellipse 36% 40% at 14% 74%,rgba(90,55,52,.11),transparent 74%),
- radial-gradient(ellipse 80% 72% at 50% 48%,rgba(26,29,36,.42),transparent 82%),
- linear-gradient(145deg,#090a0d 0%,#0d0e12 48%,#08090b 100%)!important;
-}
-.shader canvas{display:none!important}
-.shader:before{content:"";position:absolute;inset:-20%;background:
- radial-gradient(ellipse at 52% 48%,transparent 0 34%,rgba(255,255,255,.045) 34.1%,transparent 34.35%),
- radial-gradient(ellipse at 52% 48%,transparent 0 47%,rgba(255,255,255,.025) 47.1%,transparent 47.3%),
- radial-gradient(ellipse at 72% 24%,rgba(255,255,255,.11),transparent 1.2%),
- radial-gradient(ellipse at 72% 24%,rgba(255,255,255,.035),transparent 24%);
- transform:rotate(-13deg);filter:blur(.2px);opacity:.75}
-.shader:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,5,7,.12),rgba(4,5,7,.4));pointer-events:none}
+
 .hero{position:relative;z-index:1}
 .hero h1{max-width:100%;font-size:clamp(76px,11.5vw,158px)!important;letter-spacing:-.085em!important;line-height:.84!important}
 .intro p{font-size:clamp(14px,1.3vw,17px)!important;line-height:1.8!important;color:#b3b3bb!important}
