@@ -1477,7 +1477,8 @@ export default function SilkSpiderCursor({
     }
 
     const updateWebs = () => {
-      if (reduced) return
+      // On touch layouts, keep the spider but never lay or draw cobweb threads.
+      if (reduced || mobileDevice) return
       if (dropLine && !sp.landed) {
         const end = dropLine.parts[dropLine.parts.length - 1]
         const an = silk.anchors[silk.PIN[end]]
