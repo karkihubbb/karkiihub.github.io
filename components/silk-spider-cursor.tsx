@@ -732,15 +732,29 @@ export default function SilkSpiderCursor({
     if (!wrap || !silkCanvas || !glCanvas) return
     const ctx = silkCanvas.getContext("2d")
     if (!ctx) return
-    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches
+    // Keep the spider interactive even when the OS requests reduced motion.
+    const reduced = false
+    const mobileDevice = matchMedia("(max-width: 760px), (pointer: coarse)").matches
     const rand = mulberry(0x5eed)
 
     // ---------------- renderer ----------------
     let renderer: THREE.WebGLRenderer
     try {
-      renderer = new THREE.WebGLRenderer({ canvas: glCanvas, alpha: true, antialias: true, powerPreference: "high-performance" })
+      renderer = new THREE.WebGLRenderer({
+        canvas: glCanvas,
+        alpha: true,
+        antialias: !mobileDevice,
+        powerPreference: mobileDevice ? "low-power" : "high-performance",
+        stencil: false,
+        depth: true,
+      })
     } catch {
-      return
+      // Fall back to less demanding context attributes on mobile GPUs.
+      try {
+        renderer = new THREE.WebGLRenderer({ canvas: glCanvas, alpha: true, antialias: false, powerPreference: "default", stencil: false })
+      } catch {
+        return
+      }
     }
     renderer.setClearColor(0x000000, 0)
     renderer.toneMapping = THREE.ACESFilmicToneMapping
@@ -758,7 +772,7 @@ export default function SilkSpiderCursor({
     scene.add(hemi)
     const key = new THREE.DirectionalLight(0xfff1de, 1.9)
     key.castShadow = true
-    key.shadow.mapSize.set(1024, 1024)
+    key.shadow.mapSize.set(mobileDevice ? 512 : 1024, mobileDevice ? 512 : 1024)
     key.shadow.radius = 5
     key.shadow.bias = -0.0008
     key.shadow.normalBias = 0.6
