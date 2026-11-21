@@ -7,16 +7,25 @@
 <title>KarkiAI — KarkiVerse</title>
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;background:#09090b;color:#f5f5f5;font-family:Inter,Arial,sans-serif;overflow:hidden}
+html,body{margin:0;width:100%;min-height:100%;height:auto;background:#09090b;color:#f5f5f5;font-family:Inter,Arial,sans-serif;overflow-x:hidden;overflow-y:auto}
 .topbar{height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;background:rgba(9,9,11,.96);border-bottom:1px solid rgba(255,255,255,.12);position:relative;z-index:2}
 .brand{font-weight:800;letter-spacing:.02em}.brand span{color:#cbd5e1}
 .actions{display:flex;align-items:center;gap:14px}
 a{color:#e5e7eb;text-decoration:none;font-size:13px}
 a:hover{color:#fff;text-decoration:underline}
-main{height:calc(100dvh - 54px);width:100%;position:relative}
+main{height:calc(100dvh - 54px);min-height:520px;width:100%;position:relative}
 iframe{display:block;width:100%;height:100%;border:0;background:#09090b}
 @media(max-width:560px){.topbar{padding:0 12px}.actions{gap:10px}a{font-size:12px}}
 </style>
+
+<meta name="author" content="Sarwagya Karki">
+<meta name="description" content="Open KarkiAI, the assistant featured in Sarwagya Karki's KarkiVerse.">
+<meta property="og:site_name" content="KarkiVerse">
+<meta property="og:type" content="website">
+<meta property="og:title" content="KarkiAI — KarkiVerse">
+<meta property="og:description" content="Open KarkiAI, the assistant featured in Sarwagya Karki's KarkiVerse.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/karkiverse-premium.css">
 </head>
 <body>
 <header class="topbar">
@@ -29,6 +38,7 @@ iframe{display:block;width:100%;height:100%;border:0;background:#09090b}
 <main>
  <iframe src="https://karkiai.onrender.com/" title="KarkiAI app" allow="microphone; clipboard-read; clipboard-write" allowfullscreen></iframe>
 </main>
+<footer class="kv-ai-footer"><a href="index.html">← Back to KarkiVerse</a><span>© 2026 KarkiVerse · Created by Sarwagya Karki</span></footer>
 
 <style id="kv-karkiai-spider-layer">.topbar{z-index:30;background:rgba(8,8,9,.9);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}</style>
 <style id="kv-premium-nav-refresh">
@@ -73,20 +83,7 @@ p{letter-spacing:-.012em}
 .kv-btn{border-radius:4px!important;min-height:48px!important;letter-spacing:-.01em}
 .kv-btn.ghost{border-color:rgba(255,255,255,.2)!important}
 .kv-foot{border-color:var(--kv-rule)!important}
-.shader{position:fixed!important;inset:0!important;z-index:0!important;opacity:1!important;overflow:hidden!important;pointer-events:none!important;background:
- radial-gradient(ellipse 42% 48% at 76% 22%,rgba(76,91,119,.16),transparent 72%),
- radial-gradient(ellipse 36% 40% at 14% 74%,rgba(90,55,52,.11),transparent 74%),
- radial-gradient(ellipse 80% 72% at 50% 48%,rgba(26,29,36,.42),transparent 82%),
- linear-gradient(145deg,#090a0d 0%,#0d0e12 48%,#08090b 100%)!important;
-}
-.shader canvas{display:none!important}
-.shader:before{content:"";position:absolute;inset:-20%;background:
- radial-gradient(ellipse at 52% 48%,transparent 0 34%,rgba(255,255,255,.045) 34.1%,transparent 34.35%),
- radial-gradient(ellipse at 52% 48%,transparent 0 47%,rgba(255,255,255,.025) 47.1%,transparent 47.3%),
- radial-gradient(ellipse at 72% 24%,rgba(255,255,255,.11),transparent 1.2%),
- radial-gradient(ellipse at 72% 24%,rgba(255,255,255,.035),transparent 24%);
- transform:rotate(-13deg);filter:blur(.2px);opacity:.75}
-.shader:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,5,7,.12),rgba(4,5,7,.4));pointer-events:none}
+
 .hero{position:relative;z-index:1}
 .hero h1{max-width:100%;font-size:clamp(76px,11.5vw,158px)!important;letter-spacing:-.085em!important;line-height:.84!important}
 .intro p{font-size:clamp(14px,1.3vw,17px)!important;line-height:1.8!important;color:#b3b3bb!important}
