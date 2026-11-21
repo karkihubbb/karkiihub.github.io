@@ -246,4 +246,27 @@ speechSynthesis.onvoiceschanged = loadVoices;
  addEventListener('pointerdown',e=>{point(e.clientX,e.clientY);sparkBurst(e.clientX,e.clientY,30);burst=1;radius=.02;wake();},{passive:true});
  addEventListener('resize',()=>{resize();resizeSparks()},{passive:true});resizeSparks();document.addEventListener('visibilitychange',()=>{visible=!document.hidden;if(!visible&&raf){cancelAnimationFrame(raf);raf=0;}else wake();});
  resize();wake();
-})();</script></body></html>
+})();</script>
+<style id="kv-premium-nav-refresh">
+/* KarkiVerse: clean editorial navigation and responsive page polish */
+:root{--kv-accent:#ef4935}
+.kv-header{z-index:30;background:rgba(8,8,9,.9);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom-color:rgba(255,255,255,.085)}
+.kv-bar{height:68px}
+.kv-logo{letter-spacing:-.045em}
+.kv-nav{gap:clamp(8px,1.3vw,20px)}
+.kv-nav a{padding:22px 9px;color:#aaa;font-size:13px;letter-spacing:.015em}
+.kv-nav a:hover,.kv-nav a[aria-current=page]{color:#fff}
+.kv-ind{height:2px;background:var(--kv-accent)}
+.kv-burger{border-color:rgba(255,255,255,.16);border-radius:3px}
+.kv-nav.open{z-index:40}
+@media(max-width:720px){
+ .kv-bar{height:64px}
+ .kv-nav{gap:0}
+ .kv-nav a{padding:15px 4px;font-size:16px}
+}
+@media(min-width:721px){
+ .kv-nav a{padding-top:24px;padding-bottom:24px}
+}
+</style><link rel="stylesheet" href="https://karkiverse-preview-nrychxzlx-karki-ai.vercel.app/assets/spider-entry-BhKz-lsk.css" crossorigin="anonymous">
+<script type="module" src="https://karkiverse-preview-nrychxzlx-karki-ai.vercel.app/assets/spider-entry-rThUYqWn.js" crossorigin="anonymous"></script>
+</body></html>
