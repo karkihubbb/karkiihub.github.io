@@ -3,6 +3,10 @@ import { createRoot } from "react-dom/client";
 import SilkSpiderCursor from "./components/silk-spider-cursor";
 
 const host = document.createElement("div");
+// Keep the spider/web effect desktop-only: it crowds the smaller touch layout.
+const mobileStyle = document.createElement("style");
+mobileStyle.textContent = `@media (max-width: 760px), (pointer: coarse) { #silk-spider-root { display: none !important; } }`;
+document.head.appendChild(mobileStyle);
 host.id = "silk-spider-root";
 host.setAttribute("aria-hidden", "true");
 document.body.appendChild(host);
