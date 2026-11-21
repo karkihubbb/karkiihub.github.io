@@ -5,6 +5,10 @@
   const canvas = document.createElement("canvas");
   canvas.setAttribute("aria-hidden", "true");
   canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;display:block";
+  const fallback = () => {
+    host.classList.add("shader-fallback");
+    canvas.style.display = "none";
+  };
   host.replaceChildren(canvas);
 
   const isMobile = matchMedia("(max-width: 760px), (pointer: coarse)").matches;
@@ -13,7 +17,7 @@
     alpha: false, antialias: false, depth: false, stencil: false,
     powerPreference: "low-power", preserveDrawingBuffer: false
   });
-  if (!gl) { host.classList.add("shader-fallback"); return; }
+  if (!gl) { fallback(); return; }
 
   const vertexSource = [
     "attribute vec2 aPosition;",
@@ -47,7 +51,7 @@
     "float fbm(vec2 p) {",
     "  float value = 0.0;",
     "  float amplitude = 0.5;",
-    "  for (int i = 0; i < 4; i++) {",
+    "  for (int i = 0; i < 3; i++) {",
     "    value += noise(p) * amplitude;",
     "    p = p * 2.02 + vec2(17.1, 9.2);",
     "    amplitude *= 0.5;",
@@ -73,8 +77,8 @@
     "    + field * 2.65;",
     "  float ridge = 1.0 - abs(sin(phase * 1.12 + detail * 0.62));",
     "  float caustic = pow(max(ridge, 0.0), 12.0);",
-    "  float dx = fbm((q + vec2(0.014, 0.0)) * 1.72 + drift) - field;",
-    "  float dy = fbm((q + vec2(0.0, 0.014)) * 1.72 + drift) - field;",
+    "  float dx = noise((q + vec2(0.014, 0.0)) * 1.72 + drift) - noise(q * 1.72 + drift);",
+    "  float dy = noise((q + vec2(0.0, 0.014)) * 1.72 + drift) - noise(q * 1.72 + drift);",
     "  vec3 normal = normalize(vec3(-dx * 5.2, -dy * 5.2, 0.72));",
     "  vec3 lightDir = normalize(vec3(-0.46, 0.52, 0.82));",
     "  float diffuse = max(dot(normal, lightDir), 0.0);",
@@ -112,15 +116,15 @@
 
   const vertexShader = compile(gl.VERTEX_SHADER, vertexSource);
   const fragmentShader = compile(gl.FRAGMENT_SHADER, fragmentSource);
-  if (!vertexShader || !fragmentShader) { host.classList.add("shader-fallback"); return; }
+  if (!vertexShader || !fragmentShader) { fallback(); return; }
   const program = gl.createProgram();
-  if (!program) { host.classList.add("shader-fallback"); return; }
+  if (!program) { fallback(); return; }
   gl.attachShader(program, vertexShader);
   gl.attachShader(program, fragmentShader);
   gl.linkProgram(program);
   if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
     console.warn("KarkiVerse refraction shader link:", gl.getProgramInfoLog(program));
-    host.classList.add("shader-fallback");
+    fallback();
     return;
   }
 
@@ -189,6 +193,6 @@
     disposed = true;
     if (frame) cancelAnimationFrame(frame);
     frame = 0;
-    host.classList.add("shader-fallback");
+    fallback();
   });
 })();
