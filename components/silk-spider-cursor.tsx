@@ -1141,7 +1141,7 @@ export default function SilkSpiderCursor({
           placeFeet()
         },
         undefined,
-        () => {},
+        (error) => { console.error("KarkiVerse spider model failed to load; showing fallback spider.", error) },
       )
     })
 
@@ -1882,6 +1882,59 @@ export default function SilkSpiderCursor({
       ctx.globalAlpha = 1
     }
 
+    // Visible 2D safety net while the detailed GLB is loading or if a mobile
+    // browser rejects its compressed geometry. The full 3D model takes over
+    // automatically as soon as it loads.
+    const drawFallbackSpider = (x: number, y: number, angle: number, scale: number) => {
+      ctx.save()
+      ctx.translate(x, y)
+      ctx.rotate(angle)
+      const k = clamp(scale / 190, 0.72, 1.35)
+      ctx.scale(k, k)
+      ctx.lineCap = "round"
+      ctx.lineJoin = "round"
+      ctx.strokeStyle = "rgba(235,232,226,0.96)"
+      ctx.lineWidth = 3.2
+      for (const side of [-1, 1]) {
+        for (let i = 0; i < 4; i++) {
+          const sy = (i - 1.5) * 7
+          const sx = i < 2 ? -4 : 5
+          const ex = side * (24 + (i === 0 || i === 3 ? 5 : 0))
+          const ey = (i - 1.5) * 19
+          ctx.beginPath()
+          ctx.moveTo(sx, sy)
+          ctx.bezierCurveTo(side * 15, sy - 5, side * 15, ey - 7, ex, ey)
+          ctx.stroke()
+          ctx.fillStyle = "#171719"
+          ctx.beginPath()
+          ctx.arc(ex, ey, 2.5, 0, Math.PI * 2)
+          ctx.fill()
+        }
+      }
+      ctx.fillStyle = "#171719"
+      ctx.strokeStyle = "rgba(235,232,226,0.9)"
+      ctx.lineWidth = 1.5
+      ctx.beginPath()
+      ctx.ellipse(1, 1, 12, 15, 0, 0, Math.PI * 2)
+      ctx.fill()
+      ctx.stroke()
+      ctx.beginPath()
+      ctx.ellipse(12, -1, 9, 10, 0, 0, Math.PI * 2)
+      ctx.fill()
+      ctx.stroke()
+      ctx.fillStyle = "#f4eee5"
+      ctx.beginPath()
+      ctx.arc(16, -5, 3.3, 0, Math.PI * 2)
+      ctx.arc(16, 3, 3.3, 0, Math.PI * 2)
+      ctx.fill()
+      ctx.fillStyle = "#111"
+      ctx.beginPath()
+      ctx.arc(17, -5, 1.3, 0, Math.PI * 2)
+      ctx.arc(17, 3, 1.3, 0, Math.PI * 2)
+      ctx.fill()
+      ctx.restore()
+    }
+
     // ---------------- loop ----------------
     let raf = 0
     let last = 0
@@ -1937,6 +1990,7 @@ export default function SilkSpiderCursor({
         }
       }
       drawSilk(sp.t)
+      if (!rig) drawFallbackSpider(sp.x, sp.y, sp.th, S)
 
       // spider: shadow rig follows it, render only around it
       const span = S * 1.25
