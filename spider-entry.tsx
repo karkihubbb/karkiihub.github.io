@@ -13,12 +13,12 @@ createRoot(host).render(
     silkColor: "#f2eee8",
     bounceColor: "#0b0b0c",
     shadowColor: "#000000",
-    size: window.matchMedia("(max-width: 760px)").matches ? 105 : 175,
-    seedWebs: window.matchMedia("(max-width: 760px)").matches ? 7 : 12,
-    maxThreads: window.matchMedia("(max-width: 760px)").matches ? 48 : 85,
+    size: window.matchMedia("(max-width: 760px), (pointer: coarse)").matches ? 78 : 175,
+    seedWebs: window.matchMedia("(max-width: 760px), (pointer: coarse)").matches ? 2 : 12,
+    maxThreads: window.matchMedia("(max-width: 760px), (pointer: coarse)").matches ? 18 : 85,
     maxDpr: window.matchMedia("(max-width: 760px)").matches ? 1.5 : 2,
     zIndex: 20,
-    fly: true,
+    fly: !window.matchMedia("(max-width: 760px), (pointer: coarse)").matches,
     enter: true
   })
 );
