@@ -293,64 +293,96 @@ if(!calm&&matchMedia('(hover:hover) and (pointer:fine)').matches){
 <script type="module" src="/spider-entry.tsx"></script>
 
 <style id="kv-winter-flight">
-#kv-winter-scene{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.92}
-body.kv>.shader{z-index:0}
+#kv-winter-scene{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.94;display:block}
+body.kv>.shader{z-index:1;opacity:.08}
 body.kv>header,body.kv>main,body.kv>.kv-top-video,body.kv>footer{position:relative;z-index:2}
-body.kv>.shader{z-index:1;opacity:.12}
-@media(max-width:600px){#kv-winter-scene{opacity:.78}}
-@media(prefers-reduced-motion:reduce){#kv-winter-scene{opacity:.55}}
+@media(max-width:600px){#kv-winter-scene{opacity:.82}}
+@media(prefers-reduced-motion:reduce){#kv-winter-scene{opacity:.62}}
 </style>
 <canvas id="kv-winter-scene" aria-hidden="true"></canvas>
 <script id="kv-winter-flight-engine">
 (()=> {
- const canvas=document.getElementById('kv-winter-scene'); if(!canvas)return;
- const ctx=canvas.getContext('2d',{alpha:true}); if(!ctx)return;
- const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const canvas=document.getElementById('kv-winter-scene');if(!canvas)return;
+ const ctx=canvas.getContext('2d',{alpha:true});if(!ctx)return;
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
  let w=0,h=0,dpr=1,last=0,travel=0,raf=0;
- const stars=Array.from({length:115},(_,i)=>({x:(i* .61803398875)%1,y:((i* .754877666)%1)*.76,r:.45+(i%4)*.28,p:i*.73}));
- function resize(){dpr=Math.min(devicePixelRatio||1,1.6);w=innerWidth;h=innerHeight;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0)}
- addEventListener('resize',resize,{passive:true});resize();
- const dot=(x,y,r,c,a=1)=>{ctx.globalAlpha=a;ctx.fillStyle=c;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill()};
- function mountain(seed,base,amp,color,step){ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(0,h);for(let x=0;x<=w+step;x+=step){const y=base+Math.sin(x*.006+seed)*amp+Math.sin(x*.017+seed*2)*amp*.32;ctx.lineTo(x,y)}ctx.lineTo(w,h);ctx.closePath();ctx.fill()}
- function pixelShape(x,y,scale,cells,palette){for(const [cx,cy,color=0] of cells){dot(x+cx*scale,y+cy*scale,scale*.34,palette[color],.98)}}
- // Small dot-matrix sprite assembled from pixel coordinates, not a stock GIF.
+ const stars=Array.from({length:150},(_,i)=>({x:(i*.61803398875)%1,y:((i*.754877666)%1)*.76,r:.45+(i%5)*.22,phase:i*.91}));
+ const palette={'.':null,'b':'#9a542f','B':'#c47a42','g':'#e4b968','G':'#f3d58e','r':'#b92532','R':'#e23b42','w':'#f4eee2','f':'#e8b98d','d':'#713b2d','s':'#fff0c8'};
  const reindeer=[
- [0,5,0],[1,4,0],[2,4,0],[3,5,0],[4,6,0],[5,6,0],[6,5,0],[7,5,0],[8,6,0],[9,6,0],[10,5,0],
- [2,3,0],[3,2,0],[4,2,0],[5,3,0],[6,3,0],[7,2,0],[8,2,0],[9,3,0],
- [2,1,1],[1,0,1],[4,1,1],[5,0,1],[8,1,1],[9,0,1],
- [3,7,0],[3,8,0],[4,8,0],[7,7,0],[7,8,0],[8,8,0],[10,4,1],[11,4,1]
+ '...........g...g....',
+ '..........gg...gg...',
+ '...........g...g....',
+ '............b..b....',
+ '..........BBB.BB....',
+ '....BBBBBBBBBBBB....',
+ '...BBBBBBBBBBBBB....',
+ '....BBBBBBBBBBB.....',
+ '.....BB...BBB.......',
+ '.....BB...BB........',
+ '.....BB...BB........',
+ '....BB.....BB.......'
  ];
  const sleigh=[
- [2,5,0],[3,5,0],[4,5,0],[5,5,0],[6,5,0],[7,5,0],[8,5,0],[9,5,0],[10,5,0],
- [1,6,1],[2,6,1],[3,6,1],[4,6,1],[5,6,1],[6,6,1],[7,6,1],[8,6,1],[9,6,1],[10,6,1],
- [2,7,1],[3,7,1],[4,7,1],[5,7,1],[6,7,1],[7,7,1],[8,7,1],[9,7,1],
- [0,8,2],[1,8,2],[2,8,2],[8,8,2],[9,8,2],[10,8,2],[11,8,2],
- [3,4,3],[4,4,3],[5,4,3],[6,4,3],[7,4,3],
- [4,2,4],[5,2,4],[6,2,4],[5,1,4],[6,1,4],[5,0,4],[7,2,5],[4,3,5]
+ '...........ww........',
+ '..........www.......',
+ '...........f........',
+ '..........fff.......',
+ '.........rrrr.......',
+ '........rRRRRr......',
+ '.......rRRRRRRr.....',
+ '......rRRRRRRRRRR...',
+ '.....gggggggggggggg.',
+ '....gg............gg',
+ '...ggggggggggggggggg',
+ '......gggggggggggg...',
  ];
- function drawScene(t){
- ctx.clearRect(0,0,w,h);
- const night=ctx.createLinearGradient(0,0,0,h);night.addColorStop(0,'rgba(3,7,17,.88)');night.addColorStop(.58,'rgba(7,12,25,.48)');night.addColorStop(1,'rgba(3,5,10,.9)');ctx.fillStyle=night;ctx.fillRect(0,0,w,h);
- for(const s of stars){const a=.28+.5*(.5+.5*Math.sin(t*.001+s.p));dot(s.x*w,s.y*h,s.r,'#dce8ff',a)}
- const mx=w*.78,my=h*.22,mr=Math.min(48,w*.045);const glow=ctx.createRadialGradient(mx,my,2,mx,my,mr*2.6);glow.addColorStop(0,'rgba(220,232,255,.2)');glow.addColorStop(1,'rgba(220,232,255,0)');ctx.fillStyle=glow;ctx.fillRect(mx-mr*3,my-mr*3,mr*6,mr*6);
- for(let rr=mr;rr>0;rr-=4)dot(mx,my,rr,'#dce5f4',.035);
- mountain(1.1,h*.79,h*.055,'rgba(17,24,39,.72)',18);mountain(2.8,h*.86,h*.045,'rgba(9,14,25,.92)',14);
- for(let x=0;x<w;x+=9){const y=h*.9+Math.sin(x*.018)*5;dot(x,y,1,'#a9b8d0',.15)}
- const scale=Math.max(3.1,Math.min(5.2,w/260));const unit=scale*2.25;
- const span=14*unit;const cycle=w+span+220;const x=((travel%cycle)-span-110);const y=h*.31+Math.sin(t*.0022)*Math.min(9,h*.012);
- if(x<w+span+20&&x>-span-20){
- const p=['#b96a36','#f0c16b'];pixelShape(x,y,unit,reindeer,p);
- // reins: fine dotted golden line
- for(let k=0;k<8;k++)dot(x+span*.78+k*unit,y+unit*(5.5+k*.16),1.5,'#d9a85d',.8);
- pixelShape(x+span*.88,y+unit*.1,unit,sleigh,['#e94a42','#f1bd55','#f6d98a','#f4f1e8','#e94a42','#fff']);
- // star-like pixel trail
- for(let k=0;k<12;k++){const tx=x-k*unit*1.7;const ty=y+unit*(8+Math.sin(t*.003+k)*2);dot(tx,ty,1+(k%3)*.5,'#f1c879',.6*(1-k/14))}
+ function resize(){dpr=Math.min(devicePixelRatio||1,1.7);w=innerWidth;h=innerHeight;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0)}
+ addEventListener('resize',resize,{passive:true});resize();
+ const dot=(x,y,r,c,a=1)=>{ctx.globalAlpha=a;ctx.fillStyle=c;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill()};
+ function grid(rows,x,y,u,flip=false,phase=0){
+  const max= Math.max(...rows.map(v=>v.length));
+  rows.forEach((row,ry)=>{for(let cx=0;cx<row.length;cx++){const ch=row[cx];if(ch==='.')continue;const px=x+(flip?(max-1-cx):cx)*u,py=y+ry*u;
+   const color=palette[ch]||'#fff';dot(px,py,u*.39,color,.98);
+   if(ch==='G'||ch==='R')dot(px-u*.08,py-u*.1,u*.13,'#fff',.42);
+  }});
  }
- ctx.globalAlpha=1;
+ function mountain(seed,base,amp,color,step){ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(0,h);for(let x=0;x<=w+step;x+=step){const y=base+Math.sin(x*.005+seed)*amp+Math.sin(x*.014+seed*2)*amp*.28;ctx.lineTo(x,y)}ctx.lineTo(w,h);ctx.closePath();ctx.fill()}
+ function scene(t){
+  ctx.clearRect(0,0,w,h);
+  const bg=ctx.createLinearGradient(0,0,0,h);bg.addColorStop(0,'rgba(3,7,18,.88)');bg.addColorStop(.52,'rgba(7,13,29,.52)');bg.addColorStop(1,'rgba(3,6,14,.9)');ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
+  for(const s of stars){const a=.22+.62*(.5+.5*Math.sin(t*.0011+s.phase));dot(s.x*w,s.y*h,s.r,'#dce8ff',a)}
+  const mx=w*.78,my=h*.2,mr=Math.min(48,w*.047);
+  const halo=ctx.createRadialGradient(mx,my,2,mx,my,mr*3.4);halo.addColorStop(0,'rgba(203,221,255,.19)');halo.addColorStop(.42,'rgba(154,183,231,.07)');halo.addColorStop(1,'rgba(154,183,231,0)');ctx.fillStyle=halo;ctx.fillRect(mx-mr*4,my-mr*4,mr*8,mr*8);
+  dot(mx,my,mr,'#e6edf9',.12);dot(mx-3,my-3,mr*.82,'#e6edf9',.12);
+  mountain(1.1,h*.79,h*.06,'rgba(19,29,49,.78)',16);mountain(2.8,h*.87,h*.045,'rgba(7,12,24,.96)',13);
+  // Distant village-like pin lights
+  for(let i=0;i<30;i++){const x=(i*83+31)%Math.max(1,w),y=h*(.84+((i*17)%8)*.008);dot(x,y,1.05,'#e9c77f',.18)}
+  const u=Math.max(3.1,Math.min(5.3,w/290));
+  const total=34*u,cycle=w+total+260;
+  const x=(travel%cycle)-total-110;
+  const y=h*.31+Math.sin(t*.002)*Math.min(8,h*.012);
+  if(x<w+total+30&&x>-total-30){
+   // warm moving aura around the complete silhouette
+   const aura=ctx.createRadialGradient(x+total*.48,y+u*5,2,x+total*.48,y+u*5,total*.78);aura.addColorStop(0,'rgba(255,185,100,.13)');aura.addColorStop(1,'rgba(255,185,100,0)');ctx.fillStyle=aura;ctx.fillRect(x-total*.3,y-total*.4,total*1.8,total*1.4);
+   // Reindeer and alternating pixel legs
+   grid(reindeer,x,y,u);
+   const legShift=Math.floor(t/180)%2;
+   dot(x+u*(5+legShift),y+u*11.4,u*.36,'#9a542f');
+   dot(x+u*(10-legShift),y+u*11.4,u*.36,'#9a542f');
+   // Fine golden dotted reins
+   for(let k=0;k<11;k++){const px=x+u*(17+k*1.05);dot(px,y+u*(6.3+Math.sin(k*.34)*.32),u*.2,'#e7bf70',.92)}
+   // Santa's sleigh trails just behind the reindeer
+   grid(sleigh,x+u*20,y-u*.5,u);
+   // Sleigh runner sparkle
+   for(let k=0;k<9;k++)dot(x+u*(24+k*1.25),y+u*11.7,u*(.12+(k%3)*.035),'#ffe2a0',.8-k*.055);
+   // A few drifting gold pixels behind the flight path
+   for(let k=0;k<16;k++){const px=x-u*(2+k*1.65),py=y+u*(7+Math.sin(t*.003+k*.8)*2.2);dot(px,py,u*(.13+(k%3)*.07),'#f4c978',.58*(1-k/19))}
+  }
+  ctx.globalAlpha=1;
  }
- function frame(now){if(!last)last=now;const dt=Math.min(40,now-last);last=now;if(!reduce)travel+=dt*.095;drawScene(now);if(!reduce)raf=requestAnimationFrame(frame)}
- if(reduce){drawScene(0)}else{raf=requestAnimationFrame(frame)}
- document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf)}else if(!reduce){last=0;raf=requestAnimationFrame(frame)}});
+ function frame(now){if(!last)last=now;const dt=Math.min(40,now-last);last=now;if(!reduced)travel+=dt*.105;scene(now);if(!reduced)raf=requestAnimationFrame(frame)}
+ if(reduced)scene(0);else raf=requestAnimationFrame(frame);
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelAnimationFrame(raf);else if(!reduced){last=0;raf=requestAnimationFrame(frame)}});
 })();
 </script>
 </body></html>
