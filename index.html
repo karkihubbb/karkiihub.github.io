@@ -137,7 +137,7 @@ h1{font:800 clamp(56px,8.4vw,128px)/.92 Geist,system-ui,sans-serif;letter-spacin
 <meta property="og:description" content="Explore KarkiVerse, a personal website by Sarwagya Karki featuring projects, games, photos, voice tools and KarkiAI.">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/karkiverse-premium.css?v=liquid-glass-2">
-  <link rel="stylesheet" href="holiday-flight.css">
+  <link rel="stylesheet" href="holiday-flight.css?v=2">
 </head><body class="kv"><div class="shader" id="shader" aria-hidden="true"></div><header class="kv-header"><div class="kv-bar"><a class="kv-logo" href="index.html">KarkiVerse</a><button class="kv-burger" aria-label="Menu" aria-expanded="false" aria-controls="nav">☰</button><div class="kv-nav" id="nav" role="navigation" aria-label="Main"><a href="index.html">Home</a><a href="about.html">My Life</a><a href="games.html">Games</a><a href="voices.html">Voice</a><a href="karkiai.html">KarkiAI</a></div></div></header>
 <section class="kv-top-video" aria-label="KarkiVerse featured video">
  <div class="kv-video-heading"><span><i></i> KARKIVERSE / FEATURED</span><span>ONE MOMENT. ONE WORLD.</span></div>
@@ -293,7 +293,7 @@ if(!calm&&matchMedia('(hover:hover) and (pointer:fine)').matches){
 </style><script type="module" src="/refraction-shader.js?v=localized-orbit-1"></script>
 <canvas id="kv-holiday-flight" aria-hidden="true"></canvas>
   <button id="kv-holiday-sound" type="button" aria-label="Turn festive sound on" aria-pressed="false">♫ Sound off</button>
-  <script defer src="holiday-flight.js"></script>
+  <script defer src="holiday-flight.js?v=2"></script>
 </body></html>
 <style>
 /* Use the uploaded original Ronaldo animation, not the pixel-art placeholder. */
@@ -384,3 +384,5 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--kv-red)!important;o
 @media(max-width:380px){.kv-logo{font-size:16px}.kv-nav a{font-size:14px!important}.hero h1{font-size:clamp(56px,16vw,76px)!important}}
 @media(prefers-reduced-motion:reduce){.zone,.zone-arrow span{transition:none!important}}
 </style>
+
+<style id="kv-remove-spider-cursor">#spider-cursor,.spider-cursor,#spider3d-cursor,.spider3d-cursor,.cursor-3d,#cursor-3d,#custom-cursor,.custom-cursor,[id*="spider-cursor"],[class*="spider-cursor"],canvas[id*="cursor"],canvas[class*="cursor"]{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}</style>
