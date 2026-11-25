@@ -78,26 +78,39 @@ function drawMountains(t){
 }
 function draw(t,dt){
   ctx.clearRect(0,0,w,h);
-  for(const p of snow){p.y+=p.v*dt;p.x+=p.d*dt;if(p.y>h*.78){p.y=-4;p.x=rand(0,w)}if(p.x<0)p.x=w;if(p.x>w)p.x=0;}
-  const mobile=w<650;
-  const cell=mobile?Math.max(2.35,Math.min(3.05,w/128)):Math.max(3.15,Math.min(4.7,w/290));
-  const sw=sprite.width*cell,sh=sprite.height*cell;
-  const travel=w+sw*1.35,cycle=10.5,progress=(t%cycle)/cycle;
-  const x=-sw*.95+(progress*travel);
-  const y=h*(mobile?.31:.29)+Math.sin(t*.95)*Math.min(20,h*.022);
-  ctx.save();ctx.translate(x+sw/2,y);ctx.rotate(Math.sin(t*.95)*.025);
-  const glow=ctx.createRadialGradient(0,0,sh*.08,0,0,sw*.53);
-  glow.addColorStop(0,'rgba(255,190,75,.22)');glow.addColorStop(1,'rgba(255,160,60,0)');
-  ctx.fillStyle=glow;ctx.fillRect(-sw*.58,-sh*.72,sw*1.16,sh*1.44);
-  const cols=sprite.width,rows=sprite.height,pixels=spritePixels;
-  for(let yy=0;yy<rows;yy++)for(let xx=0;xx<cols;xx++){
-    const i=(yy*cols+xx)*4;
-    if(pixels[i+3]>0){ctx.globalAlpha=1;ctx.fillStyle='rgb('+pixels[i]+','+pixels[i+1]+','+pixels[i+2]+')';ctx.fillRect((xx-cols/2)*cell-cell/2,(yy-rows/2)*cell-cell/2,cell+.15,cell+.15);}
+  ctx.imageSmoothingEnabled=false;
+  for(const p of snow){
+    p.y+=p.v*dt;p.x+=p.d*dt;
+    if(p.y>h*.82){p.y=-4;p.x=rand(0,w)}
+    if(p.x<0)p.x=w;if(p.x>w)p.x=0;
   }
-  ctx.globalAlpha=1;
-  for(let k=0;k<30;k++){const tx=-sw*.47-k*cell*1.45,ty=sh*.28+Math.sin(t*2.2+k*.7)*cell*.8;dot(tx,ty,Math.max(1.5,cell*.38),k%3?'#ffd84c':'#fff2b2',Math.max(.18,.9-k*.022));}
+  const mobile=w<650;
+  // Keep the full sleigh-and-reindeer group large enough to recognize.
+  const targetWidth=Math.min(w*(mobile?.94:.78),900);
+  const scale=targetWidth/sprite.width;
+  const sw=sprite.width*scale,sh=sprite.height*scale;
+  const cycle=8.8,progress=(t%cycle)/cycle;
+  const x=-sw+(progress*(w+sw*2));
+  const y=h*(mobile?.27:.25)+Math.sin(t*.9)*Math.min(17,h*.018);
+  ctx.save();
+  ctx.translate(x+sw/2,y);
+  ctx.rotate(Math.sin(t*.9)*.018);
+  const glow=ctx.createRadialGradient(0,0,sh*.05,0,0,sw*.62);
+  glow.addColorStop(0,'rgba(255,190,75,.26)');
+  glow.addColorStop(.58,'rgba(255,160,60,.10)');
+  glow.addColorStop(1,'rgba(255,160,60,0)');
+  ctx.fillStyle=glow;
+  ctx.fillRect(-sw*.68,-sh*.9,sw*1.36,sh*1.8);
+  ctx.drawImage(sprite,-sw/2,-sh/2,sw,sh);
+  for(let k=0;k<36;k++){
+    const tx=-sw*.48-k*scale*.72;
+    const ty=sh*.27+Math.sin(t*2.2+k*.7)*scale*.8;
+    dot(tx,ty,Math.max(1.8,scale*.34),k%3?'#ffd84c':'#fff2b2',Math.max(.12,.88-k*.019));
+  }
   ctx.restore();
-  for(let n=0;n<Math.min(18,snow.length);n+=3){const p=snow[n];dot(p.x,p.y,p.r,'#dbe8ff',.32);}
+  for(let n=0;n<Math.min(24,snow.length);n+=2){
+    const p=snow[n];dot(p.x,p.y,p.r,'#dbe8ff',.42);
+  }
 }
 function bell(freq,when,duration=.48,volume=.12){
   if(!audioCtx||!master)return;
