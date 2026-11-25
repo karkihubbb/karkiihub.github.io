@@ -306,81 +306,132 @@ body.kv>header,body.kv>main,body.kv>.kv-top-video,body.kv>footer{position:relati
  const ctx=canvas.getContext('2d',{alpha:true});if(!ctx)return;
  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
  let w=0,h=0,dpr=1,last=0,travel=0,raf=0;
- const stars=Array.from({length:150},(_,i)=>({x:(i*.61803398875)%1,y:((i*.754877666)%1)*.76,r:.45+(i%5)*.22,phase:i*.91}));
- const palette={'.':null,'b':'#9a542f','B':'#c47a42','g':'#e4b968','G':'#f3d58e','r':'#b92532','R':'#e23b42','w':'#f4eee2','f':'#e8b98d','d':'#713b2d','s':'#fff0c8'};
- const reindeer=[
- '...........g...g....',
- '..........gg...gg...',
- '...........g...g....',
- '............b..b....',
- '..........BBB.BB....',
- '....BBBBBBBBBBBB....',
- '...BBBBBBBBBBBBB....',
- '....BBBBBBBBBBB.....',
- '.....BB...BBB.......',
- '.....BB...BB........',
- '.....BB...BB........',
- '....BB.....BB.......'
- ];
- const sleigh=[
- '...........ww........',
- '..........www.......',
- '...........f........',
- '..........fff.......',
- '.........rrrr.......',
- '........rRRRRr......',
- '.......rRRRRRRr.....',
- '......rRRRRRRRRRR...',
- '.....gggggggggggggg.',
- '....gg............gg',
- '...ggggggggggggggggg',
- '......gggggggggggg...',
- ];
- function resize(){dpr=Math.min(devicePixelRatio||1,1.7);w=innerWidth;h=innerHeight;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0)}
+ const stars=Array.from({length:190},(_,i)=>({x:(i*.61803398875)%1,y:((i*.754877666)%1)*.72,r:.45+(i%5)*.19,phase:i*.91}));
+ const palette={red:'#e62d38',red2:'#c91e2d',redHi:'#ff5550',gold:'#ffd84e',gold2:'#e8aa28',white:'#fff7e9',skin:'#e8b58e',coat:'#bd2732',brown:'#a95e32',brown2:'#d18a4e',brownHi:'#f0b66f',dark:'#392b2a'};
+ const sprite=document.createElement('canvas');sprite.width=360;sprite.height=180;
+ const s=sprite.getContext('2d');
+ function shape(points,fill){s.beginPath();s.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)s.lineTo(points[i][0],points[i][1]);s.closePath();s.fillStyle=fill;s.fill()}
+ function line(points,color,width=3){s.beginPath();s.moveTo(points[0][0],points[0][1]);for(let i=1;i<points.length;i++)s.lineTo(points[i][0],points[i][1]);s.strokeStyle=color;s.lineWidth=width;s.lineCap='round';s.lineJoin='round';s.stroke()}
+ function ellipse(x,y,rx,ry,color,rot=0){s.beginPath();s.ellipse(x,y,rx,ry,rot,0,Math.PI*2);s.fillStyle=color;s.fill()}
+ function buildSprite(){
+  s.clearRect(0,0,360,180);
+  // Reindeer: hindquarters, torso, neck and head, all in warm LED colours.
+  ellipse(268,75,31,18,palette.brown2,-.12);
+  ellipse(247,78,18,15,palette.brown,-.2);
+  shape([[275,69],[287,48],[298,40],[307,43],[303,55],[292,61],[286,80]],palette.brown2);
+  ellipse(304,43,13,10,palette.brownHi,-.28);
+  ellipse(314,45,5,4,palette.red2);
+  ellipse(311,39,2.2,2.2,palette.white);
+  // Ears and antlers
+  shape([[294,36],[287,27],[280,25],[286,32],[290,40]],palette.brownHi);
+  line([[300,34],[296,23],[289,17],[291,10],[296,16],[300,21],[305,10],[308,8]],'#f5d9a0',4);
+  line([[297,25],[288,21],[284,15]],'#f5d9a0',3);
+  line([[306,22],[314,17],[316,10]],'#f5d9a0',3);
+  // Four legs, staggered, with bright hooves
+  line([[247,87],[241,105],[234,119]],palette.brown,7);
+  line([[234,119],[230,124]],palette.dark,4);
+  line([[263,88],[269,106],[265,121]],palette.brown2,7);
+  line([[265,121],[261,125]],palette.dark,4);
+  line([[282,83],[290,99],[294,115]],palette.brownHi,6);
+  line([[294,115],[291,119]],palette.dark,4);
+  line([[287,78],[300,91],[307,105]],palette.brown2,6);
+  line([[307,105],[304,109]],palette.dark,4);
+  // Harness and chest highlight
+  line([[280,63],[275,82],[263,92]],palette.red2,3);
+  line([[283,64],[278,82]],palette.gold,2);
+  // Santa's reins stretch forward from the sleigh to the reindeer
+  line([[182,82],[205,72],[224,68],[244,69]],palette.redHi,2.6);
+  line([[182,88],[207,80],[228,77],[248,78]],palette.red2,2.1);
+  // Sleigh main body and raised prow
+  shape([[45,100],[61,88],[90,87],[123,91],[153,88],[183,83],[199,88],[193,105],[177,120],[142,129],[93,130],[58,119]],palette.red2);
+  shape([[50,98],[71,91],[108,94],[145,93],[178,88],[190,91],[183,104],[158,114],[119,120],[78,116],[56,109]],palette.red);
+  shape([[55,96],[79,91],[111,95],[148,93],[179,89],[184,92],[161,99],[125,103],[90,101],[64,102]],palette.redHi);
+  // Gold top trim and front curl
+  line([[48,98],[75,94],[110,98],[145,96],[176,91],[192,91]],palette.gold,4);
+  line([[190,90],[204,91],[212,101],[210,112],[202,119]],palette.gold,3.2);
+  line([[201,118],[212,111],[215,101],[210,94]],palette.gold,2.2);
+  // Sleigh runner, bright continuous gold rails and supports
+  line([[47,126],[80,137],[119,140],[158,136],[187,126],[207,119],[218,119],[223,125],[217,132],[199,137]],palette.gold2,4);
+  line([[48,122],[82,132],[120,135],[159,131],[189,121],[207,115],[218,116]],palette.gold,3);
+  line([[70,121],[74,133]],palette.gold,2.5);
+  line([[111,126],[115,137]],palette.gold,2.5);
+  line([[153,125],[157,134]],palette.gold,2.5);
+  line([[190,116],[194,128]],palette.gold,2.5);
+  // Seat and sack
+  ellipse(79,91,17,12,'#8f431f',-.2);
+  ellipse(82,88,13,9,'#c58a45',-.2);
+  // Santa body seated, red coat and dark belt
+  shape([[82,69],[91,57],[111,57],[126,67],[129,91],[115,99],[91,94],[78,84]],palette.coat);
+  shape([[91,65],[104,59],[117,64],[124,80],[111,86],[91,81]],palette.redHi);
+  line([[87,88],[116,91]],'#4b3030',5);
+  line([[99,91],[111,92]],palette.gold,2.5);
+  // Arm extended holding reins
+  line([[111,69],[128,74],[143,76],[155,76]],palette.coat,11);
+  line([[111,66],[130,71],[144,73],[157,73]],palette.redHi,5);
+  ellipse(159,74,5,4,palette.white);
+  // Santa's face, beard, hat and pom-pom
+  ellipse(103,42,16,17,palette.skin);
+  ellipse(100,50,15,11,palette.white);
+  shape([[91,46],[98,52],[107,51],[114,45],[111,58],[101,63],[91,57]],palette.white);
+  ellipse(107,40,2,2,'#34211c');
+  shape([[87,31],[91,18],[106,14],[119,24],[116,34],[101,29]],palette.red);
+  line([[89,32],[111,34],[118,30]],palette.white,6);
+  ellipse(121,22,5,5,palette.white);
+  // White cuff and boot accents
+  line([[123,77],[130,79]],palette.white,5);
+  line([[91,94],[101,97]],palette.white,4);
+  // Decorative gold rivets along the sleigh
+  for(let i=0;i<8;i++)ellipse(66+i*14,111+Math.sin(i*.4)*2,1.5,1.5,'#ffe58a');
+ }
+ buildSprite();
+ function resize(){dpr=Math.min(devicePixelRatio||1,1.8);w=innerWidth;h=innerHeight;canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0)}
  addEventListener('resize',resize,{passive:true});resize();
  const dot=(x,y,r,c,a=1)=>{ctx.globalAlpha=a;ctx.fillStyle=c;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill()};
- function grid(rows,x,y,u,flip=false,phase=0){
-  const max= Math.max(...rows.map(v=>v.length));
-  rows.forEach((row,ry)=>{for(let cx=0;cx<row.length;cx++){const ch=row[cx];if(ch==='.')continue;const px=x+(flip?(max-1-cx):cx)*u,py=y+ry*u;
-   const color=palette[ch]||'#fff';dot(px,py,u*.39,color,.98);
-   if(ch==='G'||ch==='R')dot(px-u*.08,py-u*.1,u*.13,'#fff',.42);
-  }});
- }
  function mountain(seed,base,amp,color,step){ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(0,h);for(let x=0;x<=w+step;x+=step){const y=base+Math.sin(x*.005+seed)*amp+Math.sin(x*.014+seed*2)*amp*.28;ctx.lineTo(x,y)}ctx.lineTo(w,h);ctx.closePath();ctx.fill()}
+ function drawDottedSprite(x,y,scale,t){
+  const step=4.2,sw=sprite.width,sh=sprite.height;
+  const glow=ctx.createRadialGradient(x+sw*scale*.48,y+sh*scale*.52,2,x+sw*scale*.48,y+sh*scale*.52,sw*scale*.72);
+  glow.addColorStop(0,'rgba(255,154,70,.18)');glow.addColorStop(1,'rgba(255,154,70,0)');
+  ctx.fillStyle=glow;ctx.fillRect(x-sw*scale*.18,y-sh*scale*.25,sw*scale*1.45,sh*scale*1.65);
+  const pixels=s.getImageData(0,0,sw,sh).data;
+  for(let py=2;py<sh;py+=step){for(let px=2;px<sw;px+=step){
+   const k=(Math.floor(py)*sw+Math.floor(px))*4,a=pixels[k+3];if(a<80)continue;
+   const c='rgb('+pixels[k]+','+pixels[k+1]+','+pixels[k+2]+')';
+   const xx=x+px*scale,yy=y+py*scale,r=step*scale*.37;
+   if(a>180){ctx.globalAlpha=.13;ctx.fillStyle=c;ctx.beginPath();ctx.arc(xx,yy,r*2.15,0,Math.PI*2);ctx.fill()}
+   dot(xx,yy,r,c,.98);
+   if((pixels[k]>220&&pixels[k+1]>180)||pixels[k+2]>220)dot(xx-r*.18,yy-r*.18,r*.18,'#fff',.55);
+  }}
+  ctx.globalAlpha=1;
+  // A few animated glints sparkle along the runner and antlers.
+  for(let i=0;i<9;i++){const q=(i/9+t*.00012)%1;dot(x+(45+q*175)*scale,y+(130-q*18)*scale,scale*(.55+(i%3)*.2),'#ffe9a7',.25+.45*(.5+.5*Math.sin(t*.006+i)))}
+ }
  function scene(t){
   ctx.clearRect(0,0,w,h);
-  const bg=ctx.createLinearGradient(0,0,0,h);bg.addColorStop(0,'rgba(3,7,18,.88)');bg.addColorStop(.52,'rgba(7,13,29,.52)');bg.addColorStop(1,'rgba(3,6,14,.9)');ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
-  for(const s of stars){const a=.22+.62*(.5+.5*Math.sin(t*.0011+s.phase));dot(s.x*w,s.y*h,s.r,'#dce8ff',a)}
-  const mx=w*.78,my=h*.2,mr=Math.min(48,w*.047);
-  const halo=ctx.createRadialGradient(mx,my,2,mx,my,mr*3.4);halo.addColorStop(0,'rgba(203,221,255,.19)');halo.addColorStop(.42,'rgba(154,183,231,.07)');halo.addColorStop(1,'rgba(154,183,231,0)');ctx.fillStyle=halo;ctx.fillRect(mx-mr*4,my-mr*4,mr*8,mr*8);
-  dot(mx,my,mr,'#e6edf9',.12);dot(mx-3,my-3,mr*.82,'#e6edf9',.12);
-  mountain(1.1,h*.79,h*.06,'rgba(19,29,49,.78)',16);mountain(2.8,h*.87,h*.045,'rgba(7,12,24,.96)',13);
-  // Distant village-like pin lights
-  for(let i=0;i<30;i++){const x=(i*83+31)%Math.max(1,w),y=h*(.84+((i*17)%8)*.008);dot(x,y,1.05,'#e9c77f',.18)}
-  const u=Math.max(3.1,Math.min(5.3,w/290));
-  const total=42*u,cycle=w+total+260;
-  const x=(travel%cycle)-total-110;
-  const y=h*.31+Math.sin(t*.002)*Math.min(8,h*.012);
-  if(x<w+total+30&&x>-total-30){
-   // warm moving aura around the complete silhouette
-   const aura=ctx.createRadialGradient(x+total*.48,y+u*5,2,x+total*.48,y+u*5,total*.78);aura.addColorStop(0,'rgba(255,185,100,.13)');aura.addColorStop(1,'rgba(255,185,100,0)');ctx.fillStyle=aura;ctx.fillRect(x-total*.3,y-total*.4,total*1.8,total*1.4);
-   // Reindeer and alternating pixel legs
-   grid(reindeer,x,y,u);
-   const legShift=Math.floor(t/180)%2;
-   dot(x+u*(5+legShift),y+u*11.4,u*.36,'#9a542f');
-   dot(x+u*(10-legShift),y+u*11.4,u*.36,'#9a542f');
-   // Fine golden dotted reins
-   for(let k=0;k<11;k++){const px=x+u*(17+k*1.05);dot(px,y+u*(6.3+Math.sin(k*.34)*.32),u*.2,'#e7bf70',.92)}
-   // Santa's sleigh trails just behind the reindeer
-   grid(sleigh,x+u*20,y-u*.5,u);
-   // Sleigh runner sparkle
-   for(let k=0;k<9;k++)dot(x+u*(24+k*1.25),y+u*11.7,u*(.12+(k%3)*.035),'#ffe2a0',.8-k*.055);
-   // A few drifting gold pixels behind the flight path
-   for(let k=0;k<16;k++){const px=x-u*(2+k*1.65),py=y+u*(7+Math.sin(t*.003+k*.8)*2.2);dot(px,py,u*(.13+(k%3)*.07),'#f4c978',.58*(1-k/19))}
+  const bg=ctx.createLinearGradient(0,0,0,h);bg.addColorStop(0,'rgba(1,5,14,.98)');bg.addColorStop(.65,'rgba(3,9,20,.96)');bg.addColorStop(1,'rgba(2,5,13,.98)');ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
+  for(const st of stars){const a=.28+.66*(.5+.5*Math.sin(t*.0011+st.phase));dot(st.x*w,st.y*h,st.r,'#dce8ff',a)}
+  // Pale full moon with a soft halo in the upper-right sky.
+  const mx=w*.78,my=h*.17,mr=Math.min(43,w*.043);
+  const halo=ctx.createRadialGradient(mx,my,2,mx,my,mr*3.7);halo.addColorStop(0,'rgba(218,230,255,.23)');halo.addColorStop(.4,'rgba(164,190,235,.09)');halo.addColorStop(1,'rgba(164,190,235,0)');ctx.fillStyle=halo;ctx.fillRect(mx-mr*4,my-mr*4,mr*8,mr*8);
+  dot(mx,my,mr,'#e8eefb',.18);
+  // Dotted mountain silhouettes, similar to the reference's cool blue LED landscape.
+  const step=5;
+  for(let layer=0;layer<2;layer++){
+   const base=h*(layer===0?.73:.82),amp=h*(layer===0?.055:.035),color=layer===0?'rgba(76,91,126,.45)':'rgba(20,31,53,.82)';
+   for(let x=0;x<w;x+=step){const yy=base+Math.sin(x*.006+layer*1.7)*amp+Math.sin(x*.015+layer*2)*amp*.28;for(let y=yy;y<h;y+=step)dot(x,y,1.05,color,.72)}
   }
+  // Small warm horizon lights tucked into the distant ridge.
+  for(let i=0;i<28;i++){const x=(i*83+31)%Math.max(1,w),y=h*(.82+((i*17)%8)*.008);dot(x,y,1.05,'#e9c77f',.23)}
+  const scale=Math.min(1.58,Math.max(.82,w/380));
+  const total=360*scale,cycle=w+total+240;
+  const x=(travel%cycle)-total-35;
+  const y=h*.285+Math.sin(t*.0017)*Math.min(7,h*.009);
+  if(x<w+total+20&&x>-total-20)drawDottedSprite(x,y,scale,t);
+  // Discreet, spaced festive lettering above the mountains.
+  if(w>560){ctx.save();ctx.font='700 10px monospace';ctx.textAlign='center';ctx.letterSpacing='5px';ctx.fillStyle='rgba(208,198,150,.46)';ctx.fillText('M E R R Y   C H R I S T M A S',w*.5,h*.69);ctx.restore()}
   ctx.globalAlpha=1;
  }
- function frame(now){if(!last)last=now;const dt=Math.min(40,now-last);last=now;if(!reduced)travel+=dt*.105;scene(now);if(!reduced)raf=requestAnimationFrame(frame)}
+ function frame(now){if(!last)last=now;const dt=Math.min(40,now-last);last=now;if(!reduced)travel+=dt*.072;scene(now);if(!reduced)raf=requestAnimationFrame(frame)}
  if(reduced)scene(0);else raf=requestAnimationFrame(frame);
  document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelAnimationFrame(raf);else if(!reduced){last=0;raf=requestAnimationFrame(frame)}});
 })();
