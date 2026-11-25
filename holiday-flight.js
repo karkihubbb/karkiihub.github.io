@@ -78,45 +78,26 @@ function drawMountains(t){
 }
 function draw(t,dt){
   ctx.clearRect(0,0,w,h);
-  // faint night haze
-  const haze=ctx.createRadialGradient(w*.78,h*.16,4,w*.78,h*.16,Math.max(w,h)*.62);
-  haze.addColorStop(0,'rgba(30,39,61,.22)');haze.addColorStop(1,'rgba(4,6,12,0)');
-  ctx.fillStyle=haze;ctx.fillRect(0,0,w,h);
-  // moon with tiny LED-like dots
-  const mx=w*.78,my=h*.17,mr=Math.min(43,Math.max(24,w*.045));
-  for(let yy=-mr;yy<=mr;yy+=4)for(let xx=-mr;xx<=mr;xx+=4){if(xx*xx+yy*yy<mr*mr)dot(mx+xx,my+yy,1.65,'#f5edcf',.82)}
-  dot(mx+mr*.35,my-mr*.35,mr*.74,'#080d18',.9);
-  // stars twinkle gently
-  for(const s of stars){const a=.35+.55*(.5+.5*Math.sin(t*s.s+s.p));dot(s.x,s.y,s.r,'#f4f2e9',a)}
-  // drifting snow
-  for(const p of snow){p.y+=p.v*dt;p.x+=p.d*dt;if(p.y>h*.88){p.y=-4;p.x=rand(0,w)}if(p.x<0)p.x=w;if(p.x>w)p.x=0;dot(p.x,p.y,p.r,'#c9d6e9',.38)}
-  drawMountains(t);
-  // sleigh passes through the sky, scaled for phone and desktop
-  // Use one scale for both drawing and movement so the sleigh crosses the whole screen.
-  const pixelScale=Math.min(w/720,1.0);
-  const cell=Math.max(1.7,pixelScale*3.35);
+  for(const p of snow){p.y+=p.v*dt;p.x+=p.d*dt;if(p.y>h*.78){p.y=-4;p.x=rand(0,w)}if(p.x<0)p.x=w;if(p.x>w)p.x=0;}
+  const mobile=w<650;
+  const cell=mobile?Math.max(2.35,Math.min(3.05,w/128)):Math.max(3.15,Math.min(4.7,w/290));
   const sw=sprite.width*cell,sh=sprite.height*cell;
-  const travel=w+sw*2,cycle=13;
-  const progress=(t%cycle)/cycle;
-  const x=-sw+(progress*travel);
-  const y=h*(coarse?.40:.37)+Math.sin(t*.75)*Math.min(15,h*.014);
-  const tilt=Math.sin(t*.75)*.035;
-  ctx.save();ctx.translate(x+sw/2,y);ctx.rotate(tilt);
+  const travel=w+sw*1.35,cycle=10.5,progress=(t%cycle)/cycle;
+  const x=-sw*.95+(progress*travel);
+  const y=h*(mobile?.31:.29)+Math.sin(t*.95)*Math.min(20,h*.022);
+  ctx.save();ctx.translate(x+sw/2,y);ctx.rotate(Math.sin(t*.95)*.025);
+  const glow=ctx.createRadialGradient(0,0,sh*.08,0,0,sw*.53);
+  glow.addColorStop(0,'rgba(255,190,75,.22)');glow.addColorStop(1,'rgba(255,160,60,0)');
+  ctx.fillStyle=glow;ctx.fillRect(-sw*.58,-sh*.72,sw*1.16,sh*1.44);
   const cols=sprite.width,rows=sprite.height,pixels=spritePixels;
   for(let yy=0;yy<rows;yy++)for(let xx=0;xx<cols;xx++){
     const i=(yy*cols+xx)*4;
-    if(pixels[i+3]>0){
-      ctx.globalAlpha=.99;
-      ctx.fillStyle='rgb('+pixels[i]+','+pixels[i+1]+','+pixels[i+2]+')';
-      ctx.fillRect((xx-cols/2)*cell-cell/2,(yy-rows/2)*cell-cell/2,cell,cell);
-    }
+    if(pixels[i+3]>0){ctx.globalAlpha=1;ctx.fillStyle='rgb('+pixels[i]+','+pixels[i+1]+','+pixels[i+2]+')';ctx.fillRect((xx-cols/2)*cell-cell/2,(yy-rows/2)*cell-cell/2,cell+.15,cell+.15);}
   }
   ctx.globalAlpha=1;
-  for(let k=0;k<22;k++){
-    const tx=-sw*.45-k*cell*1.8,ty=sh*.30+Math.sin(t*2+k)*2;
-    dot(tx,ty,Math.max(1.2,cell*.42),k%3?'#ffd84c':'#fff0a0',.9-k*.025);
-  }
+  for(let k=0;k<30;k++){const tx=-sw*.47-k*cell*1.45,ty=sh*.28+Math.sin(t*2.2+k*.7)*cell*.8;dot(tx,ty,Math.max(1.5,cell*.38),k%3?'#ffd84c':'#fff2b2',Math.max(.18,.9-k*.022));}
   ctx.restore();
+  for(let n=0;n<Math.min(18,snow.length);n+=3){const p=snow[n];dot(p.x,p.y,p.r,'#dbe8ff',.32);}
 }
 function bell(freq,when,duration=.48,volume=.12){
   if(!audioCtx||!master)return;
