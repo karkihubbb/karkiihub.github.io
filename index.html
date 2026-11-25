@@ -358,7 +358,7 @@ body.kv>header,body.kv>main,body.kv>.kv-top-video,body.kv>footer{position:relati
   // Distant village-like pin lights
   for(let i=0;i<30;i++){const x=(i*83+31)%Math.max(1,w),y=h*(.84+((i*17)%8)*.008);dot(x,y,1.05,'#e9c77f',.18)}
   const u=Math.max(3.1,Math.min(5.3,w/290));
-  const total=34*u,cycle=w+total+260;
+  const total=42*u,cycle=w+total+260;
   const x=(travel%cycle)-total-110;
   const y=h*.31+Math.sin(t*.002)*Math.min(8,h*.012);
   if(x<w+total+30&&x>-total-30){
