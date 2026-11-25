@@ -117,7 +117,6 @@ function draw(t,dt){
     dot(tx,ty,Math.max(1.2,cell*.42),k%3?'#ffd84c':'#fff0a0',.9-k*.025);
   }
   ctx.restore();
-  ctx.restore();
 }
 function bell(freq,when,duration=.48,volume=.12){
   if(!audioCtx||!master)return;
