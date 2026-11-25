@@ -92,18 +92,31 @@ function draw(t,dt){
   for(const p of snow){p.y+=p.v*dt;p.x+=p.d*dt;if(p.y>h*.88){p.y=-4;p.x=rand(0,w)}if(p.x<0)p.x=w;if(p.x>w)p.x=0;dot(p.x,p.y,p.r,'#c9d6e9',.38)}
   drawMountains(t);
   // sleigh passes through the sky, scaled for phone and desktop
-  const scale=Math.min(w/720,1.0);const sw=sprite.width*scale,sh=sprite.height*scale;
-  const travel=w+sw*2;const cycle=17;
-  const progress=((t%cycle)/cycle);
+  // Use one scale for both drawing and movement so the sleigh crosses the whole screen.
+  const pixelScale=Math.min(w/720,1.0);
+  const cell=Math.max(1.7,pixelScale*3.35);
+  const sw=sprite.width*cell,sh=sprite.height*cell;
+  const travel=w+sw*2,cycle=13;
+  const progress=(t%cycle)/cycle;
   const x=-sw+(progress*travel);
-  const y=h*(coarse?.43:.39)+Math.sin(t*.75)*Math.min(13,h*.012);
+  const y=h*(coarse?.40:.37)+Math.sin(t*.75)*Math.min(15,h*.014);
   const tilt=Math.sin(t*.75)*.035;
   ctx.save();ctx.translate(x+sw/2,y);ctx.rotate(tilt);
   const cols=sprite.width,rows=sprite.height,pixels=spritePixels;
-  const cell=scale*3.35, radius=cell*.39;
-  for(let yy=0;yy<rows;yy++)for(let xx=0;xx<cols;xx++){const i=(yy*cols+xx)*4;if(pixels[i+3]>0){dot((xx-cols/2)*cell,(yy-rows/2)*cell,radius,'rgb('+pixels[i]+','+pixels[i+1]+','+pixels[i+2]+')',.98)}}
-  // shimmering gold trail behind the sleigh
-  for(let k=0;k<18;k++){const tx=-sw*.45-k*scale*7,ty=sh*.32+Math.sin(t*2+k)*2;dot(tx,ty,scale*1.25,k%3?'#ffd84c':'#fff0a0',.72-k*.025)}
+  for(let yy=0;yy<rows;yy++)for(let xx=0;xx<cols;xx++){
+    const i=(yy*cols+xx)*4;
+    if(pixels[i+3]>0){
+      ctx.globalAlpha=.99;
+      ctx.fillStyle='rgb('+pixels[i]+','+pixels[i+1]+','+pixels[i+2]+')';
+      ctx.fillRect((xx-cols/2)*cell-cell/2,(yy-rows/2)*cell-cell/2,cell,cell);
+    }
+  }
+  ctx.globalAlpha=1;
+  for(let k=0;k<22;k++){
+    const tx=-sw*.45-k*cell*1.8,ty=sh*.30+Math.sin(t*2+k)*2;
+    dot(tx,ty,Math.max(1.2,cell*.42),k%3?'#ffd84c':'#fff0a0',.9-k*.025);
+  }
+  ctx.restore();
   ctx.restore();
 }
 function bell(freq,when,duration=.48,volume=.12){
