@@ -10,3 +10,7 @@
 #kv-holiday-flight{opacity:1!important;visibility:visible!important;mix-blend-mode:normal}
 
 #kv-holiday-flight{opacity:1!important;visibility:visible!important;mix-blend-mode:normal}
+
+/* Guaranteed visible, transparent full-screen animation layer */
+#kv-holiday-flight{position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;height:100dvh!important;display:block!important;visibility:visible!important;opacity:1!important;z-index:10000!important;pointer-events:none!important;background:transparent!important;}
+#kv-holiday-sound{z-index:10001!important;}
